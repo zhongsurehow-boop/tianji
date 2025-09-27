@@ -1,177 +1,208 @@
 # 《天机变》 - 卡牌逻辑数据结构 (Card Logic Data Structure)
 
-版本: 2.0
+**版本: 3.0**
 日期: 2025-09-27
 
-## 1. 核心理念
+## 1. 核心理念 (Core Philosophy) - 已修订
 
 为真正实现 "数据驱动设计" 的核心理念，所有卡牌的逻辑行为都将通过一个结构化的JSON格式来定义。游戏引擎将负责解析这个结构并执行对应的游戏逻辑，而不是将卡牌效果硬编码在程序中。
 
-本文档定义了该数据结构的标准。
+**V3.0修订核心：** 引入了 **触发器 (Triggers)** 系统和 **实体属性 (Entity Properties)**，并对 **动作 (Actions)**、**状态 (Statuses)** 和 **目标 (Targets)** 进行了精确化，以支持更复杂的响应式和全局性卡牌效果。
 
-## 2. 顶层结构
+---
 
-每张卡牌的 `.json` 文件都将遵循一个新的、扩展性更强的顶层结构。以一张基础牌为例：
+## 2. 顶层结构 (Top-Level Structure) - 已扩展
 
 ```json
 {
   "id": "basic_01_qian",
   "name": "乾",
-  "symbol": "☰☰",
-  "sequence": 1,
-  "pinyin": "qian",
-  "strokes": 12,
+  // ... 其他元数据 ...
   "type": "basic",
-  "core_mechanism": {
-    "name": "天道酬勤",
-    "description": "支付10金币和5生命值，在本轮的【解读阶段】，你爻辞效果中所有正向收益（获得金币、恢复生命、造成伤害）的数值翻倍。",
-    "variants": {
-      "di": {
-        "name": "蓄力",
-        "description": "你在【地部】发动【天道酬勤】时，支付的成本减半（只需5金币和2生命值）。",
-        "effect": { }
-      },
-      "ren": {
-        "name": "精进",
-        "description": "你在【人部】发动【天道酬勤】时，除了收益翻倍，你还可以立即额外移动一格（可穿梭于不同“部”之间）。",
-        "effect": { }
-      },
-      "tian": {
-        "name": "君威",
-        "description": "你在【天部】发动【天道酬勤】时，你可以指定一名盟友，使其也获得本轮收益翻倍的效果。但作为代价，在本轮结束时，你需要弃掉一张手牌。",
-        "effect": { }
+
+  "effect": {
+    // 卡牌打出时立即执行的主动效果
+  },
+
+  "triggers": [
+    // 卡牌在场时，被动监听并响应游戏事件的触发器
+    {
+      "condition": "ON_BEING_TARGETED",
+      "params": { "source_type": "EFFECT_NEGATIVE" },
+      "effect": {
+        "action": "CHOICE",
+        "params": {
+          "target": "SELF",
+          "options": [ { "description": "发动【心心相印】", "effect": { /* ... */ } } ]
+        }
       }
     }
-  }
+  ]
 }
 ```
 
-## 3. 效果 (Effect) 对象结构
+---
 
-`"effect"` 对象是逻辑定义的核心。它由一个或多个 "动作(Action)" 组成，并可以包含条件、成本和选择。
+## 3. 效果 (Effect) 与 触发器 (Trigger) 详解
 
-一个 `effect` 对象可以是一个单独的 `action`，也可以是一个 `action` 数组。
+### 3.1 效果对象 (`effect`)
+`"effect"` 对象定义了一个或一系列将要执行的动作。它可以包含 `cost`, `condition`, 和 `action` 数组。
 
 ```json
-"effect": [
-  { "action": "...", "params": { ... } },
-  { "action": "...", "params": { ... } }
-]
+"effect": {
+  "description": "可选的内部描述",
+  "cost": [ { "resource": "gold", "value": 10 } ],
+  "condition": { "op": "GREATER_THAN", "a": "VAR_SELF_YANG", "b": 3 },
+  "actions": [
+    { "action": "DEAL_DAMAGE", "params": { "target": "OPPONENT_SINGLE", "value": 5 } }
+  ]
+}
 ```
 
-### 3.1 动作 (Action)
+### 3.2 触发器对象 (`triggers`) - **V3.0 新增**
+`"triggers"` 是一个数组，定义了卡牌如何被动地响应游戏事件。
 
-一个 "动作" 是游戏中最基本的操作单元。
+**结构:** `{ "condition": "EVENT_TYPE", "params": { ... }, "effect": { ... } }`
 
-**结构:**
-`{ "action": "ACTION_TYPE", "params": { ... } }`
+| 条件 (`EVENT_TYPE`) | 描述 | 示例参数 (`params`) |
+| :--- | :--- | :--- |
+| `ON_BEING_TARGETED` | 当此牌的拥有者成为一个效果的目标时 | `source_type`: `EFFECT_ALL`, `EFFECT_NEGATIVE`, `ATTACK` |
+| `ON_PLAYER_ACTION` | 当任一玩家执行特定动作时 | `action_type`: `MOVE`, `PLAY_CARD_FUNCTION`, `ATTACK` |
+| `ON_PHASE_START` | 在某个游戏阶段开始时 | `phase`: `UPKEEP`, `MOVEMENT`, `INTERPRETATION` |
+| `ON_RESOURCE_CHANGE`| 当玩家资源变化时 | `resource`: `gold`, `health`; `change_type`: `GAIN`, `LOSS` |
 
-**常见动作类型 (`ACTION_TYPE`):**
+---
+
+## 4. 动作 (Action) - V3.0 大幅扩展
 
 | 类型 | 描述 | 参数 (`params`) |
-|---|---|---|
-| `MODIFY_RESOURCE` | 修改玩家资源 | `target`, `resource` (gold, health, hand_cards), `value` |
-| `MOVE` | 移动棋子 | `target`, `destination`, `move_type` (normal, jump, force) |
-| `APPLY_STATUS` | 对目标施加状态 | `target`, `status_id`, `duration`, `value` |
-| `REMOVE_STATUS` | 移除目标状态 | `target`, `status_id` (or "all_negative") |
-| `MODIFY_RULE` | 修改全局或玩家规则 | `rule_id`, `scope` (global, player), `modifier`, `duration` |
-| `TRIGGER_EVENT` | 触发一个游戏事件 | `event_id` (e.g., "discourse", "litigation") |
-| `CHOICE` | 给予玩家一个选择 | `target`, `options` (每个option包含description和effect) |
-| `SWAP` | 交换玩家属性或位置 | `target_a`, `target_b`, `swap_type` (position, gold, hand_cards) |
-| `LOOKUP` | 查看隐藏信息 | `target`, `info_type` (hand_cards, destiny_card) |
-| `CREATE_ENTITY`| 在棋盘上创建实体 | `entity_type` (trap, marker, well), `position` |
-| `EXECUTE_LATER` | 延迟执行效果 | `delay` (e.g., "next_turn_start"), `effect` |
+| :--- | :--- | :--- |
+| **资源类** | | |
+| `MODIFY_RESOURCE` | **（已废弃，见下）** | |
+| `GAIN_RESOURCE` | 目标获得资源。用于奖励。 | `target`, `resource` (gold, health...), `value`, `source` |
+| `LOSE_RESOURCE` | 目标失去资源。用于**非伤害性**的生命减少或金币损失。 | `target`, `resource`, `value` |
+| `PAY_COST` | 玩家为发动效果支付代价。**与`LOSE_RESOURCE`在规则上严格区分。** | `target`, `resource`, `value` |
+| `DEAL_DAMAGE` | 对目标造成伤害。可被防御/免疫。 | `target`, `value`, `damage_type` (physical, magical) |
+| **移动与位置** | | |
+| `MOVE` | 移动棋子。 | `target`, `destination`, `move_type` (normal, jump, force) |
+| `SWAP_POSITION` | 交换两个棋子的位置。 | `target_a`, `target_b` |
+| **状态与规则** | | |
+| `APPLY_STATUS` | 对目标施加状态。 | `target`, `status_id`, `duration`, `value`, `is_permanent` |
+| `REMOVE_STATUS` | 移除目标状态。 | `target`, `status_id` (或 `ALL_NEGATIVE`, `ALL_POSITIVE`) |
+| `MODIFY_RULE` | **(已增强)** 修改全局或玩家规则。 | `rule_id`, `scope`, `mutation` (`{type, value}`), `duration` |
+| **互动与信息** | | |
+| `CHOICE` | 给予玩家一个选择。 | `target`, `options` (每个option包含description和effect) |
+| `LOOKUP` | 查看隐藏信息。 | `target`, `info_type` (hand_cards, destiny_card) |
+| `INTERRUPT` | **(新增)** 中断一个正在结算的动作。 | `target_action`, `interrupt_type` (CANCEL, REDIRECT) |
+| **实体与场上效果** | | |
+| `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties` |
+| `DESTROY_ENTITY`| **(新增)** 移除一个场上实体。 | `target_entity_id` |
+| **其他** | | |
+| `EXECUTE_LATER` | 延迟执行效果。 | `delay` (e.g., "next_turn_start"), `effect` |
+| `TRIGGER_EVENT` | 触发一个游戏事件（如“论道”）。 | `event_id`, `participants` |
 
-### 3.2 参数详解
+---
 
-#### `target`
+## 5. 参数详解 (Parameter Details) - V3.0 修订与扩充
 
-定义动作的目标。
+### 5.1 `target` - 目标
 
-*   **玩家目标:** `SELF`, `ALLY_SINGLE`, `ALLY_ALL`, `OPPONENT_SINGLE`, `PLAYER_ALL`, `CONTROLLER_OF_EFFECT`
-*   **区域目标:** `CURRENT_ZONE`, `ADJACENT_ZONE`, `ANY_ZONE`, `PALACE_ZONES` (当前宫位所有区域)
+*   **精确化玩家目标:**
+    *   `SELF`: 动作的发起者。
+    *   `EVENT_SOURCE_PLAYER`: 触发事件的玩家。
+    *   `EVENT_TARGET_PLAYER`: 被事件指定的玩家。
+    *   `ALLY_FORMAL_SINGLE`: **(新增)** 仅限通过《比》卦结成的单个盟友。
+    *   `ALLY_FORMAL_ALL`: **(新增)** 所有正式盟友。
+    *   `PLAYER_CHOICE_ANY`: **(新增)** 由发起者在所有玩家中任选一个。
+    *   `OPPONENT_CHOICE_SINGLE`: **(新增)** 由发起者在所有敌对玩家中任选一个。
 
-#### `value`
+### 5.2 `status_id` - 状态效果
 
-定义动作的数值。可以是固定值，也可以是动态变量。
+*   **精确化免疫状态 (新增):**
+    *   `IMMUNE_COMBAT_DAMAGE`: 免疫战斗造成的伤害。
+    *   `IMMUNE_EFFECT_DAMAGE`: 免疫卡牌效果造成的伤害。
+    *   `IMMUNE_LIFE_LOSS`: 免疫不属于“伤害”的生命值减少。
+    *   `IMMUNE_PENALTY`: 免疫【地部】或【奇门】等区域惩罚。
+    *   `IMMUNE_THEFT`: 免疫偷窃/夺取金币的效果。
+    *   `IMMUNITY_GENERAL_NEGATIVE`: 笼统的负面效果免疫（兜底）。
+*   **其他关键状态:**
+    *   `CANNOT_PAY_COSTS`: **(新增)** 目标无法支付任何代价（一个负面状态）。
+    *   `HEXAGRAM_INVERTED`: 错卦状态。
+    *   `POSITIVE_GAIN_DOUBLED`: 乾卦状态。
 
-*   **固定值:** `10`, `-5`
-*   **动态变量:**
-    *   `VAR_PLAYER_YANG`: 玩家的阳气值
-    *   `VAR_PLAYER_GOLD`: 玩家的金币
-    *   `VAR_INPUT_VALUE`: 由前一个动作或选择决定的值
-    *   `VAR_GAME_FUND`: 游戏基金的数额
+### 5.3 `rule_id` & `mutation` - 规则修改 **(V3.0 增强)**
 
-#### `status_id`
+*   **新增 `rule_id`:**
+    *   `FIVE_ELEMENTS_SYSTEM_ACTIVE`: 五行系统是否生效。
+    *   `INTER_DEPARTMENT_MOVEMENT`: 天人地三部之间是否可移动。
+    *   `YIN_YANG_SYSTEM_REVERSED`: 阴阳系统正负效果是否反转。
+    *   `ZONE_REWARD_PENALTY_REVERSAL`: 泰/否卦的区域奖惩反转。
+*   **`mutation` 对象:**
+    *   `{ "type": "SET_BOOLEAN", "value": false }`: 开关规则。
+    *   `{ "type": "SET_VALUE", "value": 0 }`: 设定数值规则（如移动上限）。
+    *   `{ "type": "ADD_MODIFIER", "value": { "op": "MULTIPLY", "amount": 0.5 } }`: 增加修正。
 
-定义状态效果。
+### 5.4 `properties` - 实体属性 **(V3.0 新增)**
 
-*   `SHIELD`, `POISON`, `REGEN`, `CONFUSED`, `SLOWED`, `IMMUNE_TO_DAMAGE`, `IMMUNE_TO_NEGATIVE_EFFECTS`
+用于 `CREATE_ENTITY` 动作，定义场上实体的具体规则。
+```json
+"properties": {
+  "name": "迷雾",
+  "is_permanent": false,
+  "duration": 3, // 回合
+  "blocks_movement": { "for": "ALL_PLAYERS" },
+  "on_enter_effect": { "actions": [ { "action": "LOSE_RESOURCE", "params": { "target": "EVENT_SOURCE_PLAYER", "resource": "gold", "value": 2 } } ] },
+  "on_upkeep_effect": { /* ... */ }
+}
+```
 
-#### `rule_id`
+---
 
-定义被修改的游戏规则。
+## 6. 示例：将《蹇》卦数据化 (新版)
 
-*   `MOVEMENT_RANGE`, `HAND_LIMIT`, `GOLD_GAIN_MODIFIER`, `DAMAGE_MODIFIER`, `ZONE_REWARD_PENALTY_REVERSAL`
+**卡牌意图:** 在被攻击时，可以从手中打出此牌，无效化攻击，并后退一格。
 
-### 4. 示例：将《乾》卦地部效果数据化
+**实现方式:**
+1.  《蹇》牌本身没有 `effect`，只有 `triggers`。
+2.  引擎规则：玩家可以在满足特定触发条件时，从手中打出带有该触发器的牌。
 
 ```json
-"di": {
-  "name": "蓄力",
-  "description": "你在【地部】发动【天道酬勤】时，支付的成本减半（只需5金币和2生命值）。",
-  "effect": {
-    "action": "CHOICE",
-    "params": {
-      "target": "SELF",
-      "options": [
-        {
-          "description": "发动【天道酬勤】",
-          "cost": [
-            { "resource": "gold", "value": 5 },
-            { "resource": "health", "value": 2 }
-          ],
-          "effect": {
-            "action": "APPLY_STATUS",
+// jian.json
+{
+  "id": "basic_39_jian",
+  // ...
+  "triggers": [
+    {
+      "condition": "ON_BEING_TARGETED",
+      "params": { "source_type": "ATTACK" },
+      "playable_from_hand": true, // **新增元数据，表示此牌可作为响应牌打出**
+      "effect": {
+        "description": "发动【知难而退】",
+        "actions": [
+          {
+            "action": "INTERRUPT",
+            "params": {
+              "target_action": "CURRENTLY_RESOLVING_ATTACK", // 引擎需要知道要中断哪个动作
+              "interrupt_type": "CANCEL"
+            }
+          },
+          {
+            "action": "MOVE",
             "params": {
               "target": "SELF",
-              "status_id": "POSITIVE_GAIN_DOUBLED",
-              "duration": 1
+              "move_type": "RETREAT", // 后退一格
+              "value": 1
             }
           }
-        },
-        {
-          "description": "不发动"
-        }
-      ]
+        ]
+      }
     }
-  }
+  ]
 }
 ```
 
-### 5. 功能牌的实现
+---
 
-功能牌将通过 `APPLY_STATUS` 动作实现，将一个临时状态附加到基础牌上。
+## 7. 结论
 
-```json
-// function_cuogua.json
-{
-  "id": "function_cuogua",
-  "type": "function",
-  "name": "错卦",
-  "description": "将你基础牌的每一个爻都进行阴阳反转，变为一个全新的卦来解读。",
-  "effect": {
-    "action": "APPLY_STATUS",
-    "params": {
-      "target": "ATTACHED_BASE_CARD",
-      "status_id": "HEXAGRAM_INVERTED",
-      "duration": 1
-    }
-  }
-}
-```
-游戏引擎在解读基础牌时，会检查其是否附有 `HEXAGRAM_INVERTED` 状态，若有，则在查找其效果前，先计算出反转后的卦象ID，再用新的ID去获取效果。
-
-### 6. 结论
-
-这个新的数据结构将提供足够的灵活性和精确度来定义游戏中所有复杂的卡牌逻辑，真正实现项目的数据驱动设计目标。这将极大地方便未来的内容更新、平衡性调整和Mod制作。
+V3.0 的数据结构通过引入**触发器**、**实体属性**，并**精确化**已有的动作、状态和目标，极大地增强了逻辑引擎的表达能力。这个新框架现在能够以纯粹的数据驱动方式，支持响应式、全局规则修改、创造复杂场上实体等高级卡牌效果，为解决先前发现的逻辑冲突、漏洞和实现难题铺平了道路。
