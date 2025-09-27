@@ -1,0 +1,14 @@
+{
+    "id": "natal_qian",
+    "type": "natal",
+    "name": "乾",
+    "symbol": "☰",
+    "passive": {
+        "name": "天行健",
+        "description": "从【天部】获得金币时，额外+1。"
+    },
+    "active": {
+        "name": "飞龙在天",
+        "description": "移动阶段，可直接移至任意未被占据的【天部】。"
+    }
+}

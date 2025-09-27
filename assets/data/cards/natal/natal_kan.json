@@ -1,0 +1,14 @@
+{
+    "id": "natal_kan",
+    "type": "natal",
+    "name": "坎",
+    "symbol": "☵",
+    "passive": {
+        "name": "习坎",
+        "description": "在水或木属性区域，你发起的“论道”笔画数-1。"
+    },
+    "active": {
+        "name": "险中求胜",
+        "description": "本轮你的金币奖惩减半。"
+    }
+}
