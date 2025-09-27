@@ -176,17 +176,24 @@ let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 
 
 ```
     {
-  "id": "string",          // 唯一ID
-  "name": "string",        // 中文名 (乾)
-  "symbol": "string",      // 卦象符号 (☰)
+  "id": "string",          // 唯一ID, e.g., "basic_01_qian"
+  "name": "string",        // 中文名, e.g., "乾"
+  "symbol": "string",      // 卦象符号, e.g., "☰☰"
   "sequence": "integer",   // 序卦传顺序 (1-64)
+  "pinyin": "string",      // 拼音, e.g., "qian"
   "strokes": "integer",    // 总笔画数 (用于'论道'事件)
-  "link": { ... },         // 对卦/综卦联动信息
-  "effects": {
-    "tian": "string",      // 天部效果描述
-    "ren": "string",       // 人部效果描述
-    "di": "string"        // 地部效果描述
-  }
+  "link": {                // 对卦/综卦联动信息 (占位符)
+    "pair_type": "...",
+    "pair_id": "..."
+  },
+  "effects": [
+    "string",              // 第一爻效果 (地部)
+    "string",              // 第二爻效果 (地部)
+    "string",              // 第三爻效果 (人部)
+    "string",              // 第四爻效果 (人部)
+    "string",              // 第五爻效果 (天部)
+    "string"               // 第六爻效果 (天部)
+  ]
 }
 
 ```
