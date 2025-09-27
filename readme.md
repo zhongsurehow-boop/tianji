@@ -65,6 +65,7 @@ assets/
 
 *   **文件命名:** 所有与卡牌相关的文件（`.json` 和 `.png`）都必须以其卡牌ID命名。
     *   **示例:** `basic_01_qian.json`, `basic_01_qian.png`
+    *   **开发者注:** 为确保单一事实来源，应始终以**文件名**作为卡牌的权威ID。JSON文件内部的 `pinyin` 字段仅为方便阅读的冗余数据。
 
 *   **命名范式:**
     *   **基础牌:** `basic_[01-64]_[pinyin]`
@@ -182,18 +183,24 @@ let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 
   "sequence": "integer",   // 序卦传顺序 (1-64)
   "pinyin": "string",      // 拼音, e.g., "qian"
   "strokes": "integer",    // 总笔画数 (用于'论道'事件)
-  "link": {                // 对卦/综卦联动信息 (占位符)
-    "pair_type": "...",
-    "pair_id": "..."
-  },
-  "effects": [
-    "string",              // 第一爻效果 (地部)
-    "string",              // 第二爻效果 (地部)
-    "string",              // 第三爻效果 (人部)
-    "string",              // 第四爻效果 (人部)
-    "string",              // 第五爻效果 (天部)
-    "string"               // 第六爻效果 (天部)
-  ]
+  "mechanism": {
+    "name": "string",          // 核心机制名称, e.g., "天道酬勤"
+    "core_description": "string", // 机制的通用描述
+    "variants": {
+      "di": {                  // 地部效果
+        "name": "string",      // e.g., "蓄力"
+        "description": "string"
+      },
+      "ren": {                  // 人部效果
+        "name": "string",      // e.g., "精进"
+        "description": "string"
+      },
+      "tian": {                 // 天部效果
+        "name": "string",      // e.g., "君威"
+        "description": "string"
+      }
+    }
+  }
 }
 
 ```
