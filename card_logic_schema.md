@@ -1,13 +1,13 @@
 # 《天机变》 - 卡牌逻辑数据结构 (Card Logic Data Structure)
 
-**版本: 3.0**
+**版本: 3.1**
 日期: 2025-09-27
 
 ## 1. 核心理念 (Core Philosophy) - 已修订
 
 为真正实现 "数据驱动设计" 的核心理念，所有卡牌的逻辑行为都将通过一个结构化的JSON格式来定义。游戏引擎将负责解析这个结构并执行对应的游戏逻辑，而不是将卡牌效果硬编码在程序中。
 
-**V3.0修订核心：** 引入了 **触发器 (Triggers)** 系统和 **实体属性 (Entity Properties)**，并对 **动作 (Actions)**、**状态 (Statuses)** 和 **目标 (Targets)** 进行了精确化，以支持更复杂的响应式和全局性卡牌效果。
+**V3.1修订核心：** 新增 `COPY_EFFECT` 动作和 `usage_limit` 属性，以支持效果复制和“每场游戏一次”等限制性机制。
 
 ---
 
@@ -19,6 +19,11 @@
   "name": "乾",
   // ... 其他元数据 ...
   "type": "basic",
+
+  "usage_limit": {
+    "scope": "GAME",
+    "count": 1
+  },
 
   "effect": {
     // 卡牌打出时立即执行的主动效果
@@ -73,7 +78,7 @@
 
 ---
 
-## 4. 动作 (Action) - V3.0 大幅扩展
+## 4. 动作 (Action) - V3.1 大幅扩展
 
 | 类型 | 描述 | 参数 (`params`) |
 | :--- | :--- | :--- |
@@ -94,6 +99,7 @@
 | `CHOICE` | 给予玩家一个选择。 | `target`, `options` (每个option包含description和effect) |
 | `LOOKUP` | 查看隐藏信息。 | `target`, `info_type` (hand_cards, destiny_card) |
 | `INTERRUPT` | **(新增)** 中断一个正在结算的动作。 | `target_action`, `interrupt_type` (CANCEL, REDIRECT) |
+| `COPY_EFFECT` | **(新增)** 复制另一个效果。 | `target`, `source_effect`, `modifications` |
 | **实体与场上效果** | | |
 | `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties` |
 | `DESTROY_ENTITY`| **(新增)** 移除一个场上实体。 | `target_entity_id` |
@@ -103,7 +109,7 @@
 
 ---
 
-## 5. 参数详解 (Parameter Details) - V3.0 修订与扩充
+## 5. 参数详解 (Parameter Details) - V3.1 修订与扩充
 
 ### 5.1 `target` - 目标
 
@@ -156,6 +162,17 @@
 }
 ```
 
+### 5.5 `usage_limit` - 使用限制 **(V3.1 新增)**
+位于卡牌顶层，用于定义那些有使用次数限制的效果（如“每场游戏一次”）。
+
+*   **`scope`**: `GAME`, `ROUND`, `PLAYER_LIFETIME`
+*   **`count`**: 整数，表示可用的次数。
+
+### 5.6 `COPY_EFFECT` 参数 **(V3.1 新增)**
+*   **`target`**: 谁来执行这个被复制的效果。
+*   **`source_effect`**: 定义要复制哪个效果。例如: `{ "type": "LAST_BASIC_CARD_EFFECT", "player": "ANY" }`
+*   **`modifications`**: 可选，对复制的效果进行调整。例如: `{ "remove_negative_parts": true }`
+
 ---
 
 ## 6. 示例：将《蹇》卦数据化 (新版)
@@ -205,4 +222,4 @@
 
 ## 7. 结论
 
-V3.0 的数据结构通过引入**触发器**、**实体属性**，并**精确化**已有的动作、状态和目标，极大地增强了逻辑引擎的表达能力。这个新框架现在能够以纯粹的数据驱动方式，支持响应式、全局规则修改、创造复杂场上实体等高级卡牌效果，为解决先前发现的逻辑冲突、漏洞和实现难题铺平了道路。
+V3.1 的数据结构通过引入**触发器**、**实体属性**，并**精确化**已有的动作、状态和目标，极大地增强了逻辑引擎的表达能力。新增的 `COPY_EFFECT` 动作和 `usage_limit` 属性，使得引擎能够以纯粹的数据驱动方式，支持响应式、全局规则修改、效果复制、次数限制等高级卡牌效果，为解决先前发现的逻辑冲突、漏洞和实现难题铺平了道路。

@@ -1,7 +1,7 @@
 # 《天机变》- 游戏资产 (Assets) 使用说明
 
-版本: 1.0
-日期: 2025-09-26
+**版本: 2.0**
+**日期: 2025-09-27**
 
 ## 1. 简介
 
@@ -9,9 +9,14 @@
 
 本文档旨在为所有开发者提供一个清晰的指引，说明资产的组织结构、命名规范以及如何在游戏引擎中正确地加载和使用它们。请在开始开发前仔细阅读本文档。
 
-**核心设计哲学：数据驱动 (Data-Driven Design)**
+**核心设计哲学：单一事实来源 (Single Source of Truth)**
 
-本项目遵循严格的数据与视图分离原则。所有游戏逻辑（如卡牌效果、属性）都存储在纯文本的 `.json` 文件中，而所有视觉表现（如卡牌美术）都存储在 `.png` 文件中。**JSON文件是游戏逻辑的“单一事实来源 (Single Source of Truth)”**。
+本项目遵循严格的数据与视图分离原则。
+- **视觉表现 (View):** 所有视觉资源 (如卡牌美术) 都存储在 `.png` 文件中。
+- **游戏逻辑 (Logic):** 所有卡牌的逻辑行为都统一在 **`hexagram_interpretations.md`** 文件中进行定义。该文件是人类可读的描述和机器可读的 `json` 逻辑的唯一来源。
+- **游戏数据 (Data):** 位于 `assets/data/cards/` 下的 `.json` 文件是 **自动生成的产物**。
+
+**重要：请勿直接编辑 `.json` 文件。** 要修改卡牌逻辑，请参见第4.1节。
 
 ---
 
@@ -20,9 +25,8 @@
 所有资产都位于 `assets` 文件夹下，其结构如下：
 
 ```
-
 assets/
-├── data/                      # 存放所有游戏逻辑数据 (JSON文件)
+├── data/                      # 存放所有游戏逻辑数据 (自动生成的JSON文件)
 │   └── cards/
 │       ├── basic/             # 64张基础牌
 │       ├── destiny/           # 12张天命牌
@@ -34,22 +38,10 @@ assets/
 │           └── stems/         # 10张天干牌
 │
 └── images/                    # 存放所有视觉资源 (PNG文件)
-└── cards/
-├── backs/             # 各种牌背
-├── basic/             # 基础牌美术
-├── destiny/           # 天命牌美术
-├── function/          # 功能牌美术
-├── natal/             # 本命卦牌美术
-├── state/             # 游戏状态牌美术
-│   ├── branches/
-│   ├── celestial/
-│   └── stems/
-└── ui_elements/       # UI元素，如卡牌模板
-
-
-
-
-
+    └── cards/
+        ├── backs/             # 各种牌背
+        ├── basic/             # 基础牌美术
+        ... (结构与 data/cards/ 完全镜像)
 ```
     **关键规则：镜像结构**
 
@@ -65,7 +57,6 @@ assets/
 
 *   **文件命名:** 所有与卡牌相关的文件（`.json` 和 `.png`）都必须以其卡牌ID命名。
     *   **示例:** `basic_01_qian.json`, `basic_01_qian.png`
-    *   **开发者注:** 为确保单一事实来源，应始终以**文件名**作为卡牌的权威ID。JSON文件内部的 `pinyin` 字段仅为方便阅读的冗余数据。
 
 *   **命名范式:**
     *   **基础牌:** `basic_[01-64]_[pinyin]`
@@ -78,63 +69,68 @@ assets/
 
 ### 3.2 数据文件 (`.json`)
 
-`.json` 文件定义了卡牌的一切**逻辑行为**。修改这些文件会直接改变游戏玩法。
+`.json` 文件是**自动生成的**，定义了卡牌的一切**逻辑行为**。
 
-*   **编码:** 所有 `.json` 文件必须使用 `UTF-8` 编码。
-*   **结构:** 每种类型的卡牌都有其固定的JSON结构。请参考下面的“资产详情”部分。
+*   **编码:** 所有 `.json` 文件使用 `UTF-8` 编码。
+*   **结构:** 完整的JSON结构定义请参阅 **`card_logic_schema.md`**。
 
 ### 3.3 图像文件 (`.png`)
 
 `.png` 文件定义了卡牌的**视觉外观**。
 
-*   **尺寸:** 当前占位图尺寸为 `500x700` 像素。最终美术资源应保持统一尺寸。
+*   **尺寸:** 当前占位图尺寸为 `500x700` 像素。
 *   **替换规则:** 你可以随时替换任何一张 `.png` 图片以更新美术，**但文件名必须与对应的 `.json` 文件保持严格一致**。
 
 ---
 
-## 4. 如何使用资产（编程指南）
+## 4. 工作流程与编程指南
 
-### 4.1 加载一张卡牌
+### 4.1 修改卡牌逻辑 (核心工作流)
 
-在游戏中加载并创建一张卡牌的推荐流程如下：
+要修改任何卡牌的逻辑、效果或数值，请严格遵循以下步骤：
+
+1.  **编辑源文件:** 打开 **`hexagram_interpretations.md`** 文件。
+2.  **找到目标卡牌:** 定位到你想要修改的卡牌的描述部分。
+3.  **修改JSON块:** 直接编辑该卡牌描述下方的 ```json ... ``` 代码块。这里是定义卡牌行为的唯一地方。
+4.  **运行生成脚本:** 在终端中运行以下命令：
+    ```bash
+    python tools/generate_card_data.py
+    ```
+5.  **验证:** 脚本会自动重新生成所有位于 `assets/data/cards/` 下的 `.json` 文件，确保你的修改已应用。
+
+### 4.2 加载卡牌 (编程指南)
+
+在游戏中加载并创建一张卡牌的推荐流程如下。此伪代码已修正了所有已知的路径解析错误，可作为实现参考。
 
 ```javascript
-// 伪代码示例 (已修正逻辑错误)
+// 伪代码示例 (已修正)
 function loadCard(cardId) {
-    // 1. 从ID中解析出主类型和文件名
-    // 修正了bug：之前将整个数组赋给了type，现在只取第一个元素
-    const type = cardId.split('_')[0]; // "basic", "destiny", "stem", etc.
-    const filename = cardId;          // "basic_01_qian"
+    // 1. 从ID中解析出主类型
+    // e.g., "basic_01_qian" -> "basic"
+    // e.g., "stem_jia" -> "stem"
+    const type = cardId.split('_')[0];
 
     // 2. 根据类型推导正确的资产路径
-    // 默认路径直接使用卡牌类型作为文件夹名
-    let categoryPath = type;
-
-    // 特殊处理：天干(stem)、地支(branch)、星象(celestial) 牌位于 "state" 文件夹下
-    // 修正了bug：之前的逻辑完全错误，无法定位到state文件夹，也没有处理子文件夹
+    let categoryPath;
     const stateCardTypes = ['stem', 'branch', 'celestial'];
+
     if (stateCardTypes.includes(type)) {
-        // 它们的父目录是 'state'，子目录是类型名（复数或原名）
-        // 例如: assets/data/cards/state/stems/stem_jia.json
-        let subfolderName;
-        if (type === 'stem') {
-            subfolderName = 'stems';
-        } else if (type === 'branch') {
-            subfolderName = 'branches';
-        } else { // celestial
-            subfolderName = 'celestial';
-        }
-        categoryPath = `state/${subfolderName}`;
+        // 特殊处理：天干(stem)、地支(branch)、星象(celestial) 牌位于 "state" 文件夹下
+        // 例如, 'stem' 类型对应 'state/stems' 文件夹
+        const subfolder = (type === 'celestial') ? 'celestial' : type + 's';
+        categoryPath = `state/${subfolder}`;
+    } else {
+        // 其他所有类型直接使用类型名作为文件夹名
+        // 例如, 'basic' 类型对应 'basic' 文件夹
+        categoryPath = type;
     }
 
     // 3. 构建完整的文件路径
-    // 修正了bug：之前由于type变量错误，路径拼接是无效的
-    // 示例 (天干牌): assets/data/cards/state/stems/stem_jia.json
-    // 示例 (基础牌): assets/data/cards/basic/basic_01_qian.json
+    const filename = cardId;
     const dataPath = `assets/data/cards/${categoryPath}/${filename}.json`;
     const imagePath = `assets/images/cards/${categoryPath}/${filename}.png`;
 
-    // 4. 加载资源 (此部分为引擎相关的伪代码，保持不变)
+    // 4. 加载资源 (此部分为引擎相关的伪代码)
     const cardData = loadJsonFile(dataPath);
     const cardImage = loadImageFile(imagePath);
 
@@ -144,14 +140,12 @@ function loadCard(cardId) {
 }
 
 // 使用示例
-let qianCard = loadCard("basic_01_qian");
-let jiaCard = loadCard("stem_jia"); // 现在可以正确加载 state/stems/ 目录下的文件
-let chenCard = loadCard("branch_chen"); // 现在可以正确加载 state/branches/ 目录下的文件
-let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 state/celestial/ 目录下的文件
-
+let qianCard = loadCard("basic_01_qian"); // 正确加载: assets/data/cards/basic/basic_01_qian.json
+let jiaCard = loadCard("stem_jia");       // 正确加载: assets/data/cards/state/stems/stem_jia.json
+let chenCard = loadCard("branch_chen");   // 正确加载: assets/data/cards/state/branches/branch_chen.json
 ```
 
-### 4.2 构建牌库
+### 4.3 构建牌库
 
 要构建一个完整的牌库（例如，基础牌库），程序应该：
 
@@ -160,87 +154,14 @@ let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 
 3. 对于每一个ID，调用 `loadCard(id)` 函数来创建卡牌对象。
 4. 将所有创建的卡牌对象存入一个列表或数组中，然后进行洗牌。
 
-**关于功能牌库的说明：**
-游戏规则要求一个包含20张牌的功能牌库。该牌库应通过加载 `assets/data/cards/function/` 目录下的5种功能牌数据、每种创建4个实例来构成，然后将这20张牌洗混。这解决了规则中“20张功能牌”与数据文件中“5个文件”之间的歧义。
+---
 
-------
+## 5. 资产详情 (JSON Schema)
 
+**所有卡牌的JSON结构都遵循 `card_logic_schema.md` 中定义的规范。**
 
+该文档是定义卡牌数据结构、可用动作、触发器和参数的权威来源。在实现卡牌逻辑或扩展引擎功能时，请务必以此文件为准。
 
-## 5. 资产详情 (JSON Schema) - 版本 2.0
-
-**重要提示:** 为真正实现数据驱动设计，卡牌的JSON结构已被重构，以包含详细的逻辑定义。完整的结构规范请参阅 **`card_logic_schema.md`** 文档。以下为简化的示例。
-
-#### basic_[id].json
-
-```json
-{
-  "id": "basic_01_qian",
-  "name": "乾",
-  "symbol": "☰☰",
-  "sequence": 1,
-  "pinyin": "qian",
-  "strokes": 12,
-  "type": "basic",
-  "core_mechanism": {
-    "name": "天道酬勤",
-    "description": "支付10金币和5生命值，在本轮的【解读阶段】，你爻辞效果中所有正向收益（获得金币、恢复生命、造成伤害）的数值翻倍。",
-    "variants": {
-      "di": {
-        "name": "蓄力",
-        "description": "你在【地部】发动【天道酬勤】时，支付的成本减半（只需5金币和2生命值）。",
-        "effect": {
-          "action": "CHOICE",
-          "params": {
-            "target": "SELF",
-            "options": [
-              {
-                "description": "发动【天道酬勤】",
-                "cost": [ { "resource": "gold", "value": 5 }, { "resource": "health", "value": 2 } ],
-                "effect": {
-                  "action": "APPLY_STATUS",
-                  "params": { "target": "SELF", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
-                }
-              },
-              { "description": "不发动" }
-            ]
-          }
-        }
-      },
-      "ren": {
-        "name": "精进",
-        "description": "你在【人部】发动【天道酬勤】时，除了收益翻倍，你还可以立即额外移动一格。",
-        "effect": { }
-      },
-      "tian": {
-        "name": "君威",
-        "description": "你在【天部】发动【天道酬勤】时，你可以指定一名盟友，使其也获得本轮收益翻倍的效果。",
-        "effect": { }
-      }
-    }
-  }
-}
-```
-
-#### function_[id].json
-
-```json
-{
-  "id": "function_cuogua",
-  "type": "function",
-  "name": "错卦",
-  "description": "将你基础牌的每一个爻都进行阴阳反转，变为一个全新的卦来解读。",
-  "effect": {
-    "action": "APPLY_STATUS",
-    "params": {
-      "target": "ATTACHED_BASE_CARD",
-      "status_id": "HEXAGRAM_INVERTED",
-      "duration": 1
-    }
-  }
-}
-```
-
-*(所有卡牌类型的JSON结构都已更新，以包含一个详细的 `effect` 对象。请参阅 `card_logic_schema.md` 获取完整定义。)*
+由于所有 `.json` 文件都是通过脚本生成的，此处不再提供静态示例，以避免信息过时。
 
 ---

@@ -1,5 +1,11 @@
-**版本: 2.0 (已修订)**
-**说明:** 本文档所有卡牌效果描述均已根据 `game_rules.md` v2.0 和 `card_logic_schema.md` v3.0 进行修订，以确保逻辑严密、无歧义且可实现。
+**版本: 3.0 (Data-Driven Update)**
+**说明:** 本文档是游戏卡牌逻辑的 **单一事实来源 (Single Source of Truth)**。每张卡牌的描述下方都包含一个 `json` 代码块，该代码块定义了卡牌在游戏引擎中的确切行为。
+
+**开发者指南:**
+- **要修改卡牌逻辑，请直接修改本文档中的 `json` 代码块。**
+- **修改完成后，请运行 `python tools/generate_card_data.py` 脚本。**
+- 该脚本会自动解析本文档，提取所有 `json` 数据，并重新生成位于 `assets/data/cards/` 目录下的所有游戏数据文件。
+- **请勿手动编辑 `assets/data/cards/` 目录下的任何 `.json` 文件**，因为它们会在脚本运行时被覆盖。
 
 ---
 
@@ -10,6 +16,139 @@
   - **地部 (蓄力):** 发动【天道酬勤】时，支付的**代价**减半（5金币，3生命值，向下取整）。
   - **人部 (精进):** 除了核心效果，你还可以立即执行一次额外移动（1格）。
   - **天部 (君威):** 你可以指定一名**正式盟友**，使其也获得【天道酬勤】状态，持续一轮。作为**代价**，在【归整阶段】的“回合结束时效果结算”步骤，你必须弃掉一张手牌。
+
+```json
+{
+  "id": "basic_01_qian",
+  "name": "乾",
+  "symbol": "☰☰",
+  "sequence": 1,
+  "pinyin": "qian",
+  "strokes": 12,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "天道酬勤",
+    "description": "支付10金币和5生命值，在本轮的【解读阶段】，你爻辞效果中所有正向收益（获得金币、恢复生命、造成伤害）的数值翻倍。",
+    "variants": {
+      "di": {
+        "name": "蓄力",
+        "description": "你在【地部】发动【天道酬勤】时，支付的成本减半（只需5金币和2生命值）。",
+        "effect": {
+          "actions": [
+            {
+              "action": "CHOICE",
+              "params": {
+                "target": "SELF",
+                "options": [
+                  {
+                    "description": "发动【天道酬勤】",
+                    "cost": [
+                      { "resource": "gold", "value": 5 },
+                      { "resource": "health", "value": 3 }
+                    ],
+                    "effect": {
+                      "actions": [
+                        {
+                          "action": "APPLY_STATUS",
+                          "params": { "target": "SELF", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
+                        }
+                      ]
+                    }
+                  },
+                  { "description": "不发动" }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "精进",
+        "description": "你在【人部】发动【天道酬勤】时，除了收益翻倍，你还可以立即额外移动一格。",
+        "effect": {
+          "actions": [
+            {
+              "action": "CHOICE",
+              "params": {
+                "target": "SELF",
+                "options": [
+                  {
+                    "description": "发动【天道酬勤】并移动",
+                    "cost": [
+                      { "resource": "gold", "value": 10 },
+                      { "resource": "health", "value": 5 }
+                    ],
+                    "effect": {
+                      "actions": [
+                        {
+                          "action": "APPLY_STATUS",
+                          "params": { "target": "SELF", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
+                        },
+                        {
+                          "action": "MOVE",
+                          "params": { "target": "SELF", "value": 1, "move_type": "NORMAL" }
+                        }
+                      ]
+                    }
+                  },
+                  { "description": "不发动" }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "君威",
+        "description": "你在【天部】发动【天道酬勤】时，你可以指定一名盟友，使其也获得本轮收益翻倍的效果。",
+        "effect": {
+          "actions": [
+            {
+              "action": "CHOICE",
+              "params": {
+                "target": "SELF",
+                "options": [
+                  {
+                    "description": "为自己和盟友发动【天道酬勤】",
+                    "cost": [
+                      { "resource": "gold", "value": 10 },
+                      { "resource": "health", "value": 5 }
+                    ],
+                    "effect": {
+                      "actions": [
+                        {
+                          "action": "APPLY_STATUS",
+                          "params": { "target": "SELF", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
+                        },
+                        {
+                          "action": "APPLY_STATUS",
+                          "params": { "target": "ALLY_FORMAL_SINGLE", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
+                        },
+                        {
+                          "action": "EXECUTE_LATER",
+                          "params": {
+                            "delay": "END_OF_TURN",
+                            "effect": {
+                              "actions": [
+                                { "action": "DISCARD_CARD", "params": { "target": "SELF", "count": 1 } }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  { "description": "不发动" }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 
