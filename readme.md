@@ -1,8 +1,4 @@
-
-
-
-
-    # 《天机变》- 游戏资产 (Assets) 使用说明
+# 《天机变》- 游戏资产 (Assets) 使用说明
 
 版本: 1.0
 日期: 2025-09-26
@@ -22,7 +18,7 @@
 ## 2. 文件夹结构
 
 所有资产都位于 `assets` 文件夹下，其结构如下：
-  
+
 ```
 
 assets/
@@ -102,30 +98,56 @@ assets/
 在游戏中加载并创建一张卡牌的推荐流程如下：
 
 ```javascript
-// 伪代码示例
+// 伪代码示例 (已修正逻辑错误)
 function loadCard(cardId) {
-    // 1. 从ID中解析出类型和文件名
-    const type = cardId.split('_'); // "basic"
+    // 1. 从ID中解析出主类型和文件名
+    // 修正了bug：之前将整个数组赋给了type，现在只取第一个元素
+    const type = cardId.split('_')[0]; // "basic", "destiny", "stem", etc.
     const filename = cardId;          // "basic_01_qian"
 
-    // 2. 根据类型和文件名推导出数据和图像的路径
-    // 注意: state类的牌有额外的子文件夹
-    let subfolder = (type === 'stem' || type === 'branch' || type === 'celestial') ? getSubfolder(type) : '';
-    const dataPath = `assets/data/cards/${type}/${subfolder}${filename}.json`;
-    const imagePath = `assets/images/cards/${type}/${subfolder}${filename}.png`;
+    // 2. 根据类型推导正确的资产路径
+    // 默认路径直接使用卡牌类型作为文件夹名
+    let categoryPath = type;
 
-    // 3. 加载资源
+    // 特殊处理：天干(stem)、地支(branch)、星象(celestial) 牌位于 "state" 文件夹下
+    // 修正了bug：之前的逻辑完全错误，无法定位到state文件夹，也没有处理子文件夹
+    const stateCardTypes = ['stem', 'branch', 'celestial'];
+    if (stateCardTypes.includes(type)) {
+        // 它们的父目录是 'state'，子目录是类型名（复数或原名）
+        // 例如: assets/data/cards/state/stems/stem_jia.json
+        let subfolderName;
+        if (type === 'stem') {
+            subfolderName = 'stems';
+        } else if (type === 'branch') {
+            subfolderName = 'branches';
+        } else { // celestial
+            subfolderName = 'celestial';
+        }
+        categoryPath = `state/${subfolderName}`;
+    }
+
+    // 3. 构建完整的文件路径
+    // 修正了bug：之前由于type变量错误，路径拼接是无效的
+    // 示例 (天干牌): assets/data/cards/state/stems/stem_jia.json
+    // 示例 (基础牌): assets/data/cards/basic/basic_01_qian.json
+    const dataPath = `assets/data/cards/${categoryPath}/${filename}.json`;
+    const imagePath = `assets/images/cards/${categoryPath}/${filename}.png`;
+
+    // 4. 加载资源 (此部分为引擎相关的伪代码，保持不变)
     const cardData = loadJsonFile(dataPath);
     const cardImage = loadImageFile(imagePath);
-    
-    // 4. 在游戏中创建卡牌对象
+
+    // 5. 在游戏中创建卡牌对象
     const cardObject = new Card(cardData, cardImage);
     return cardObject;
 }
 
 // 使用示例
 let qianCard = loadCard("basic_01_qian");
-  
+let jiaCard = loadCard("stem_jia"); // 现在可以正确加载 state/stems/ 目录下的文件
+let chenCard = loadCard("branch_chen"); // 现在可以正确加载 state/branches/ 目录下的文件
+let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 state/celestial/ 目录下的文件
+
 ```
 
 ### 4.2 构建牌库
@@ -163,7 +185,7 @@ let qianCard = loadCard("basic_01_qian");
     "di": "string"        // 地部效果描述
   }
 }
-  
+
 ```
 
 #### function_[id].json
@@ -179,7 +201,7 @@ let qianCard = loadCard("basic_01_qian");
   "name": "string",        // 中文名 (错卦)
   "description": "string"  // 效果描述
 }
-  
+
 ```
 
 #### natal_[id].json
@@ -203,10 +225,9 @@ let qianCard = loadCard("basic_01_qian");
     "description": "string"
   }
 }
-  
+
 ```
 
 *(其他卡牌类型的JSON结构类似，都包含id, type, name等关键字段。)*
 
 ------
-
