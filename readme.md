@@ -103,25 +103,25 @@ assets/
 在游戏中加载并创建一张卡牌的推荐流程如下。此伪代码已修正了所有已知的路径解析错误，可作为实现参考。
 
 ```javascript
-// 伪代码示例 (已修正)
-function loadCard(cardId) {
-    // 1. 从ID中解析出主类型
-    // e.g., "basic_01_qian" -> "basic"
-    // e.g., "stem_jia" -> "stem"
+// 伪代码示例 (V2.0, 已修正数据结构不匹配问题)
+
+/**
+ * 加载并准备一张卡牌以供在特定位置使用。
+ * @param {string} cardId - 卡牌的唯一ID, e.g., "basic_01_qian".
+ * @param {string} playerLocation - 玩家当前所在的部, e.g., "di", "ren", "tian".
+ * @returns {Card} 一个包含了正确效果和图像的游戏卡牌对象。
+ */
+function prepareCardForUse(cardId, playerLocation) {
+    // 1. 从ID中解析出主类型 (basic, stem, etc.)
     const type = cardId.split('_')[0];
 
-    // 2. 根据类型推导正确的资产路径
+    // 2. 根据类型推导正确的资产路径 (此部分逻辑保持不变)
     let categoryPath;
     const stateCardTypes = ['stem', 'branch', 'celestial'];
-
     if (stateCardTypes.includes(type)) {
-        // 特殊处理：天干(stem)、地支(branch)、星象(celestial) 牌位于 "state" 文件夹下
-        // 例如, 'stem' 类型对应 'state/stems' 文件夹
         const subfolder = (type === 'celestial') ? 'celestial' : type + 's';
         categoryPath = `state/${subfolder}`;
     } else {
-        // 其他所有类型直接使用类型名作为文件夹名
-        // 例如, 'basic' 类型对应 'basic' 文件夹
         categoryPath = type;
     }
 
@@ -130,19 +130,45 @@ function loadCard(cardId) {
     const dataPath = `assets/data/cards/${categoryPath}/${filename}.json`;
     const imagePath = `assets/images/cards/${categoryPath}/${filename}.png`;
 
-    // 4. 加载资源 (此部分为引擎相关的伪代码)
-    const cardData = loadJsonFile(dataPath);
+    // 4. 加载核心资源
+    const fullCardData = loadJsonFile(dataPath); // 加载包含所有变体的完整JSON
     const cardImage = loadImageFile(imagePath);
 
-    // 5. 在游戏中创建卡牌对象
-    const cardObject = new Card(cardData, cardImage);
+    // 5. **核心逻辑：根据玩家位置选择正确的爻辞效果**
+    // 从完整数据中提取出适用于当前位置的效果
+    let activeEffect;
+    if (fullCardData.core_mechanism && fullCardData.core_mechanism.variants) {
+        const variants = fullCardData.core_mechanism.variants;
+        if (variants[playerLocation]) {
+            activeEffect = variants[playerLocation].effect;
+        } else {
+            // 如果没有找到特定位置的变体，可以设置一个默认或错误状态
+            console.warn(`Card ${cardId} has no variant for location: ${playerLocation}`);
+            // 根据游戏规则，此处可能需要加载一个空效果或基础效果
+            activeEffect = {};
+        }
+    } else {
+        // 对于没有爻辞变体的卡牌（如功能牌），直接使用其顶级effect
+        activeEffect = fullCardData.effect || {};
+    }
+
+    // 6. 在游戏中创建卡牌对象，注入选定的效果
+    // Card构造函数现在接收一个“激活效果”而不是整个数据块
+    const cardObject = new Card(fullCardData.id, fullCardData.name, cardImage, activeEffect);
+
     return cardObject;
 }
 
 // 使用示例
-let qianCard = loadCard("basic_01_qian"); // 正确加载: assets/data/cards/basic/basic_01_qian.json
-let jiaCard = loadCard("stem_jia");       // 正确加载: assets/data/cards/state/stems/stem_jia.json
-let chenCard = loadCard("branch_chen");   // 正确加载: assets/data/cards/state/branches/branch_chen.json
+// 玩家位于【地部】，准备使用《乾》卦
+let playerLocation = "di";
+let qianCardForDi = prepareCardForUse("basic_01_qian", playerLocation);
+// qianCardForDi.activeEffect 此时将包含《乾》卦【地部】(蓄力)的效果
+
+// 玩家位于【天部】，准备使用《乾》卦
+playerLocation = "tian";
+let qianCardForTian = prepareCardForUse("basic_01_qian", playerLocation);
+// qianCardForTian.activeEffect 此时将包含《乾》卦【天部】(君威)的效果
 ```
 
 ### 4.3 构建牌库
