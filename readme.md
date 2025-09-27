@@ -167,84 +167,80 @@ let anxiCard = loadCard("celestial_luohou_anxing"); // 现在可以正确加载 
 
 
 
-## 5. 资产详情 (JSON Schema)
+## 5. 资产详情 (JSON Schema) - 版本 2.0
+
+**重要提示:** 为真正实现数据驱动设计，卡牌的JSON结构已被重构，以包含详细的逻辑定义。完整的结构规范请参阅 **`card_logic_schema.md`** 文档。以下为简化的示例。
 
 #### basic_[id].json
 
-
-
-
-
-```
-    {
-  "id": "string",          // 唯一ID, e.g., "basic_01_qian"
-  "name": "string",        // 中文名, e.g., "乾"
-  "symbol": "string",      // 卦象符号, e.g., "☰☰"
-  "sequence": "integer",   // 序卦传顺序 (1-64)
-  "pinyin": "string",      // 拼音, e.g., "qian"
-  "strokes": "integer",    // 总笔画数 (用于'论道'事件)
-  "mechanism": {
-    "name": "string",          // 核心机制名称, e.g., "天道酬勤"
-    "core_description": "string", // 机制的通用描述
+```json
+{
+  "id": "basic_01_qian",
+  "name": "乾",
+  "symbol": "☰☰",
+  "sequence": 1,
+  "pinyin": "qian",
+  "strokes": 12,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "天道酬勤",
+    "description": "支付10金币和5生命值，在本轮的【解读阶段】，你爻辞效果中所有正向收益（获得金币、恢复生命、造成伤害）的数值翻倍。",
     "variants": {
-      "di": {                  // 地部效果
-        "name": "string",      // e.g., "蓄力"
-        "description": "string"
+      "di": {
+        "name": "蓄力",
+        "description": "你在【地部】发动【天道酬勤】时，支付的成本减半（只需5金币和2生命值）。",
+        "effect": {
+          "action": "CHOICE",
+          "params": {
+            "target": "SELF",
+            "options": [
+              {
+                "description": "发动【天道酬勤】",
+                "cost": [ { "resource": "gold", "value": 5 }, { "resource": "health", "value": 2 } ],
+                "effect": {
+                  "action": "APPLY_STATUS",
+                  "params": { "target": "SELF", "status_id": "POSITIVE_GAIN_DOUBLED", "duration": 1 }
+                }
+              },
+              { "description": "不发动" }
+            ]
+          }
+        }
       },
-      "ren": {                  // 人部效果
-        "name": "string",      // e.g., "精进"
-        "description": "string"
+      "ren": {
+        "name": "精进",
+        "description": "你在【人部】发动【天道酬勤】时，除了收益翻倍，你还可以立即额外移动一格。",
+        "effect": { }
       },
-      "tian": {                 // 天部效果
-        "name": "string",      // e.g., "君威"
-        "description": "string"
+      "tian": {
+        "name": "君威",
+        "description": "你在【天部】发动【天道酬勤】时，你可以指定一名盟友，使其也获得本轮收益翻倍的效果。",
+        "effect": { }
       }
     }
   }
 }
-
 ```
 
 #### function_[id].json
 
-
-
-
-
-```
-    {
-  "id": "string",
+```json
+{
+  "id": "function_cuogua",
   "type": "function",
-  "name": "string",        // 中文名 (错卦)
-  "description": "string"  // 效果描述
-}
-
-```
-
-#### natal_[id].json
-
-
-
-
-
-```
-    {
-  "id": "string",
-  "type": "natal",
-  "name": "string",
-  "symbol": "string",
-  "passive": {
-    "name": "string",
-    "description": "string"
-  },
-  "active": {
-    "name": "string",
-    "description": "string"
+  "name": "错卦",
+  "description": "将你基础牌的每一个爻都进行阴阳反转，变为一个全新的卦来解读。",
+  "effect": {
+    "action": "APPLY_STATUS",
+    "params": {
+      "target": "ATTACHED_BASE_CARD",
+      "status_id": "HEXAGRAM_INVERTED",
+      "duration": 1
+    }
   }
 }
-
 ```
 
-*(其他卡牌类型的JSON结构类似，都包含id, type, name等关键字段。)*
+*(所有卡牌类型的JSON结构都已更新，以包含一个详细的 `effect` 对象。请参阅 `card_logic_schema.md` 获取完整定义。)*
 
-------
+---

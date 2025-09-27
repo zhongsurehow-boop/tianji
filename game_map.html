@@ -171,7 +171,7 @@
                 });
                 data.zones['Gong_Zhong'] = {
                     description: '中宫/太极部',
-                    adjacencies: [],
+                    adjacencies: [], // Adjacency is governed by specialRules, not a simple list
                     specialRules: [
                         'Player must exit upon next move.',
                         'Target of exit is the unoccupied Earth-Dept zone with the lowest Luoshu number.',
@@ -214,8 +214,7 @@
                     }
                 }
 
-                // Adjacencies for Zhong Gong
-                data.zones['Gong_Zhong'].adjacencies = palaceIds.map(id => `Gong_${id}-Bu_Tian`);
+                // Note: Adjacency FROM Zhong Gong is handled by its special movement rule, not a static list here.
             }
 
             // --- Call the generation functions ---
