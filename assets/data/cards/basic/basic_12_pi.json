@@ -1,0 +1,17 @@
+{
+    "id": "basic_12_pi",
+    "name": "否",
+    "symbol": "☰☷",
+    "sequence": 12,
+    "pinyin": "pi",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (否) ...",
+        "ren": "人部效果 (否) ...",
+        "di": "地部效果 (否) ..."
+    }
+}

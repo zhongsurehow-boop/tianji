@@ -1,0 +1,17 @@
+{
+    "id": "basic_16_yu",
+    "name": "豫",
+    "symbol": "☳☷",
+    "sequence": 16,
+    "pinyin": "yu",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (豫) ...",
+        "ren": "人部效果 (豫) ...",
+        "di": "地部效果 (豫) ..."
+    }
+}

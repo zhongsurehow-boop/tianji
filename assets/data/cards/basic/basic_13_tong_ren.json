@@ -1,0 +1,17 @@
+{
+    "id": "basic_13_tong_ren",
+    "name": "同人",
+    "symbol": "☰☲",
+    "sequence": 13,
+    "pinyin": "tong_ren",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (同人) ...",
+        "ren": "人部效果 (同人) ...",
+        "di": "地部效果 (同人) ..."
+    }
+}

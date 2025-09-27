@@ -1,0 +1,17 @@
+{
+    "id": "basic_08_bi",
+    "name": "比",
+    "symbol": "☵☷",
+    "sequence": 8,
+    "pinyin": "bi",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (比) ...",
+        "ren": "人部效果 (比) ...",
+        "di": "地部效果 (比) ..."
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "id": "basic_62_xiao_guo",
+    "name": "小過",
+    "symbol": "☳☶",
+    "sequence": 62,
+    "pinyin": "xiao_guo",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (小過) ...",
+        "ren": "人部效果 (小過) ...",
+        "di": "地部效果 (小過) ..."
+    }
+}

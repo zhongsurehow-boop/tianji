@@ -1,0 +1,17 @@
+{
+    "id": "basic_26_da_chu",
+    "name": "大畜",
+    "symbol": "☶☰",
+    "sequence": 26,
+    "pinyin": "da_chu",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (大畜) ...",
+        "ren": "人部效果 (大畜) ...",
+        "di": "地部效果 (大畜) ..."
+    }
+}

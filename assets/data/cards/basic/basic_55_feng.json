@@ -1,0 +1,17 @@
+{
+    "id": "basic_55_feng",
+    "name": "豐",
+    "symbol": "☳☲",
+    "sequence": 55,
+    "pinyin": "feng",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (豐) ...",
+        "ren": "人部效果 (豐) ...",
+        "di": "地部效果 (豐) ..."
+    }
+}

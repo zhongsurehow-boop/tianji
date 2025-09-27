@@ -1,0 +1,17 @@
+{
+    "id": "basic_38_kui",
+    "name": "睽",
+    "symbol": "☲☱",
+    "sequence": 38,
+    "pinyin": "kui",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (睽) ...",
+        "ren": "人部效果 (睽) ...",
+        "di": "地部效果 (睽) ..."
+    }
+}

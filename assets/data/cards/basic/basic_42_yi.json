@@ -1,0 +1,17 @@
+{
+    "id": "basic_42_yi",
+    "name": "益",
+    "symbol": "☴☳",
+    "sequence": 42,
+    "pinyin": "yi",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (益) ...",
+        "ren": "人部效果 (益) ...",
+        "di": "地部效果 (益) ..."
+    }
+}

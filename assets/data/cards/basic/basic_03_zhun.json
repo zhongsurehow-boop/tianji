@@ -1,0 +1,17 @@
+{
+    "id": "basic_03_zhun",
+    "name": "屯",
+    "symbol": "☵☳",
+    "sequence": 3,
+    "pinyin": "zhun",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (屯) ...",
+        "ren": "人部效果 (屯) ...",
+        "di": "地部效果 (屯) ..."
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "id": "basic_36_ming_yi",
+    "name": "明夷",
+    "symbol": "☷☲",
+    "sequence": 36,
+    "pinyin": "ming_yi",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (明夷) ...",
+        "ren": "人部效果 (明夷) ...",
+        "di": "地部效果 (明夷) ..."
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "id": "basic_06_song",
+    "name": "訟",
+    "symbol": "☰☵",
+    "sequence": 6,
+    "pinyin": "song",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (訟) ...",
+        "ren": "人部效果 (訟) ...",
+        "di": "地部效果 (訟) ..."
+    }
+}

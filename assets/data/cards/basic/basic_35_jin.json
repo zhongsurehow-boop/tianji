@@ -1,0 +1,17 @@
+{
+    "id": "basic_35_jin",
+    "name": "晉",
+    "symbol": "☲☷",
+    "sequence": 35,
+    "pinyin": "jin",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (晉) ...",
+        "ren": "人部效果 (晉) ...",
+        "di": "地部效果 (晉) ..."
+    }
+}

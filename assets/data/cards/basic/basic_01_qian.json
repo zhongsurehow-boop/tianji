@@ -1,0 +1,17 @@
+{
+    "id": "basic_01_qian",
+    "name": "乾",
+    "symbol": "☰",
+    "sequence": 1,
+    "pinyin": "qian",
+    "strokes": 6,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (乾) ...",
+        "ren": "人部效果 (乾) ...",
+        "di": "地部效果 (乾) ..."
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "id": "basic_56_lv",
+    "name": "旅",
+    "symbol": "☲☶",
+    "sequence": 56,
+    "pinyin": "lv",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (旅) ...",
+        "ren": "人部效果 (旅) ...",
+        "di": "地部效果 (旅) ..."
+    }
+}

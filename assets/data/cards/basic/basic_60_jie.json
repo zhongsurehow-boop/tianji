@@ -1,0 +1,17 @@
+{
+    "id": "basic_60_jie",
+    "name": "節",
+    "symbol": "☵☱",
+    "sequence": 60,
+    "pinyin": "jie",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (節) ...",
+        "ren": "人部效果 (節) ...",
+        "di": "地部效果 (節) ..."
+    }
+}

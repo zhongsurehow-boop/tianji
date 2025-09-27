@@ -1,0 +1,17 @@
+{
+    "id": "basic_57_xun",
+    "name": "巽",
+    "symbol": "☴☴",
+    "sequence": 57,
+    "pinyin": "xun",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (巽) ...",
+        "ren": "人部效果 (巽) ...",
+        "di": "地部效果 (巽) ..."
+    }
+}

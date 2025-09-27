@@ -1,0 +1,17 @@
+{
+    "id": "basic_41_sun",
+    "name": "損",
+    "symbol": "☶☱",
+    "sequence": 41,
+    "pinyin": "sun",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (損) ...",
+        "ren": "人部效果 (損) ...",
+        "di": "地部效果 (損) ..."
+    }
+}

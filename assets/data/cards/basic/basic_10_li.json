@@ -1,0 +1,17 @@
+{
+    "id": "basic_10_li",
+    "name": "履",
+    "symbol": "☰☱",
+    "sequence": 10,
+    "pinyin": "li",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (履) ...",
+        "ren": "人部效果 (履) ...",
+        "di": "地部效果 (履) ..."
+    }
+}

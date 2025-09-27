@@ -1,0 +1,17 @@
+{
+    "id": "basic_59_huan",
+    "name": "渙",
+    "symbol": "☴☵",
+    "sequence": 59,
+    "pinyin": "huan",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (渙) ...",
+        "ren": "人部效果 (渙) ...",
+        "di": "地部效果 (渙) ..."
+    }
+}

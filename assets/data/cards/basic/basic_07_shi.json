@@ -1,0 +1,17 @@
+{
+    "id": "basic_07_shi",
+    "name": "師",
+    "symbol": "☷☵",
+    "sequence": 7,
+    "pinyin": "shi",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (師) ...",
+        "ren": "人部效果 (師) ...",
+        "di": "地部效果 (師) ..."
+    }
+}

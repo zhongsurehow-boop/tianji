@@ -1,0 +1,17 @@
+{
+    "id": "basic_22_bi",
+    "name": "賁",
+    "symbol": "☶☲",
+    "sequence": 22,
+    "pinyin": "bi",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (賁) ...",
+        "ren": "人部效果 (賁) ...",
+        "di": "地部效果 (賁) ..."
+    }
+}

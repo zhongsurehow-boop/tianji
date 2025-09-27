@@ -1,0 +1,17 @@
+{
+    "id": "basic_63_ji_ji",
+    "name": "既濟",
+    "symbol": "☵☲",
+    "sequence": 63,
+    "pinyin": "ji_ji",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (既濟) ...",
+        "ren": "人部效果 (既濟) ...",
+        "di": "地部效果 (既濟) ..."
+    }
+}

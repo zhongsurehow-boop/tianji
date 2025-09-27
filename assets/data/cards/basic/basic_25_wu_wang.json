@@ -1,0 +1,17 @@
+{
+    "id": "basic_25_wu_wang",
+    "name": "無妄",
+    "symbol": "☰☳",
+    "sequence": 25,
+    "pinyin": "wu_wang",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (無妄) ...",
+        "ren": "人部效果 (無妄) ...",
+        "di": "地部效果 (無妄) ..."
+    }
+}

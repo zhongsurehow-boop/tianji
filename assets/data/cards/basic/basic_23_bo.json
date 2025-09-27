@@ -1,0 +1,17 @@
+{
+    "id": "basic_23_bo",
+    "name": "剝",
+    "symbol": "☶☷",
+    "sequence": 23,
+    "pinyin": "bo",
+    "strokes": 11,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (剝) ...",
+        "ren": "人部效果 (剝) ...",
+        "di": "地部效果 (剝) ..."
+    }
+}

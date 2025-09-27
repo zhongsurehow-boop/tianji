@@ -1,0 +1,17 @@
+{
+    "id": "basic_27_yi",
+    "name": "頤",
+    "symbol": "☶☳",
+    "sequence": 27,
+    "pinyin": "yi",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (頤) ...",
+        "ren": "人部效果 (頤) ...",
+        "di": "地部效果 (頤) ..."
+    }
+}

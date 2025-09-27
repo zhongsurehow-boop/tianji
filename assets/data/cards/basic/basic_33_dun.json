@@ -1,0 +1,17 @@
+{
+    "id": "basic_33_dun",
+    "name": "遯",
+    "symbol": "☰☶",
+    "sequence": 33,
+    "pinyin": "dun",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (遯) ...",
+        "ren": "人部效果 (遯) ...",
+        "di": "地部效果 (遯) ..."
+    }
+}

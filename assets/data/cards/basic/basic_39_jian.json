@@ -1,0 +1,17 @@
+{
+    "id": "basic_39_jian",
+    "name": "蹇",
+    "symbol": "☵☶",
+    "sequence": 39,
+    "pinyin": "jian",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (蹇) ...",
+        "ren": "人部效果 (蹇) ...",
+        "di": "地部效果 (蹇) ..."
+    }
+}

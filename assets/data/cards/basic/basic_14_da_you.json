@@ -1,0 +1,17 @@
+{
+    "id": "basic_14_da_you",
+    "name": "大有",
+    "symbol": "☲☰",
+    "sequence": 14,
+    "pinyin": "da_you",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (大有) ...",
+        "ren": "人部效果 (大有) ...",
+        "di": "地部效果 (大有) ..."
+    }
+}

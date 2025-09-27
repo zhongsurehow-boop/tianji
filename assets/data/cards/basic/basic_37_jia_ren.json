@@ -1,0 +1,17 @@
+{
+    "id": "basic_37_jia_ren",
+    "name": "家人",
+    "symbol": "☴☲",
+    "sequence": 37,
+    "pinyin": "jia_ren",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (家人) ...",
+        "ren": "人部效果 (家人) ...",
+        "di": "地部效果 (家人) ..."
+    }
+}

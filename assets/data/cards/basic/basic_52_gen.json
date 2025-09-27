@@ -1,0 +1,17 @@
+{
+    "id": "basic_52_gen",
+    "name": "艮",
+    "symbol": "☶☶",
+    "sequence": 52,
+    "pinyin": "gen",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (艮) ...",
+        "ren": "人部效果 (艮) ...",
+        "di": "地部效果 (艮) ..."
+    }
+}

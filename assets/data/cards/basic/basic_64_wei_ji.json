@@ -1,0 +1,17 @@
+{
+    "id": "basic_64_wei_ji",
+    "name": "未濟",
+    "symbol": "☲☵",
+    "sequence": 64,
+    "pinyin": "wei_ji",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (未濟) ...",
+        "ren": "人部效果 (未濟) ...",
+        "di": "地部效果 (未濟) ..."
+    }
+}

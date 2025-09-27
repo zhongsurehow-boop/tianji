@@ -1,0 +1,17 @@
+{
+    "id": "basic_17_sui",
+    "name": "隨",
+    "symbol": "☱☳",
+    "sequence": 17,
+    "pinyin": "sui",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (隨) ...",
+        "ren": "人部效果 (隨) ...",
+        "di": "地部效果 (隨) ..."
+    }
+}

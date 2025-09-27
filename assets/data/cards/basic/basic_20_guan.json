@@ -1,0 +1,17 @@
+{
+    "id": "basic_20_guan",
+    "name": "觀",
+    "symbol": "☴☷",
+    "sequence": 20,
+    "pinyin": "guan",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (觀) ...",
+        "ren": "人部效果 (觀) ...",
+        "di": "地部效果 (觀) ..."
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "id": "basic_48_jing",
+    "name": "井",
+    "symbol": "☵☴",
+    "sequence": 48,
+    "pinyin": "jing",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (井) ...",
+        "ren": "人部效果 (井) ...",
+        "di": "地部效果 (井) ..."
+    }
+}

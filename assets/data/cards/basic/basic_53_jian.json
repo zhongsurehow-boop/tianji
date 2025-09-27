@@ -1,0 +1,17 @@
+{
+    "id": "basic_53_jian",
+    "name": "漸",
+    "symbol": "☴☶",
+    "sequence": 53,
+    "pinyin": "jian",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (漸) ...",
+        "ren": "人部效果 (漸) ...",
+        "di": "地部效果 (漸) ..."
+    }
+}

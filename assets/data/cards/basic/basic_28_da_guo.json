@@ -1,0 +1,17 @@
+{
+    "id": "basic_28_da_guo",
+    "name": "大過",
+    "symbol": "☱☴",
+    "sequence": 28,
+    "pinyin": "da_guo",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (大過) ...",
+        "ren": "人部效果 (大過) ...",
+        "di": "地部效果 (大過) ..."
+    }
+}

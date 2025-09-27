@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天机变地图</title>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0e8d9;
+            font-family: 'KaiTi', 'SimSun', serif;
+        }
+
+        #game-board-container {
+            width: 80vmin;
+            height: 80vmin;
+        }
+
+        #game-board {
+            width: 100%;
+            height: 100%;
+        }
+
+        .zone {
+            stroke: #6b4f3a;
+            stroke-width: 4;
+            cursor: pointer;
+            transition: filter 0.2s ease-in-out, 
+                        stroke 0.2s ease-in-out, 
+                        stroke-width 0.2s ease-in-out;
+        }
+
+        .zone:hover, #Gong_Zhong:hover {
+            filter: brightness(1.15);
+            stroke: gold;
+            stroke-width: 8;
+        }
+
+        /* ====================================================== */
+        /* == NEW: Thematic Color Scheme based on WuXing/Bagua == */
+        /* ====================================================== */
+        .gong-li   { fill: #c0392b; } /* 离 (火) - Red */
+        .gong-kun  { fill: #f1c40f; } /* 坤 (地) - Yellow */
+        .gong-dui  { fill: #bdc3c7; } /* 兑 (泽/金) - Metal Gray */
+        .gong-qian { fill: #ecf0f1; } /* 乾 (天/金) - Silver */
+        .gong-kan  { fill: #2c3e50; } /* 坎 (水) - Black/Dark Blue */
+        .gong-gen  { fill: #d3a47c; } /* 艮 (山/地) - Sandy Brown */
+        .gong-zhen { fill: #27ae60; } /* 震 (雷/木) - Vibrant Green */
+        .gong-xun  { fill: #2ecc71; } /* 巽 (风/木) - Light Green */
+
+        /* Opacity is still controlled by department */
+        .bu-di { opacity: 0.7; } 
+        .bu-ren { opacity: 0.85; } 
+        .bu-tian { opacity: 1; }
+
+        #Gong_Zhong {
+            cursor: pointer;
+            animation: spin 20s linear infinite;
+            transform-origin: center;
+        }
+        
+        .taiji-black-bg { fill: black; stroke: #333; stroke-width: 5; }
+        .taiji-white-half { fill: white; }
+        .taiji-white-semicircle { fill: white; }
+        .taiji-black-semicircle { fill: black; }
+        .fisheye-white { fill: white; }
+        .fisheye-black { fill: black; }
+
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .labels, .trigram-symbol {
+            text-anchor: middle; pointer-events: none;
+            fill: black; stroke: white;
+            stroke-width: 1.5px; paint-order: stroke;
+        }
+        
+        /* Special text color for dark background of Kan */
+        .label-on-dark, .symbol-on-dark {
+            fill: white;
+            stroke: black;
+        }
+
+        .labels { font-size: 40px; }
+        .trigram-symbol { font-size: 60px; font-weight: bold; }
+
+        .luoshu-dots .dot { stroke-width: 2px; }
+        .luoshu-dots .dot.white { fill: white; stroke: black; }
+        .luoshu-dots .dot.black { fill: black; stroke: white; }
+    </style>
+</head>
+<body>
+
+    <div id="game-board-container">
+        <svg id="game-board" viewBox="0 0 800 800">
+            <g id="di-ring" class="ring-group"></g>
+            <g id="ren-ring" class="ring-group"></g>
+            <g id="tian-ring" class="ring-group"></g>
+            
+            <g id="Gong_Zhong">
+                <circle class="taiji-black-bg" cx="400" cy="400" r="120" />
+                <path class="taiji-white-half" d="M400,280 A120,120 0 0,1 400,520 Z" />
+                <circle class="taiji-white-semicircle" cx="400" cy="340" r="60" />
+                <circle class="taiji-black-semicircle" cx="400" cy="460" r="60" />
+                <circle class="fisheye-black" cx="400" cy="340" r="20" />
+                <circle class="fisheye-white" cx="400" cy="460" r="20" />
+            </g>
+            
+            <g id="text-labels" class="labels"></g>
+            <g id="trigram-symbols-layer"></g>
+            <g id="luoshu-dots-layer"></g>
+        </svg>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // =================================================================
+            // 1. DATA (The "Single Source of Truth" - Now with rich metadata)
+            // This object is the digital twin of the game board and its rules.
+            // =================================================================
+            const mapData = {
+                center: { x: 400, y: 400 },
+                palaces: [
+                    { id: 'Li',   name: '离', symbol: '☲', luoshu: 9, element: 'fire',  angle: -22.5, direction: '正南', imagery: '火, 光明, 附丽' },
+                    { id: 'Kun',  name: '坤', symbol: '☷', luoshu: 2, element: 'earth', angle: 22.5,  direction: '西南', imagery: '地, 柔顺, 承载' },
+                    { id: 'Dui',  name: '兑', symbol: '☱', luoshu: 7, element: 'metal', angle: 67.5,  direction: '正西', imagery: '泽, 喜悦, 言说' },
+                    { id: 'Qian', name: '乾', symbol: '☰', luoshu: 6, element: 'metal', angle: 112.5, direction: '西北', imagery: '天, 刚健, 创造' },
+                    { id: 'Kan',  name: '坎', symbol: '☵', luoshu: 1, element: 'water', angle: 157.5, direction: '正北', imagery: '水, 险陷, 智慧' },
+                    { id: 'Gen',  name: '艮', symbol: '☶', luoshu: 8, element: 'earth', angle: 202.5, direction: '东北', imagery: '山, 静止, 笃实' },
+                    { id: 'Zhen', name: '震', symbol: '☳', luoshu: 3, element: 'wood',  angle: 247.5, direction: '正东', imagery: '雷, 奋起, 行动' },
+                    { id: 'Xun',  name: '巽', symbol: '☴', luoshu: 4, element: 'wood',  angle: 292.5, direction: '东南', imagery: '风, 顺入, 命令' }
+                ],
+                departments: [
+                    { id: 'Tian', name: '天', innerRadius: 120, outerRadius: 200 },
+                    { id: 'Ren',  name: '人', innerRadius: 200, outerRadius: 300 },
+                    { id: 'Di',   name: '地', innerRadius: 300, outerRadius: 400 }
+                ],
+                // ==================================================================
+                // == NEW & CRITICAL: A comprehensive list of all zones and their  ==
+                // == adjacencies, effectively encoding the movement rules.        ==
+                // ==================================================================
+                zones: {
+                    'Gong_Li-Bu_Tian':  { description: '离宫之天部', adjacencies: ['Gong_Li-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Li-Bu_Ren':   { description: '离宫之人部', adjacencies: ['Gong_Li-Bu_Tian', 'Gong_Li-Bu_Di'] },
+                    'Gong_Li-Bu_Di':    { description: '离宫之地部', adjacencies: ['Gong_Li-Bu_Ren', 'Gong_Kun-Bu_Di', 'Gong_Xun-Bu_Di'] },
+                    'Gong_Kun-Bu_Tian': { description: '坤宫之天部', adjacencies: ['Gong_Kun-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Kun-Bu_Ren':  { description: '坤宫之人部', adjacencies: ['Gong_Kun-Bu_Tian', 'Gong_Kun-Bu_Di'] },
+                    'Gong_Kun-Bu_Di':   { description: '坤宫之地部', adjacencies: ['Gong_Kun-Bu_Ren', 'Gong_Dui-Bu_Di', 'Gong_Li-Bu_Di'] },
+                    'Gong_Dui-Bu_Tian': { description: '兑宫之天部', adjacencies: ['Gong_Dui-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Dui-Bu_Ren':  { description: '兑宫之人部', adjacencies: ['Gong_Dui-Bu_Tian', 'Gong_Dui-Bu_Di'] },
+                    'Gong_Dui-Bu_Di':   { description: '兑宫之地部', adjacencies: ['Gong_Dui-Bu_Ren', 'Gong_Qian-Bu_Di', 'Gong_Kun-Bu_Di'] },
+                    'Gong_Qian-Bu_Tian':{ description: '乾宫之天部', adjacencies: ['Gong_Qian-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Qian-Bu_Ren': { description: '乾宫之人部', adjacencies: ['Gong_Qian-Bu_Tian', 'Gong_Qian-Bu_Di'] },
+                    'Gong_Qian-Bu_Di':  { description: '乾宫之地部', adjacencies: ['Gong_Qian-Bu_Ren', 'Gong_Kan-Bu_Di', 'Gong_Dui-Bu_Di'] },
+                    'Gong_Kan-Bu_Tian': { description: '坎宫之天部', adjacencies: ['Gong_Kan-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Kan-Bu_Ren':  { description: '坎宫之人部', adjacencies: ['Gong_Kan-Bu_Tian', 'Gong_Kan-Bu_Di'] },
+                    'Gong_Kan-Bu_Di':   { description: '坎宫之地部', adjacencies: ['Gong_Kan-Bu_Ren', 'Gong_Gen-Bu_Di', 'Gong_Qian-Bu_Di'] },
+                    'Gong_Gen-Bu_Tian': { description: '艮宫之天部', adjacencies: ['Gong_Gen-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Gen-Bu_Ren':  { description: '艮宫之人部', adjacencies: ['Gong_Gen-Bu_Tian', 'Gong_Gen-Bu_Di'] },
+                    'Gong_Gen-Bu_Di':   { description: '艮宫之地部', adjacencies: ['Gong_Gen-Bu_Ren', 'Gong_Zhen-Bu_Di', 'Gong_Kan-Bu_Di'] },
+                    'Gong_Zhen-Bu_Tian':{ description: '震宫之天部', adjacencies: ['Gong_Zhen-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Zhen-Bu_Ren': { description: '震宫之人部', adjacencies: ['Gong_Zhen-Bu_Tian', 'Gong_Zhen-Bu_Di'] },
+                    'Gong_Zhen-Bu_Di':  { description: '震宫之地部', adjacencies: ['Gong_Zhen-Bu_Ren', 'Gong_Xun-Bu_Di', 'Gong_Gen-Bu_Di'] },
+                    'Gong_Xun-Bu_Tian': { description: '巽宫之天部', adjacencies: ['Gong_Xun-Bu_Ren', 'Gong_Zhong'] },
+                    'Gong_Xun-Bu_Ren':  { description: '巽宫之人部', adjacencies: ['Gong_Xun-Bu_Tian', 'Gong_Xun-Bu_Di'] },
+                    'Gong_Xun-Bu_Di':   { description: '巽宫之地部', adjacencies: ['Gong_Xun-Bu_Ren', 'Gong_Li-Bu_Di', 'Gong_Zhen-Bu_Di'] },
+                    'Gong_Zhong':       { description: '中宫/太极部', 
+                                          adjacencies: [
+                                            'Gong_Li-Bu_Tian', 'Gong_Kun-Bu_Tian', 'Gong_Dui-Bu_Tian', 'Gong_Qian-Bu_Tian',
+                                            'Gong_Kan-Bu_Tian', 'Gong_Gen-Bu_Tian', 'Gong_Zhen-Bu_Tian', 'Gong_Xun-Bu_Tian'
+                                          ],
+                                          specialRules: [
+                                            'Player must exit upon next move.',
+                                            'Target of exit is the unoccupied Earth-Dept zone with the lowest Luoshu number.',
+                                            'Player suffers 10% gold penalty upon entry.'
+                                          ]
+                                        }
+                }
+            };
+
+            // =================================================================
+            // 2. RENDERER (Reads the rich data to build the map)
+            // =================================================================
+            const svgNS = "http://www.w3.org/2000/svg";
+
+            // --- Render the 24 outer zones ---
+            mapData.palaces.forEach(palace => {
+                mapData.departments.forEach(dept => {
+                    const zoneId = `Gong_${palace.id}-Bu_${dept.id}`;
+                    const classList = `zone gong-${palace.id.toLowerCase()} bu-${dept.id.toLowerCase()}`;
+                    
+                    const path = createAnnulusSector(
+                        mapData.center.x, mapData.center.y,
+                        dept.innerRadius, dept.outerRadius,
+                        palace.angle, palace.angle + 45
+                    );
+                    
+                    path.setAttribute('id', zoneId);
+                    path.setAttribute('class', classList);
+                    path.addEventListener('click', handleZoneClick);
+                    document.getElementById(`${dept.id.toLowerCase()}-ring`).appendChild(path);
+                });
+            });
+
+            // --- Render labels and symbols ---
+            const labelsGroup = document.getElementById('text-labels');
+            const symbolsGroup = document.getElementById('trigram-symbols-layer');
+            const luoshuGroup = document.getElementById('luoshu-dots-layer');
+
+            mapData.palaces.forEach(palace => {
+                const currentAngle = palace.angle + 22.5;
+                const isDarkBg = palace.id === 'Kan';
+
+                // Chinese Name Labels
+                const labelRadius = (mapData.departments[1].innerRadius + mapData.departments[1].outerRadius) / 2;
+                const labelPos = polarToCartesian(mapData.center.x, mapData.center.y, labelRadius, currentAngle);
+                const text = createText(palace.name, labelPos.x, labelPos.y, isDarkBg ? 'label-on-dark' : '');
+                if (currentAngle > 90 && currentAngle < 270) text.setAttribute('transform', `rotate(180 ${labelPos.x} ${labelPos.y})`);
+                labelsGroup.appendChild(text);
+
+                // Trigram Symbols
+                const symbolRadius = (mapData.departments[2].innerRadius + mapData.departments[2].outerRadius) / 2;
+                const symbolPos = polarToCartesian(mapData.center.x, mapData.center.y, symbolRadius, currentAngle);
+                const symbolText = createText(palace.symbol, symbolPos.x, symbolPos.y, `trigram-symbol ${isDarkBg ? 'symbol-on-dark' : ''}`);
+                if (currentAngle > 90 && currentAngle < 270) symbolText.setAttribute('transform', `rotate(180 ${symbolPos.x} ${symbolPos.y})`);
+                symbolsGroup.appendChild(symbolText);
+                
+                // Luoshu Dots
+                const luoshuRadius = (mapData.departments[0].innerRadius + mapData.departments[0].outerRadius) / 2;
+                const luoshuCenter = polarToCartesian(mapData.center.x, mapData.center.y, luoshuRadius, currentAngle);
+                const luoshuDotsGroup = createLuoshuDots(palace.luoshu);
+                luoshuDotsGroup.setAttribute('transform', `translate(${luoshuCenter.x}, ${luoshuCenter.y}) rotate(${currentAngle})`);
+                luoshuGroup.appendChild(luoshuDotsGroup);
+            });
+            
+            // Add click listener for the Central Palace
+            document.getElementById('Gong_Zhong').addEventListener('click', handleZoneClick);
+
+            // =================================================================
+            // 3. UTILITIES & EVENT HANDLERS
+            // =================================================================
+            function handleZoneClick(event) {
+                const zoneId = event.currentTarget.id;
+                const zoneData = mapData.zones[zoneId];
+                if (!zoneData) { console.error(`No data found for ID: ${zoneId}`); return; }
+
+                console.clear(); // Clear console for cleaner output
+                console.log(`%c玩家点击了: ${zoneData.description}`, 'color: gold; font-weight: bold; font-size: 16px;');
+                console.log(`  ID: ${zoneId}`);
+                console.log('  --- 规则数据 ---');
+                console.log('  邻接区域:', zoneData.adjacencies);
+                if (zoneData.specialRules) {
+                    console.log('  特殊规则:', zoneData.specialRules);
+                }
+            }
+
+            // ... (The rest of the helper functions: polarToCartesian, createAnnulusSector, createText, createLuoshuDots remain the same) ...
+            function polarToCartesian(centerX, centerY, radius, angleInDegrees){const a=(angleInDegrees-90)*Math.PI/180;return{x:centerX+(radius*Math.cos(a)),y:centerY+(radius*Math.sin(a))}}
+            function createAnnulusSector(cx,cy,r0,r1,a0,a1){const p0=polarToCartesian(cx,cy,r0,a0),p1=polarToCartesian(cx,cy,r1,a0),p2=polarToCartesian(cx,cy,r1,a1),p3=polarToCartesian(cx,cy,r0,a1);const l=a1-a0<=180?"0":"1";const d=`M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} A ${r1} ${r1} 0 ${l} 1 ${p2.x} ${p2.y} L ${p3.x} ${p3.y} A ${r0} ${r0} 0 ${l} 0 ${p0.x} ${p0.y} Z`;const p=document.createElementNS(svgNS,'path');p.setAttribute("d",d);return p}
+            function createText(t,x,y,c=''){const e=document.createElementNS(svgNS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('dy','0.35em');if(c)e.setAttribute('class',c);e.textContent=t;return e}
+            function createLuoshuDots(n){const g=document.createElementNS(svgNS,'g');g.classList.add('luoshu-dots');const o=n%2!==0;const c=o?'white':'black';const r=5,s=14;const p={1:[[0,0]],2:[[-s/2,0],[s/2,0]],3:[[-s,0],[0,0],[s,0]],4:[[-s/2,-s/2],[s/2,-s/2],[-s/2,s/2],[s/2,s/2]],5:[[-s,-s/2],[s,-s/2],[-s,s/2],[s,s/2],[0,0]],6:[[-s,-s/2],[0,-s/2],[s,-s/2],[-s,s/2],[0,s/2],[s,s/2]],7:[[-s,-s],[0,-s],[s,-s],[0,0],[-s,s],[0,s],[s,s]],8:[[-s*1.5,-s/2],[-s/2,-s/2],[s/2,-s/2],[s*1.5,-s/2],[-s*1.5,s/2],[-s/2,s/2],[s/2,s/2],[s*1.5,s/2]],9:[[-s,-s],[0,-s],[s,-s],[-s,0],[0,0],[s,0],[-s,s],[0,s],[s,s]]};const a=p[n]||[];a.forEach(pos=>{const e=document.createElementNS(svgNS,'circle');e.setAttribute('cx',pos[0]);e.setAttribute('cy',pos[1]);e.setAttribute('r',r);e.classList.add('dot',c);g.appendChild(e)});return g}
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+    "id": "basic_34_da_zhuang",
+    "name": "大壯",
+    "symbol": "☳☰",
+    "sequence": 34,
+    "pinyin": "da_zhuang",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (大壯) ...",
+        "ren": "人部效果 (大壯) ...",
+        "di": "地部效果 (大壯) ..."
+    }
+}

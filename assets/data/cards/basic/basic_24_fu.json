@@ -1,0 +1,17 @@
+{
+    "id": "basic_24_fu",
+    "name": "復",
+    "symbol": "☷☳",
+    "sequence": 24,
+    "pinyin": "fu",
+    "strokes": 11,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (復) ...",
+        "ren": "人部效果 (復) ...",
+        "di": "地部效果 (復) ..."
+    }
+}

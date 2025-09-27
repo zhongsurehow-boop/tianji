@@ -1,0 +1,17 @@
+{
+    "id": "basic_50_ding",
+    "name": "鼎",
+    "symbol": "☲☴",
+    "sequence": 50,
+    "pinyin": "ding",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (鼎) ...",
+        "ren": "人部效果 (鼎) ...",
+        "di": "地部效果 (鼎) ..."
+    }
+}

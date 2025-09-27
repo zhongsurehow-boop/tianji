@@ -1,0 +1,17 @@
+{
+    "id": "basic_40_xie",
+    "name": "解",
+    "symbol": "☳☵",
+    "sequence": 40,
+    "pinyin": "xie",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (解) ...",
+        "ren": "人部效果 (解) ...",
+        "di": "地部效果 (解) ..."
+    }
+}

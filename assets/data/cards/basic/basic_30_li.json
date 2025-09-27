@@ -1,0 +1,17 @@
+{
+    "id": "basic_30_li",
+    "name": "離",
+    "symbol": "☲☲",
+    "sequence": 30,
+    "pinyin": "li",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (離) ...",
+        "ren": "人部效果 (離) ...",
+        "di": "地部效果 (離) ..."
+    }
+}

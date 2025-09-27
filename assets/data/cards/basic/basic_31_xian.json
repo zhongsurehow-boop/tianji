@@ -1,0 +1,17 @@
+{
+    "id": "basic_31_xian",
+    "name": "咸",
+    "symbol": "☱☶",
+    "sequence": 31,
+    "pinyin": "xian",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (咸) ...",
+        "ren": "人部效果 (咸) ...",
+        "di": "地部效果 (咸) ..."
+    }
+}

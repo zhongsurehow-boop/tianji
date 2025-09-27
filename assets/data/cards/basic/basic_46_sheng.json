@@ -1,0 +1,17 @@
+{
+    "id": "basic_46_sheng",
+    "name": "升",
+    "symbol": "☷☴",
+    "sequence": 46,
+    "pinyin": "sheng",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (升) ...",
+        "ren": "人部效果 (升) ...",
+        "di": "地部效果 (升) ..."
+    }
+}

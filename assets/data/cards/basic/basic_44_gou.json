@@ -1,0 +1,17 @@
+{
+    "id": "basic_44_gou",
+    "name": "姤",
+    "symbol": "☰☴",
+    "sequence": 44,
+    "pinyin": "gou",
+    "strokes": 7,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (姤) ...",
+        "ren": "人部效果 (姤) ...",
+        "di": "地部效果 (姤) ..."
+    }
+}

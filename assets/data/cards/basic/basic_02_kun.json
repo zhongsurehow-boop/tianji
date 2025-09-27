@@ -1,0 +1,17 @@
+{
+    "id": "basic_02_kun",
+    "name": "坤",
+    "symbol": "☷",
+    "sequence": 2,
+    "pinyin": "kun",
+    "strokes": 12,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (坤) ...",
+        "ren": "人部效果 (坤) ...",
+        "di": "地部效果 (坤) ..."
+    }
+}

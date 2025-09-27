@@ -1,0 +1,17 @@
+{
+    "id": "basic_21_shi_he",
+    "name": "噬嗑",
+    "symbol": "☲☳",
+    "sequence": 21,
+    "pinyin": "shi_he",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (噬嗑) ...",
+        "ren": "人部效果 (噬嗑) ...",
+        "di": "地部效果 (噬嗑) ..."
+    }
+}

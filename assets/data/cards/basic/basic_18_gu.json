@@ -1,0 +1,17 @@
+{
+    "id": "basic_18_gu",
+    "name": "蠱",
+    "symbol": "☶☴",
+    "sequence": 18,
+    "pinyin": "gu",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (蠱) ...",
+        "ren": "人部效果 (蠱) ...",
+        "di": "地部效果 (蠱) ..."
+    }
+}

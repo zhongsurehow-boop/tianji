@@ -1,0 +1,17 @@
+{
+    "id": "basic_15_qian",
+    "name": "謙",
+    "symbol": "☷☶",
+    "sequence": 15,
+    "pinyin": "qian",
+    "strokes": 10,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (謙) ...",
+        "ren": "人部效果 (謙) ...",
+        "di": "地部效果 (謙) ..."
+    }
+}

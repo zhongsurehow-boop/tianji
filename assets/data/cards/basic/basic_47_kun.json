@@ -1,0 +1,17 @@
+{
+    "id": "basic_47_kun",
+    "name": "困",
+    "symbol": "☱☵",
+    "sequence": 47,
+    "pinyin": "kun",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (困) ...",
+        "ren": "人部效果 (困) ...",
+        "di": "地部效果 (困) ..."
+    }
+}

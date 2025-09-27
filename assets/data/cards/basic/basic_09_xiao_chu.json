@@ -1,0 +1,17 @@
+{
+    "id": "basic_09_xiao_chu",
+    "name": "小畜",
+    "symbol": "☴☰",
+    "sequence": 9,
+    "pinyin": "xiao_chu",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (小畜) ...",
+        "ren": "人部效果 (小畜) ...",
+        "di": "地部效果 (小畜) ..."
+    }
+}

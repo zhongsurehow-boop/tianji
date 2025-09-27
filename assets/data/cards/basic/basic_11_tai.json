@@ -1,0 +1,17 @@
+{
+    "id": "basic_11_tai",
+    "name": "泰",
+    "symbol": "☷☰",
+    "sequence": 11,
+    "pinyin": "tai",
+    "strokes": 9,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (泰) ...",
+        "ren": "人部效果 (泰) ...",
+        "di": "地部效果 (泰) ..."
+    }
+}

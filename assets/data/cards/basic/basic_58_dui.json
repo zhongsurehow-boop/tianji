@@ -1,0 +1,17 @@
+{
+    "id": "basic_58_dui",
+    "name": "兌",
+    "symbol": "☱☱",
+    "sequence": 58,
+    "pinyin": "dui",
+    "strokes": 8,
+    "link": {
+        "pair_type": "...",
+        "pair_id": "..."
+    },
+    "effects": {
+        "tian": "天部效果 (兌) ...",
+        "ren": "人部效果 (兌) ...",
+        "di": "地部效果 (兌) ..."
+    }
+}
