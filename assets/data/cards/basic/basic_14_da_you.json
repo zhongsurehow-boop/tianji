@@ -57,8 +57,7 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 12,
-                "source": "REVEALED"
+                "value": 10
               }
             }
           ]

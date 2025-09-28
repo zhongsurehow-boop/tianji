@@ -1015,7 +1015,7 @@
         "name": "自天祐之",
         "effect": {
           "actions": [
-            { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 12, "source": "REVEALED" } }
+            { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 10 } }
           ]
         }
       }
@@ -1688,7 +1688,7 @@
 - **爻辞变量：**
   - **地部 (枯杨生华):** 弃一张牌，获得10金币。
   - **人部 (栋桡):** 对一名玩家造成8点伤害，你自己也损失4点生命值。
-  - **天部 (过涉灭顶):** 弃掉所有手牌和一半金币，对所有其他玩家造成6点伤害。
+  - **天部 (过涉灭顶):** 弃掉3张手牌，对所有其他玩家造成5点伤害。
 ```json
 {
   "id": "basic_28_da_guo",
@@ -1724,11 +1724,10 @@
         "name": "过涉灭顶",
         "effect": {
           "cost": [
-            { "action": "DISCARD_CARD", "params": { "target": "SELF", "count": "ALL" } },
-            { "action": "LOSE_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": { "op": "DIVIDE", "a": "VAR_SELF_GOLD", "b": 2 } } }
+            { "action": "DISCARD_CARD", "params": { "target": "SELF", "count": 3 } }
           ],
           "actions": [
-            { "action": "DEAL_DAMAGE", "params": { "target": "OPPONENT_ALL", "value": 6 } }
+            { "action": "DEAL_DAMAGE", "params": { "target": "OPPONENT_ALL", "value": 5 } }
           ]
         }
       }
@@ -3483,9 +3482,9 @@
 **核心机制：【水火既济】**
 - **效果：** 若你的阴阳指示条为0且五行资源平衡，你获得100胜利点。每场游戏只能成功宣告一次。
 - **爻辞变量：**
-  - **地部:** 宣告成功时，额外获得20金币。
-  - **人部:** 宣告成功时，额外抽3张功能牌。
-  - **天部:** 宣告成功时，所有其他玩家失去10金币。
+  - **地部:** 宣告成功时，额外获得30金币。
+  - **人部:** 宣告成功时，额外获得30金币。
+  - **天部:** 宣告成功时，额外获得30金币。
 ```json
 {
   "id": "basic_63_jiji",
@@ -3506,21 +3505,21 @@
         "name": "地",
         "effect": {
           "condition": { "op": "AND", "conditions": [ { "op": "PLAYER_HAS_FLAG", "params": { "flag": "YIN_YANG_IS_ZERO" } }, { "op": "PLAYER_HAS_FLAG", "params": { "flag": "FIVE_ELEMENTS_BALANCED" } } ] },
-          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 20 } } ]
+          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 30 } } ]
         }
       },
       "ren": {
         "name": "人",
         "effect": {
           "condition": { "op": "AND", "conditions": [ { "op": "PLAYER_HAS_FLAG", "params": { "flag": "YIN_YANG_IS_ZERO" } }, { "op": "PLAYER_HAS_FLAG", "params": { "flag": "FIVE_ELEMENTS_BALANCED" } } ] },
-          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "DRAW_CARD", "params": { "target": "SELF", "deck": "function", "count": 3 } } ]
+          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 30 } } ]
         }
       },
       "tian": {
         "name": "天",
         "effect": {
           "condition": { "op": "AND", "conditions": [ { "op": "PLAYER_HAS_FLAG", "params": { "flag": "YIN_YANG_IS_ZERO" } }, { "op": "PLAYER_HAS_FLAG", "params": { "flag": "FIVE_ELEMENTS_BALANCED" } } ] },
-          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "LOSE_RESOURCE", "params": { "target": "OPPONENT_ALL", "resource": "gold", "value": 10 } } ]
+          "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "VICTORY_POINTS", "value": 100 } }, { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 30 } } ]
         }
       }
     }

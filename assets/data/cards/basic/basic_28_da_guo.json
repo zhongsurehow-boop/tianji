@@ -64,19 +64,7 @@
               "action": "DISCARD_CARD",
               "params": {
                 "target": "SELF",
-                "count": "ALL"
-              }
-            },
-            {
-              "action": "LOSE_RESOURCE",
-              "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": {
-                  "op": "DIVIDE",
-                  "a": "VAR_SELF_GOLD",
-                  "b": 2
-                }
+                "count": 3
               }
             }
           ],
@@ -85,7 +73,7 @@
               "action": "DEAL_DAMAGE",
               "params": {
                 "target": "OPPONENT_ALL",
-                "value": 6
+                "value": 5
               }
             }
           ]

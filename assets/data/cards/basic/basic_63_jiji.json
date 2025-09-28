@@ -47,7 +47,7 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 20
+                "value": 30
               }
             }
           ]
@@ -83,11 +83,11 @@
               }
             },
             {
-              "action": "DRAW_CARD",
+              "action": "GAIN_RESOURCE",
               "params": {
                 "target": "SELF",
-                "deck": "function",
-                "count": 3
+                "resource": "gold",
+                "value": 30
               }
             }
           ]
@@ -123,11 +123,11 @@
               }
             },
             {
-              "action": "LOSE_RESOURCE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_ALL",
+                "target": "SELF",
                 "resource": "gold",
-                "value": 10
+                "value": 30
               }
             }
           ]
