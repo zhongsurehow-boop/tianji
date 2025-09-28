@@ -1,6 +1,5 @@
 {
-    "id": "branch_mao",
-    "type": "branch",
-    "name": "卯",
-    "element": "wood"
+  "id": "branch_mao",
+  "name": "卯",
+  "type": "branch"
 }

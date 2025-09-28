@@ -1,6 +1,5 @@
 {
-    "id": "branch_xu",
-    "type": "branch",
-    "name": "戌",
-    "element": "earth"
+  "id": "branch_xu",
+  "name": "戌",
+  "type": "branch"
 }

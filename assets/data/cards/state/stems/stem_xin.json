@@ -1,6 +1,5 @@
 {
-    "id": "stem_xin",
-    "type": "stem",
-    "name": "辛",
-    "element": "metal"
+  "id": "stem_xin",
+  "name": "辛",
+  "type": "stem"
 }

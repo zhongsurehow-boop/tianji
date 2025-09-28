@@ -1,6 +1,5 @@
 {
-    "id": "stem_geng",
-    "type": "stem",
-    "name": "庚",
-    "element": "metal"
+  "id": "stem_geng",
+  "name": "庚",
+  "type": "stem"
 }

@@ -1,7 +1,0 @@
-{
-    "id": "celestial_ziwei_dangtou",
-    "type": "celestial",
-    "name": "紫微当头",
-    "trigger": "游戏开始时揭示。",
-    "effect": "此星象持续直到第一位玩家出局。在此期间，所有玩家的生命值上限增加20。"
-}

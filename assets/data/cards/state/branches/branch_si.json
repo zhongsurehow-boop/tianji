@@ -1,6 +1,5 @@
 {
-    "id": "branch_si",
-    "type": "branch",
-    "name": "巳",
-    "element": "fire"
+  "id": "branch_si",
+  "name": "巳",
+  "type": "branch"
 }

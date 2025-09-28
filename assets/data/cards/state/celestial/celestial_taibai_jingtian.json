@@ -1,7 +1,0 @@
-{
-    "id": "celestial_taibai_jingtian",
-    "type": "celestial",
-    "name": "太白经天",
-    "trigger": "当任一牌库首次被重洗时，揭示此牌。",
-    "effect": "此星象持续3轮。在此期间，所有“金”属性宫位的“论道”事件，胜利者可以额外夺取3金币。"
-}

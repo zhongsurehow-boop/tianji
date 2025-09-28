@@ -1,6 +1,5 @@
 {
-    "id": "branch_hai",
-    "type": "branch",
-    "name": "亥",
-    "element": "water"
+  "id": "branch_hai",
+  "name": "亥",
+  "type": "branch"
 }

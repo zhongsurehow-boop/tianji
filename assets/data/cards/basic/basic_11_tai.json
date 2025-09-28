@@ -1,20 +1,59 @@
 {
-    "id": "basic_11_tai",
-    "name": "泰",
-    "symbol": "☷☰",
-    "sequence": 11,
-    "pinyin": "tai",
-    "strokes": 10,
-    "link": {
-        "pair_type": "...",
-        "pair_id": "..."
-    },
-    "effects": [
-        "第一爻效果 (泰)",
-        "第二爻效果 (泰)",
-        "第三爻效果 (泰)",
-        "第四爻效果 (泰)",
-        "第五爻效果 (泰)",
-        "第六爻效果 (泰)"
-    ]
+  "id": "basic_11_tai",
+  "name": "泰",
+  "symbol": "☷☰",
+  "sequence": 11,
+  "pinyin": "tai",
+  "strokes": 11,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "Placeholder Effect",
+    "description": "A simple placeholder effect.",
+    "variants": {
+      "di": {
+        "name": "地",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "人",
+        "effect": {
+          "actions": [
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "SELF",
+                "deck": "basic",
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "天",
+        "effect": {
+          "actions": [
+            {
+              "action": "DEAL_DAMAGE",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 2
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,5 @@
 {
-    "id": "branch_chen",
-    "type": "branch",
-    "name": "辰",
-    "element": "earth"
+  "id": "branch_chen",
+  "name": "辰",
+  "type": "branch"
 }

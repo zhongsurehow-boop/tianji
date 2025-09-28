@@ -1,6 +1,5 @@
 {
-    "id": "branch_yin",
-    "type": "branch",
-    "name": "寅",
-    "element": "wood"
+  "id": "branch_yin",
+  "name": "寅",
+  "type": "branch"
 }

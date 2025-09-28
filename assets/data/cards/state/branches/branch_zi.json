@@ -1,6 +1,5 @@
 {
-    "id": "branch_zi",
-    "type": "branch",
-    "name": "子",
-    "element": "water"
+  "id": "branch_zi",
+  "name": "子",
+  "type": "branch"
 }

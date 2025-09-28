@@ -1,6 +1,5 @@
 {
-    "id": "stem_jia",
-    "type": "stem",
-    "name": "甲",
-    "element": "wood"
+  "id": "stem_jia",
+  "name": "甲",
+  "type": "stem"
 }

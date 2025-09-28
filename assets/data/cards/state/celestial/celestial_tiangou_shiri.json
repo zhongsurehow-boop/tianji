@@ -1,7 +1,0 @@
-{
-    "id": "celestial_tiangou_shiri",
-    "type": "celestial",
-    "name": "天狗食日",
-    "trigger": "当牌库第二次被重洗时，揭示此牌。",
-    "effect": "此星象为终局事件。游戏将在3轮后结束。"
-}
