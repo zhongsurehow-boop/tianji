@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天机变</title>
+    <style>
+        /* CSS styles from the original index.html and game_map.html are combined here */
+        body { font-family: 'KaiTi', 'SimSun', serif; background-color: #f0e8d9; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+        #game-container { display: flex; width: 95vw; height: 95vh; max-width: 1400px; max-height: 900px; border: 2px solid #6b4f3a; border-radius: 10px; background: #e9e0d0; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+        #left-panel { width: 20%; padding: 15px; border-right: 2px solid #6b4f3a; display: flex; flex-direction: column; }
+        #center-panel { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 10px; }
+        #right-panel { width: 25%; padding: 15px; border-left: 2px solid #6b4f3a; display: flex; flex-direction: column; }
+        .panel-box { background: #fdfaf3; border: 1px solid #c8bca9; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+        h2, h3, h4 { color: #5a4533; border-bottom: 1px solid #c8bca9; padding-bottom: 5px; margin-top: 0; }
+        h4 { font-size: 1em; margin-bottom: 5px; }
+        #player1-info, #player2-info { margin-bottom: 20px; }
+        .player-hand { min-height: 120px; background: #f0e8d9; border-radius: 3px; padding: 5px; }
+        .card { border: 1px solid #999; border-radius: 4px; padding: 5px 8px; margin: 3px; font-size: 14px; background: #fff; display: inline-block; cursor: pointer; box-shadow: 1px 1px 3px rgba(0,0,0,0.1); }
+        .card:hover { border-color: gold; box-shadow: 1px 1px 5px rgba(0,0,0,0.2); }
+        #game-log-container { flex-grow: 1; display: flex; flex-direction: column; }
+        #game-log { flex-grow: 1; background: #fdfaf3; border: 1px solid #c8bca9; padding: 10px; overflow-y: auto; font-size: 14px; line-height: 1.5; }
+        #game-log p { margin: 0 0 5px 0; }
+        #game-board-container { width: 95%; height: 95%; max-width: 80vh; max-height: 80vh; }
+        #game-board { width: 100%; height: 100%; }
+        .zone { stroke: #6b4f3a; stroke-width: 4; cursor: pointer; transition: filter 0.2s ease-in-out, stroke 0.2s ease-in-out, stroke-width 0.2s ease-in-out; }
+        .zone:hover, #Gong_Zhong:hover { filter: brightness(1.15); stroke: gold; stroke-width: 8; }
+        .gong-li { fill: #c0392b; } .gong-kun { fill: #f1c40f; } .gong-dui { fill: #bdc3c7; } .gong-qian { fill: #ecf0f1; } .gong-kan { fill: #2c3e50; } .gong-gen { fill: #d3a47c; } .gong-zhen { fill: #27ae60; } .gong-xun { fill: #2ecc71; }
+        .bu-di { opacity: 0.7; } .bu-ren { opacity: 0.85; } .bu-tian { opacity: 1; }
+        #Gong_Zhong { cursor: pointer; animation: spin 20s linear infinite; transform-origin: center; }
+        .taiji-black-bg { fill: black; stroke: #333; stroke-width: 5; }
+        .taiji-white-half { fill: white; }
+        .taiji-white-semicircle { fill: white; }
+        .taiji-black-semicircle { fill: black; }
+        .fisheye-white { fill: white; }
+        .fisheye-black { fill: black; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .labels, .trigram-symbol { text-anchor: middle; pointer-events: none; fill: black; stroke: white; stroke-width: 1.5px; paint-order: stroke; }
+        .label-on-dark, .symbol-on-dark { fill: white; stroke: black; }
+        .labels { font-size: 40px; }
+        .trigram-symbol { font-size: 60px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="left-panel">
+            <div id="player1-info" class="panel-box">
+                <h3>玩家一</h3>
+                <p>位置: <span id="p1-location">N/A</span></p>
+                <p>金钱: <span id="p1-gold">100</span></p>
+                <p>生命: <span id="p1-health">20</span></p>
+                <h4>手牌:</h4>
+                <div id="p1-hand" class="player-hand"></div>
+            </div>
+            <div id="player2-info" class="panel-box">
+                <h3>玩家二</h3>
+                <p>位置: <span id="p2-location">N/A</span></p>
+                <p>金钱: <span id="p2-gold">100</span></p>
+                <p>生命: <span id="p2-health">20</span></p>
+                <h4>手牌:</h4>
+                <div id="p2-hand" class="player-hand"></div>
+            </div>
+        </div>
+        <div id="center-panel">
+            <div id="game-board-container">
+                <svg id="game-board" viewBox="0 0 800 800">
+                    <g id="di-ring" class="ring-group"></g>
+                    <g id="ren-ring" class="ring-group"></g>
+                    <g id="tian-ring" class="ring-group"></g>
+                    <g id="Gong_Zhong"><circle class="taiji-black-bg" cx="400" cy="400" r="120" /><path class="taiji-white-half" d="M400,280 A120,120 0 0,1 400,520 Z" /><circle class="taiji-white-semicircle" cx="400" cy="340" r="60" /><circle class="taiji-black-semicircle" cx="400" cy="460" r="60" /><circle class="fisheye-black" cx="400" cy="340" r="20" /><circle class="fisheye-white" cx="400" cy="460" r="20" /></g>
+                    <g id="text-labels" class="labels"></g>
+                    <g id="trigram-symbols-layer"></g>
+                </svg>
+            </div>
+        </div>
+        <div id="right-panel">
+            <div id="game-log-container" class="panel-box">
+                <h2>游戏日志</h2><div id="game-log"><p>游戏开始...</p></div>
+            </div>
+            <div id="actions-container" class="panel-box">
+                <h2>当前阶段: <span id="current-phase">等待</span></h2>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { initGame } from './game.js';
+        import { getMapData } from './map.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMap();
+            initGame();
+        });
+
+        function renderMap() {
+            const mapData = getMapData();
+            const svgNS = "http://www.w3.org/2000/svg";
+
+            mapData.palaces.forEach(palace => {
+                mapData.departments.forEach(dept => {
+                    const zoneId = `Gong_${palace.id}-Bu_${dept.id}`;
+                    const classList = `zone gong-${palace.id.toLowerCase()} bu-${dept.id.toLowerCase()}`;
+                    const path = createAnnulusSector(mapData.center.x, mapData.center.y, dept.innerRadius, dept.outerRadius, palace.angle, palace.angle + 45);
+                    path.setAttribute('id', zoneId);
+                    path.setAttribute('class', classList);
+                    document.getElementById(`${dept.id.toLowerCase()}-ring`).appendChild(path);
+                });
+            });
+
+            const labelsGroup = document.getElementById('text-labels');
+            const symbolsGroup = document.getElementById('trigram-symbols-layer');
+            mapData.palaces.forEach(palace => {
+                const angle = palace.angle + 22.5;
+                const isDark = palace.id === 'Kan';
+                const labelPos = polarToCartesian(mapData.center.x, mapData.center.y, 250, angle);
+                const label = createText(palace.name, labelPos.x, labelPos.y, isDark ? 'label-on-dark' : '');
+                if (angle > 90 && angle < 270) label.setAttribute('transform', `rotate(180 ${labelPos.x} ${labelPos.y})`);
+                labelsGroup.appendChild(label);
+
+                const symbolPos = polarToCartesian(mapData.center.x, mapData.center.y, 350, angle);
+                const symbol = createText(palace.symbol, symbolPos.x, symbolPos.y, `trigram-symbol ${isDark ? 'symbol-on-dark' : ''}`);
+                if (angle > 90 && angle < 270) symbol.setAttribute('transform', `rotate(180 ${symbolPos.x} ${symbolPos.y})`);
+                symbolsGroup.appendChild(symbol);
+            });
+        }
+
+        function polarToCartesian(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return{x:cx+(r*Math.cos(rad)),y:cy+(r*Math.sin(rad))}}
+        function createAnnulusSector(cx,cy,r0,r1,a0,a1){const p0=polarToCartesian(cx,cy,r0,a0),p1=polarToCartesian(cx,cy,r1,a0),p2=polarToCartesian(cx,cy,r1,a1),p3=polarToCartesian(cx,cy,r0,a1);const l=a1-a0<=180?"0":"1";const d=`M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} A ${r1} ${r1} 0 ${l} 1 ${p2.x} ${p2.y} L ${p3.x} ${p3.y} A ${r0} ${r0} 0 ${l} 0 ${p0.x} ${p0.y} Z`;const p=document.createElementNS("http://www.w3.org/2000/svg",'path');p.setAttribute("d",d);return p}
+        function createText(t,x,y,c=''){const e=document.createElementNS("http://www.w3.org/2000/svg",'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('dy','0.35em');if(c)e.setAttribute('class',c);e.textContent=t;return e}
+    </script>
+</body>
+</html>
