@@ -4487,7 +4487,7 @@
       "tian": {
         "name": "易位",
         "effect": {
-          "actions": [{ "action": "SWAP_RESOURCE", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "gold" } }]
+          "actions": [{ "action": "SWAP_RESOURCES", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "gold" } }]
         }
       }
     }

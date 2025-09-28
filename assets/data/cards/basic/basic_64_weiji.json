@@ -51,7 +51,7 @@
         "effect": {
           "actions": [
             {
-              "action": "SWAP_RESOURCE",
+              "action": "SWAP_RESOURCES",
               "params": {
                 "target_a": "SELF",
                 "target_b": "OPPONENT_CHOICE_SINGLE",

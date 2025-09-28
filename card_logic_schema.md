@@ -90,6 +90,7 @@
 | `LOSE_RESOURCE` | 目标失去资源。用于**非伤害性**的生命减少或金币损失。 | `target`, `resource`, `value` |
 | `PAY_COST` | 玩家为发动效果支付代价。**与`LOSE_RESOURCE`在规则上严格区分。** | `target`, `resource`, `value` |
 | `DEAL_DAMAGE` | 对目标造成伤害。可被防御/免疫。 | `target`, `value`, `damage_type` (physical, magical) |
+| `SWAP_RESOURCES` | **(新增)** 交换两个目标指定的资源。 | `target_a`, `target_b`, `resource` |
 | **移动与位置** | | |
 | `MOVE` | 移动棋子。 | `target`, `destination`, `move_type` (normal, jump, force) |
 | `SWAP_POSITION` | 交换两个棋子的位置。 | `target_a`, `target_b` |
