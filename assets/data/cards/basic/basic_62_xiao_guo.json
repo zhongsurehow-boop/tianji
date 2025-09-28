@@ -7,26 +7,41 @@
   "strokes": 62,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "小有过失",
+    "description": "可以做小事，不宜做大事。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "弗过",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "LOSE_RESOURCE",
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 1
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "遇其妣",
+        "effect": {
+          "actions": [
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "弗遇",
         "effect": {
           "actions": [
             {
@@ -34,21 +49,8 @@
               "params": {
                 "target": "SELF",
                 "deck": "basic",
-                "count": 1
-              }
-            }
-          ]
-        }
-      },
-      "tian": {
-        "name": "天",
-        "effect": {
-          "actions": [
-            {
-              "action": "DEAL_DAMAGE",
-              "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "count": 1,
+                "reveal": true
               }
             }
           ]

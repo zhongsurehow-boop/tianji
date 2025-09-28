@@ -7,41 +7,45 @@
   "strokes": 21,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "惩奸除恶",
+    "description": "采取强硬手段解决问题。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "噬肤",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "DEAL_DAMAGE",
               "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 3
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "噬干肉",
         "effect": {
+          "cost": [
+            {
+              "resource": "gold",
+              "value": 3
+            }
+          ],
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "DEAL_DAMAGE",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 5
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "何校灭耳",
         "effect": {
           "actions": [
             {
@@ -49,6 +53,13 @@
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
                 "value": 2
+              }
+            },
+            {
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "count": 1
               }
             }
           ]

@@ -7,18 +7,18 @@
   "strokes": 51,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "震惊百里",
+    "description": "带来突发的震动和混乱。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "震索索",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "LOSE_RESOURCE",
               "params": {
-                "target": "SELF",
-                "resource": "gold",
+                "target": "PLAYERS_IN_SAME_ZONE",
+                "resource": "health",
                 "value": 2
               }
             }
@@ -26,29 +26,30 @@
         }
       },
       "ren": {
-        "name": "人",
+        "name": "震遂泥",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "DISCARD_CARD",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "target": "ALL_PLAYERS",
+                "count": 1,
+                "source": "RANDOM"
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "震惊百里",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "MOVE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "OPPONENT_ALL",
+                "move_type": "RANDOM_DIRECTION",
+                "value": 1
               }
             }
           ]

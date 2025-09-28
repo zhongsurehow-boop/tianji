@@ -7,11 +7,41 @@
   "strokes": 42,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "益不足",
+    "description": "增益自己以求发展。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "元吉",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 4
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "有孚惠心",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 4
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "立心勿恒",
         "effect": {
           "actions": [
             {
@@ -21,33 +51,12 @@
                 "resource": "gold",
                 "value": 2
               }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
+            },
             {
-              "action": "DRAW_CARD",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
-              }
-            }
-          ]
-        }
-      },
-      "tian": {
-        "name": "天",
-        "effect": {
-          "actions": [
-            {
-              "action": "DEAL_DAMAGE",
-              "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
+                "target": "ALLY_FORMAL_ALL",
+                "resource": "gold",
                 "value": 2
               }
             }

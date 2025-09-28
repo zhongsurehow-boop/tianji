@@ -7,48 +7,55 @@
   "strokes": 43,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "刚决柔也",
+    "description": "以强硬手段做出决断。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "壮于前趾",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "DESTROY_ENTITY",
               "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "target_entity_id": "CHOICE"
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "扬于王庭",
         "effect": {
-          "actions": [
+          "cost": [
             {
-              "action": "DRAW_CARD",
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "count": 3
+              }
+            }
+          ],
+          "actions": [
+            {
+              "action": "DEAL_DAMAGE",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 10
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "无号",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "APPLY_STATUS",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "status_id": "UNSTOPPABLE",
+                "duration": "NEXT_ACTION"
               }
             }
           ]

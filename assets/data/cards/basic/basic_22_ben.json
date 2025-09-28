@@ -7,11 +7,11 @@
   "strokes": 22,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "文饰之美",
+    "description": "华美的装饰，实际作用不大。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "贲其趾",
         "effect": {
           "actions": [
             {
@@ -19,14 +19,14 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 1
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "贲其须",
         "effect": {
           "actions": [
             {
@@ -36,22 +36,21 @@
                 "deck": "basic",
                 "count": 1
               }
+            },
+            {
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "SELF",
+                "count": 1
+              }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "白贲",
         "effect": {
-          "actions": [
-            {
-              "action": "DEAL_DAMAGE",
-              "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
-              }
-            }
-          ]
+          "actions": []
         }
       }
     }

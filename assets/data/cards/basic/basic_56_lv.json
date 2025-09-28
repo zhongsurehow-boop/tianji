@@ -7,11 +7,26 @@
   "strokes": 56,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "行旅之道",
+    "description": "旅途中的见闻与得失。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "旅琐琐",
+        "effect": {
+          "actions": [
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 1
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "得其资斧",
         "effect": {
           "actions": [
             {
@@ -19,36 +34,31 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
-            {
-              "action": "DRAW_CARD",
-              "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "value": 3
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "终誉命",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "gold",
+                "value": 5
+              }
+            },
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "SELF",
+                "status_id": "PRESTIGE",
+                "value": 1,
+                "is_permanent": true
               }
             }
           ]

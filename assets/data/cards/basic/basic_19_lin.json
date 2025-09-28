@@ -7,17 +7,17 @@
   "strokes": 19,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "君子之临",
+    "description": "亲自到达，产生影响。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "咸临",
         "effect": {
           "actions": [
             {
               "action": "GAIN_RESOURCE",
               "params": {
-                "target": "SELF",
+                "target": "PLAYERS_IN_SAME_ZONE",
                 "resource": "gold",
                 "value": 2
               }
@@ -26,28 +26,31 @@
         }
       },
       "ren": {
-        "name": "人",
+        "name": "甘临",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "GAIN_RESOURCE",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "resource": "health",
+                "value": {
+                  "op": "COUNT",
+                  "target": "PLAYERS_IN_SAME_ZONE"
+                }
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "知临",
         "effect": {
           "actions": [
             {
               "action": "DEAL_DAMAGE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
+                "target": "OTHER_PLAYERS_IN_SAME_ZONE",
                 "value": 2
               }
             }

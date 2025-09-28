@@ -7,48 +7,71 @@
   "strokes": 52,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "艮止之道",
+    "description": "停止行动，保持静止。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "艮其背",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "APPLY_STATUS",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "status_id": "CANNOT_MOVE",
+                "duration": 1
+              }
+            },
+            {
+              "action": "EXECUTE_LATER",
+              "params": {
+                "delay": "NEXT_TURN_START",
+                "effect": {
+                  "actions": [
+                    {
+                      "action": "GAIN_RESOURCE",
+                      "params": {
+                        "target": "SELF",
+                        "resource": "gold",
+                        "value": 5
+                      }
+                    }
+                  ]
+                }
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "不获其身",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "APPLY_STATUS",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "status_id": "CARDS_LOCKED",
+                "duration": 1
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "时行则行",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "MODIFY_RULE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "rule_id": "CARD_EFFECT_MOVEMENT_BLOCKED",
+                "scope": "GLOBAL",
+                "mutation": {
+                  "type": "SET_BOOLEAN",
+                  "value": true
+                },
+                "duration": 1
               }
             }
           ]

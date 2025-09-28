@@ -7,26 +7,42 @@
   "strokes": 16,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "其乐融融",
+    "description": "带来愉悦和顺畅。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "介于石",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "APPLY_STATUS",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "status_id": "GUARD",
+                "value": 2,
+                "duration": 1
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "盱豫",
+        "effect": {
+          "actions": [
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "value": 2,
+                "move_type": "NORMAL"
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "冥豫",
         "effect": {
           "actions": [
             {
@@ -36,19 +52,13 @@
                 "deck": "basic",
                 "count": 1
               }
-            }
-          ]
-        }
-      },
-      "tian": {
-        "name": "天",
-        "effect": {
-          "actions": [
+            },
             {
-              "action": "DEAL_DAMAGE",
+              "action": "DRAW_CARD",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "ALLY_FORMAL_ALL",
+                "deck": "basic",
+                "count": 1
               }
             }
           ]

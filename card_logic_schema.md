@@ -91,8 +91,10 @@
 | `PAY_COST` | 玩家为发动效果支付代价。**与`LOSE_RESOURCE`在规则上严格区分。** | `target`, `resource`, `value` |
 | `DEAL_DAMAGE` | 对目标造成伤害。可被防御/免疫。 | `target`, `value`, `damage_type` (physical, magical) |
 | `SWAP_RESOURCES` | **(新增)** 交换两个目标指定的资源。 | `target_a`, `target_b`, `resource` |
+| `SET_RESOURCE`| **(新增)** 将目标的资源直接设置为一个特定值。 | `target`, `resource`, `value` |
+| `TRANSFER_RESOURCE`| **(新增)** 将资源从一个目标转移到另一个目标。 | `from`, `to`, `resource`, `value` |
 | **移动与位置** | | |
-| `MOVE` | 移动棋子。 | `target`, `destination`, `move_type` (normal, jump, force) |
+| `MOVE` | 移动棋子。 | `target`, `destination`, `move_type` (normal, jump, force, retreat, away_from_player, towards_player, random_direction, normal_ignore_penalty) |
 | `SWAP_POSITION` | 交换两个棋子的位置。 | `target_a`, `target_b` |
 | **状态与规则** | | |
 | `APPLY_STATUS` | 对目标施加状态。 | `target`, `status_id`, `duration`, `value`, `is_permanent` |
@@ -108,6 +110,7 @@
 | `DISCARD_CARD`| **(新增)** 目标弃牌。 | `target`, `count` |
 | `SWAP_HAND_CARDS`| **(新增)** 两人交换指定数量手牌。 | `target`, `other_player`, `count` (or `ALL`) |
 | `SWAP_DISCARD_PILES`| **(新增)** 两人交换弃牌堆。 | `target_a`, `target_b` |
+| `RECOVER_CARD_FROM_DISCARD`| **(新增)** 从弃牌堆回收牌到手牌。 | `target`, `deck`, `count` |
 | **实体与场上效果** | | |
 | `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties` |
 | `DESTROY_ENTITY`| **(新增)** 移除一个场上实体。 | `target_entity_id` |
@@ -135,6 +138,11 @@
     *   `ALLY_FORMAL_IN_PALACE`: **(新增)** 位于同一宫位的所有正式盟友。
     *   `ALLY_FORMAL_SINGLE_CHOICE`: **(新增)** 由发起者在所有正式盟友中任选一个。
     *   `PLAYER_CHOICE_ANY_NON_ALLY`: **(新增)** 由发起者在所有非盟友玩家中任选一个。
+    *   `PLAYERS_IN_SAME_ZONE`: **(新增)** 位于同一区域的所有玩家（包括自己）。
+    *   `OTHER_PLAYERS_IN_SAME_ZONE`: **(新增)** 位于同一区域的所有其他玩家。
+    *   `PLAYER_CHOICE_RANDOM`: **(新增)** 在所有玩家中随机选择一个（包括自己）。
+    *   `PLAYER_IN_NEW_ZONE`: **(新增)** 移动后新区域中的一名玩家。
+    *   `OPPONENT_RANDOM`: **(新增)** 在所有敌对玩家中随机选择一个。
 
 ### 5.2 `status_id` - 状态效果
 
@@ -146,6 +154,7 @@
     *   `IMMUNE_THEFT`: 免疫偷窃/夺取金币的效果。
     *   `IMMUNITY_GENERAL_NEGATIVE`: 笼统的负面效果免疫（兜底）。
 *   **其他关键状态:**
+    *   `CANNOT_MOVE`: **(新增)** 目标不能移动。
     *   `CANNOT_PAY_COSTS`: **(新增)** 目标无法支付任何代价（一个负面状态）。
     *   `CANNOT_GAIN_GOLD_FROM_ZONE`: **(新增)** 目标不能从区域效果中获得金币。
     *   `HEXAGRAM_INVERTED`: 错卦状态。
@@ -156,6 +165,14 @@
     *   `PRESTIGE`: **(新增)** 威望状态。
     *   `MONTORIAL_FOG`: **(新增)** 启蒙之雾状态。
     *   `EFFECT_MODIFIER_CANCEL_NEGATIVE`: **(新增)** 取消效果负面部分的状态。
+    *   `GUARD`: **(新增)** 守护状态，可抵挡固定数值的伤害。
+    *   `MOVE_LIMIT`: **(新增)** 移动限制状态，限制目标的最大移动格数。
+    *   `DAMAGE_BOOST`: **(新增)** 伤害加成状态，增加下一次造成的伤害。
+    *   `IMPRISONED`: **(新增)** 禁锢状态，目标不能移动或抽牌。
+    *   `EFFECTS_LOCKED`: **(新增)** 效果锁定状态，目标不能使用卡牌的核心机制。
+    *   `ACTION_COST_INCREASED`: **(新增)** 行动代价增加状态。
+    *   `UNSTOPPABLE`: **(新增)** 势不可挡状态，行动无法被响应或无效。
+    *   `CARDS_LOCKED`: **(新增)** 卡牌锁定状态，目标不能打出卡牌。
 
 ### 5.3 `rule_id` & `mutation` - 规则修改 **(V3.0 增强)**
 
@@ -164,6 +181,9 @@
     *   `INTER_DEPARTMENT_MOVEMENT`: 天人地三部之间是否可移动。
     *   `YIN_YANG_SYSTEM_REVERSED`: 阴阳系统正负效果是否反转。
     *   `ZONE_REWARD_PENALTY_REVERSAL`: 泰/否卦的区域奖惩反转。
+    *   `TURN_ORDER_REVERSED`: **(新增)** 回合顺序是否反转。
+    *   `CARD_EFFECT_MOVEMENT_BLOCKED`: **(新增)** 卡牌效果导致的移动是否被阻止。
+    *   `HAND_LIMIT_DRAW`: **(新增)** 抽牌阶段的手牌上限规则。
 *   **`mutation` 对象:**
     *   `{ "type": "SET_BOOLEAN", "value": false }`: 开关规则。
     *   `{ "type": "SET_VALUE", "value": 0 }`: 设定数值规则（如移动上限）。
@@ -203,7 +223,7 @@ To avoid "magic strings," actions that need to reference dynamic game state (lik
 *   **`SOURCE_TYPE` Values:**
     *   `LAST_BASIC_CARD_EFFECT_PLAYED`: The effect from the last *basic* card that was resolved. Used by 《坤》.
     *   `INTERRUPTED_EFFECT`: The effect that was just cancelled by an `INTERRUPT` action. This is specifically for creating "counter-spell" type effects, like with 《蒙》.
-*   **`PLAYER_SCOPE_VALUE` Values:** (Optional) `SELF`, `OPPONENT_SINGLE`, `ANY`, etc.
+*   **`PLAYER_SCOPE_VALUE` Values:** (Optional) `SELF`, `OPPONENT_SINGLE`, `ANY`, `LAST_ACTED_PLAYER`, etc.
 
 ---
 

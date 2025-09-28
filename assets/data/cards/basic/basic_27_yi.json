@@ -7,48 +7,67 @@
   "strokes": 27,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "修身养性",
+    "description": "颐养天年，获得补给。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "舍尔灵龟",
         "effect": {
           "actions": [
             {
               "action": "GAIN_RESOURCE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "resource": "health",
+                "value": 3
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "拂经",
         "effect": {
           "actions": [
+            {
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "SELF",
+                "count": "ALL"
+              }
+            },
             {
               "action": "DRAW_CARD",
               "params": {
                 "target": "SELF",
                 "deck": "basic",
-                "count": 1
+                "count": {
+                  "op": "COUNT",
+                  "target": "DISCARDED_THIS_TURN"
+                }
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "由颐",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "health",
+                "value": 3
+              }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "ALLY_FORMAL_ALL",
+                "resource": "health",
+                "value": 3
               }
             }
           ]

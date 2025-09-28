@@ -7,26 +7,11 @@
   "strokes": 31,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "心心相印",
+    "description": "双方产生感应，进行互动。",
     "variants": {
       "di": {
-        "name": "地",
-        "effect": {
-          "actions": [
-            {
-              "action": "GAIN_RESOURCE",
-              "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
+        "name": "咸其拇",
         "effect": {
           "actions": [
             {
@@ -36,18 +21,58 @@
                 "deck": "basic",
                 "count": 1
               }
+            },
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "PLAYER_CHOICE_ANY",
+                "deck": "basic",
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "咸其股",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 3
+              }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "PLAYER_CHOICE_ANY",
+                "resource": "health",
+                "value": 3
+              }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "咸其辅颊舌",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "LOSE_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
+                "target": "SELF",
+                "resource": "gold",
+                "value": 2
+              }
+            },
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "PLAYER_CHOICE_ANY",
+                "resource": "gold",
                 "value": 2
               }
             }

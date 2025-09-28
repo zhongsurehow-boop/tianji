@@ -7,11 +7,53 @@
   "strokes": 32,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "恒久之道",
+    "description": "持之以恒，产生持续性的效果。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "浚恒",
+        "effect": {
+          "actions": [
+            {
+              "action": "EXECUTE_LATER",
+              "params": {
+                "delay": "NEXT_TURN_START",
+                "repeat": 3,
+                "effect": {
+                  "actions": [
+                    {
+                      "action": "GAIN_RESOURCE",
+                      "params": {
+                        "target": "SELF",
+                        "resource": "gold",
+                        "value": 1
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "振恒",
+        "effect": {
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "SELF",
+                "status_id": "GUARD",
+                "value": 1,
+                "duration": 2
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "不恒其德",
         "effect": {
           "actions": [
             {
@@ -19,36 +61,14 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 5
               }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
+            },
             {
-              "action": "DRAW_CARD",
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
                 "count": 1
-              }
-            }
-          ]
-        }
-      },
-      "tian": {
-        "name": "天",
-        "effect": {
-          "actions": [
-            {
-              "action": "DEAL_DAMAGE",
-              "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
               }
             }
           ]

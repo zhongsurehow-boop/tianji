@@ -7,11 +7,11 @@
   "strokes": 55,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "丰功伟业",
+    "description": "日中见斗，象征极盛之时。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "丰其沛",
         "effect": {
           "actions": [
             {
@@ -19,36 +19,60 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 10
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "丰其屋",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "CREATE_ENTITY",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "entity_type": "TREASURE_CAULDRON",
+                "position": "SELF",
+                "is_permanent": true,
+                "properties": {
+                  "name": "宝鼎",
+                  "on_turn_start_effect": {
+                    "actions": [
+                      {
+                        "action": "GAIN_RESOURCE",
+                        "params": {
+                          "target": "OWNER",
+                          "resource": "gold",
+                          "value": 1
+                        }
+                      }
+                    ]
+                  }
+                }
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "天际翔也",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "gold",
+                "value": 5
+              }
+            },
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "move_type": "NORMAL",
+                "value": 3
               }
             }
           ]

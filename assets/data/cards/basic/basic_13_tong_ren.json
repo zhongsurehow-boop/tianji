@@ -7,12 +7,15 @@
   "strokes": 13,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "与人偕行",
+    "description": "与人同心，其利断金。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "同人于野",
         "effect": {
+          "condition": {
+            "op": "PLAYER_HAS_ALLY"
+          },
           "actions": [
             {
               "action": "GAIN_RESOURCE",
@@ -21,19 +24,27 @@
                 "resource": "gold",
                 "value": 2
               }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "ALLY_FORMAL_ALL",
+                "resource": "gold",
+                "value": 2
+              }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "同人于宗",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "SWAP_HAND_CARDS",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
+                "other_player": "OPPONENT_CHOICE_SINGLE",
                 "count": 1
               }
             }
@@ -41,14 +52,46 @@
         }
       },
       "tian": {
-        "name": "天",
+        "name": "大师克相遇",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "CHOICE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "options": [
+                  {
+                    "description": "造成6点伤害（需要盟友）",
+                    "condition": {
+                      "op": "PLAYER_HAS_ALLY"
+                    },
+                    "effect": {
+                      "actions": [
+                        {
+                          "action": "DEAL_DAMAGE",
+                          "params": {
+                            "target": "OPPONENT_CHOICE_SINGLE",
+                            "value": 6
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "description": "造成4点伤害",
+                    "effect": {
+                      "actions": [
+                        {
+                          "action": "DEAL_DAMAGE",
+                          "params": {
+                            "target": "OPPONENT_CHOICE_SINGLE",
+                            "value": 4
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
               }
             }
           ]

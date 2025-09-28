@@ -7,26 +7,11 @@
   "strokes": 54,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "以祉元吉",
+    "description": "少女出嫁，有不正之象，但亦有福祉。",
     "variants": {
       "di": {
-        "name": "地",
-        "effect": {
-          "actions": [
-            {
-              "action": "GAIN_RESOURCE",
-              "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
+        "name": "归妹以娣",
         "effect": {
           "actions": [
             {
@@ -36,19 +21,51 @@
                 "deck": "basic",
                 "count": 1
               }
+            },
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "PLAYER_CHOICE_ANY",
+                "deck": "basic",
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "帝乙归妹",
+        "effect": {
+          "actions": [
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 3
+              }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 6
+              }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "月几望",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "SWAP_HAND_CARDS",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "other_player": "OPPONENT_CHOICE_SINGLE",
+                "count": "ALL"
               }
             }
           ]

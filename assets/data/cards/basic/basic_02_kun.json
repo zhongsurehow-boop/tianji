@@ -43,7 +43,7 @@
       },
       "ren": {
         "name": "收敛",
-        "description": "若你本轮未移动，你可以改为复制本轮一名其他玩家已结算的基础爻辞效果，并取消其负面部分。",
+        "description": "若你本轮未移动，你可以改为复制上一位行动的玩家已结算的基础爻辞效果，并取消其负面部分。",
         "effect": {
           "condition": {
             "op": "PLAYER_HAS_FLAG",
@@ -58,7 +58,7 @@
                 "target": "SELF",
                 "source_effect": {
                   "type": "LAST_BASIC_CARD_EFFECT_PLAYED",
-                  "player_scope": "OTHER"
+                  "player_scope": "LAST_ACTED_PLAYER"
                 },
                 "modifications": {
                   "remove_negative_parts": true

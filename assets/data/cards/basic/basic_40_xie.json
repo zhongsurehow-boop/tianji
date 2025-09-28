@@ -7,33 +7,33 @@
   "strokes": 40,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "解脱困境",
+    "description": "从困境中解脱出来。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "田获三狐",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "REMOVE_STATUS",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "status_id": "ALL_NEGATIVE",
+                "count": 1
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "解而拇",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "REMOVE_STATUS",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
+                "target": "PLAYER_CHOICE_ANY",
+                "status_id": "ALL_NEGATIVE",
                 "count": 1
               }
             }
@@ -41,14 +41,15 @@
         }
       },
       "tian": {
-        "name": "天",
+        "name": "公用射隼",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "REMOVE_STATUS",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "ALL_PLAYERS",
+                "status_id": "ALL_NEGATIVE",
+                "count": 1
               }
             }
           ]

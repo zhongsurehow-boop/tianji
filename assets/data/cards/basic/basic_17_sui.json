@@ -7,48 +7,64 @@
   "strokes": 17,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "随行逐队",
+    "description": "跟随他人的行动。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "出门交",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "destination": "ADJACENT_TO_PLAYER",
+                "player": "LAST_ACTED_PLAYER"
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "系小子",
         "effect": {
           "actions": [
+            {
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "SELF",
+                "count": 1
+              }
+            },
             {
               "action": "DRAW_CARD",
               "params": {
                 "target": "SELF",
                 "deck": "basic",
-                "count": 1
+                "count": 2
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "随有获",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "LAST_ACTED_PLAYER",
+                "resource": "gold",
+                "value": 3
+              }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 3
               }
             }
           ]

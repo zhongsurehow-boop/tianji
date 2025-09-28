@@ -7,11 +7,55 @@
   "strokes": 46,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "步步高升",
+    "description": "地位或力量的上升。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "允升",
+        "effect": {
+          "condition": {
+            "op": "IS_IN_DEPARTMENT",
+            "params": {
+              "target": "SELF",
+              "department": "di"
+            }
+          },
+          "actions": [
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "destination": "RANDOM_EMPTY_IN_DEPARTMENT",
+                "department": "ren"
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "升阶",
+        "effect": {
+          "condition": {
+            "op": "IS_IN_DEPARTMENT",
+            "params": {
+              "target": "SELF",
+              "department": "ren"
+            }
+          },
+          "actions": [
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "destination": "RANDOM_EMPTY_IN_DEPARTMENT",
+                "department": "tian"
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "冥升",
         "effect": {
           "actions": [
             {
@@ -19,36 +63,7 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
-            {
-              "action": "DRAW_CARD",
-              "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
-              }
-            }
-          ]
-        }
-      },
-      "tian": {
-        "name": "天",
-        "effect": {
-          "actions": [
-            {
-              "action": "DEAL_DAMAGE",
-              "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "value": 5
               }
             }
           ]

@@ -7,18 +7,18 @@
   "strokes": 35,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "晋升之道",
+    "description": "不断前进，获得奖赏。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "晋如",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
+                "move_type": "NORMAL",
                 "value": 2
               }
             }
@@ -26,9 +26,17 @@
         }
       },
       "ren": {
-        "name": "人",
+        "name": "受兹介福",
         "effect": {
           "actions": [
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "move_type": "NORMAL",
+                "value": 1
+              }
+            },
             {
               "action": "DRAW_CARD",
               "params": {
@@ -41,13 +49,21 @@
         }
       },
       "tian": {
-        "name": "天",
+        "name": "维用伐邑",
         "effect": {
           "actions": [
             {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "move_type": "NORMAL",
+                "value": 1
+              }
+            },
+            {
               "action": "DEAL_DAMAGE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
+                "target": "PLAYER_IN_NEW_ZONE",
                 "value": 2
               }
             }

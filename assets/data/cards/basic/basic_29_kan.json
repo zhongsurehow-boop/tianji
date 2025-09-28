@@ -7,33 +7,40 @@
   "strokes": 29,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "习坎之险",
+    "description": "重重险难，陷入困境。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "习坎",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "LOSE_RESOURCE",
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 3
+              }
+            },
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 3
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "求小得",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
                 "count": 1
               }
             }
@@ -41,14 +48,15 @@
         }
       },
       "tian": {
-        "name": "天",
+        "name": "系用徽纆",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "APPLY_STATUS",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "status_id": "IMPRISONED",
+                "duration": 1
               }
             }
           ]

@@ -7,26 +7,11 @@
   "strokes": 15,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "谦谦君子",
+    "description": "谦虚退让，获得他人的尊敬或小利。",
     "variants": {
       "di": {
-        "name": "地",
-        "effect": {
-          "actions": [
-            {
-              "action": "GAIN_RESOURCE",
-              "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
+        "name": "谦谦君子",
         "effect": {
           "actions": [
             {
@@ -40,15 +25,32 @@
           ]
         }
       },
-      "tian": {
-        "name": "天",
+      "ren": {
+        "name": "鸣谦",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "gold",
+                "value": 1,
+                "source": "OPPONENT_ALL"
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "劳谦",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 4
               }
             }
           ]

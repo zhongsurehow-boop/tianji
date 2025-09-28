@@ -7,18 +7,18 @@
   "strokes": 33,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "君子以远小人",
+    "description": "主动退避，以防灾祸。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "好遁",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
+                "move_type": "RETREAT",
                 "value": 2
               }
             }
@@ -26,29 +26,39 @@
         }
       },
       "ren": {
-        "name": "人",
+        "name": "嘉遁",
         "effect": {
-          "actions": [
+          "cost": [
             {
-              "action": "DRAW_CARD",
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
                 "count": 1
+              }
+            }
+          ],
+          "actions": [
+            {
+              "action": "MOVE",
+              "params": {
+                "target": "SELF",
+                "destination": "EMPTY_IN_SAME_DEPARTMENT"
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "肥遁",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "MOVE",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "move_type": "AWAY_FROM_PLAYER",
+                "player": "SELF",
+                "value": 1
               }
             }
           ]

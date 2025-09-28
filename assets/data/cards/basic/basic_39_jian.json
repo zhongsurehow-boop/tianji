@@ -7,48 +7,55 @@
   "strokes": 39,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "进退维谷",
+    "description": "行动艰难，充满阻碍。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "往蹇来誉",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "CREATE_ENTITY",
               "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "entity_type": "HINDRANCE",
+                "position": "SELF",
+                "duration": 1,
+                "properties": {
+                  "blocks_movement": {
+                    "for": "ALL_PLAYERS"
+                  }
+                }
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "王臣蹇蹇",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "APPLY_STATUS",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "status_id": "ACTION_COST_INCREASED",
+                "value": 2,
+                "duration": "NEXT_ACTION"
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "利见大人",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "APPLY_STATUS",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "status_id": "CANNOT_MOVE",
+                "duration": 1
               }
             }
           ]

@@ -7,26 +7,26 @@
   "strokes": 44,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "不期而遇",
+    "description": "意想不到的相遇。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "系于金柅",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "destination": "PLAYER_ZONE",
+                "player": "OPPONENT_RANDOM"
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "包有鱼",
         "effect": {
           "actions": [
             {
@@ -36,19 +36,36 @@
                 "deck": "basic",
                 "count": 1
               }
+            },
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "OPPONENT_RANDOM",
+                "deck": "basic",
+                "count": 1
+              }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "以杞包瓜",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "LOOKUP",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "info_type": "hand_cards",
+                "other_player": "OPPONENT_RANDOM"
+              }
+            },
+            {
+              "action": "LOOKUP",
+              "params": {
+                "target": "OPPONENT_RANDOM",
+                "info_type": "hand_cards",
+                "other_player": "SELF"
               }
             }
           ]

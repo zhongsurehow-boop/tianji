@@ -7,11 +7,11 @@
   "strokes": 53,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "循序渐进",
+    "description": "逐步发展，最终成功。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "鸿渐于干",
         "effect": {
           "actions": [
             {
@@ -26,29 +26,30 @@
         }
       },
       "ren": {
-        "name": "人",
+        "name": "鸿渐于磐",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "GAIN_RESOURCE",
               "params": {
                 "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "resource": "gold",
+                "value": 4
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "鸿渐于陆",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "gold",
+                "value": 6
               }
             }
           ]

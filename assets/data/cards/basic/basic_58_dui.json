@@ -7,11 +7,11 @@
   "strokes": 58,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "和悦之道",
+    "description": "带来喜悦与和睦。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "和兑",
         "effect": {
           "actions": [
             {
@@ -19,14 +19,14 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 3
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "孚兑",
         "effect": {
           "actions": [
             {
@@ -36,19 +36,36 @@
                 "deck": "basic",
                 "count": 1
               }
+            },
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "PLAYER_CHOICE_ANY",
+                "deck": "basic",
+                "count": 1
+              }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "引兑",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "GAIN_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "health",
+                "value": 3
+              }
+            },
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "ALLY_FORMAL_ALL",
+                "resource": "health",
+                "value": 3
               }
             }
           ]

@@ -7,48 +7,55 @@
   "strokes": 10,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "如履薄冰",
+    "description": "小心翼翼地前进或采取行动。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "安履",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "value": 1,
+                "move_type": "NORMAL_IGNORE_PENALTY"
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "眇能视",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "LOOKUP",
               "params": {
-                "target": "SELF",
-                "deck": "basic",
-                "count": 1
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "info_type": "hand_cards"
               }
             }
           ]
         }
       },
       "tian": {
-        "name": "天",
+        "name": "履虎尾",
         "effect": {
           "actions": [
             {
               "action": "DEAL_DAMAGE",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "value": 3
+              }
+            },
+            {
+              "action": "LOSE_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "health",
+                "value": 3
               }
             }
           ]

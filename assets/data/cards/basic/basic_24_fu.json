@@ -7,30 +7,29 @@
   "strokes": 24,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "一阳来复",
+    "description": "从终点回到起点，重新开始。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "不远复",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "MOVE",
               "params": {
                 "target": "SELF",
-                "resource": "gold",
-                "value": 2
+                "destination": "START_OF_TURN_POSITION"
               }
             }
           ]
         }
       },
       "ren": {
-        "name": "人",
+        "name": "休复",
         "effect": {
           "actions": [
             {
-              "action": "DRAW_CARD",
+              "action": "RECOVER_CARD_FROM_DISCARD",
               "params": {
                 "target": "SELF",
                 "deck": "basic",
@@ -41,14 +40,15 @@
         }
       },
       "tian": {
-        "name": "天",
+        "name": "敦复",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "SET_RESOURCE",
               "params": {
-                "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "target": "SELF",
+                "resource": "YIN_YANG_GAUGE",
+                "value": 0
               }
             }
           ]

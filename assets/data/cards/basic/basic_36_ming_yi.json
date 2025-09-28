@@ -7,48 +7,47 @@
   "strokes": 36,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "晦暗之时",
+    "description": "光明受损，形势不利。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "明夷于飞",
         "effect": {
           "actions": [
             {
-              "action": "GAIN_RESOURCE",
+              "action": "DISCARD_CARD",
               "params": {
-                "target": "SELF",
-                "resource": "gold",
-                "value": 2
-              }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
-            {
-              "action": "DRAW_CARD",
-              "params": {
-                "target": "SELF",
-                "deck": "basic",
+                "target": "OPPONENT_CHOICE_SINGLE",
                 "count": 1
               }
             }
           ]
         }
       },
-      "tian": {
-        "name": "天",
+      "ren": {
+        "name": "入于左腹",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "source": "CHOICE_FROM_HAND"
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "不明晦",
+        "effect": {
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "status_id": "EFFECTS_LOCKED",
+                "duration": 1
               }
             }
           ]
