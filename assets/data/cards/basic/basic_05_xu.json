@@ -16,7 +16,9 @@
           "actions": [
             {
               "action": "SKIP_PHASE",
-              "params": { "phase": "INTERPRETATION" }
+              "params": {
+                "phase": "INTERPRETATION"
+              }
             },
             {
               "action": "APPLY_STATUS",
@@ -31,16 +33,23 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
-                "snapshot_args": [],
                 "effect": {
                   "actions": [
                     {
                       "action": "GAIN_RESOURCE",
-                      "params": { "target": "SELF", "resource": "gold", "value": 10 }
+                      "params": {
+                        "target": "SELF",
+                        "resource": "gold",
+                        "value": 10
+                      }
                     },
                     {
                       "action": "DRAW_CARD",
-                      "params": { "target": "SELF", "deck": "basic", "count": 2 }
+                      "params": {
+                        "target": "SELF",
+                        "deck": "basic",
+                        "count": 2
+                      }
                     }
                   ]
                 }
@@ -55,25 +64,8 @@
           "actions": [
             {
               "action": "SKIP_PHASE",
-              "params": { "phase": "INTERPRETATION" }
-            },
-            {
-              "action": "EXECUTE_LATER",
               "params": {
-                "delay": "NEXT_UPKEEP_PHASE",
-                "snapshot_args": [],
-                "effect": {
-                  "actions": [
-                    {
-                      "action": "GAIN_RESOURCE",
-                      "params": { "target": "SELF", "resource": "gold", "value": 10 }
-                    },
-                    {
-                      "action": "DRAW_CARD",
-                      "params": { "target": "SELF", "deck": "basic", "count": 2 }
-                    }
-                  ]
-                }
+                "phase": "INTERPRETATION"
               }
             },
             {
@@ -82,18 +74,27 @@
                 "delay": "NEXT_UPKEEP_PHASE",
                 "condition": {
                   "op": "PLAYER_HAS_NOT_TAKEN_DAMAGE_SINCE",
-                  "params": { "timestamp": "NOW" }
+                  "params": {
+                    "timestamp": "NOW"
+                  }
                 },
-                "snapshot_args": [],
                 "effect": {
                   "actions": [
                     {
                       "action": "GAIN_RESOURCE",
-                      "params": { "target": "SELF", "resource": "gold", "value": 15 }
+                      "params": {
+                        "target": "SELF",
+                        "resource": "gold",
+                        "value": 15
+                      }
                     },
                     {
                       "action": "DRAW_CARD",
-                      "params": { "target": "SELF", "deck": "basic", "count": 3 }
+                      "params": {
+                        "target": "SELF",
+                        "deck": "basic",
+                        "count": 3
+                      }
                     }
                   ]
                 }
@@ -108,18 +109,23 @@
           "actions": [
             {
               "action": "SKIP_PHASE",
-              "params": { "phase": "INTERPRETATION" }
+              "params": {
+                "phase": "INTERPRETATION"
+              }
             },
             {
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
-                "snapshot_args": [],
                 "effect": {
                   "actions": [
                     {
                       "action": "GAIN_RESOURCE",
-                      "params": { "target": "SELF", "resource": "gold", "value": 10 }
+                      "params": {
+                        "target": "SELF",
+                        "resource": "gold",
+                        "value": 10
+                      }
                     },
                     {
                       "action": "CHOICE",
@@ -130,7 +136,12 @@
                             "description": "将10金币赠予盟友",
                             "effect": {
                               "action": "TRANSFER_RESOURCE",
-                              "params": { "from": "SELF", "to": "ALLY_FORMAL_SINGLE", "resource": "gold", "value": 10 }
+                              "params": {
+                                "from": "SELF",
+                                "to": "ALLY_FORMAL_SINGLE",
+                                "resource": "gold",
+                                "value": 10
+                              }
                             }
                           }
                         ]

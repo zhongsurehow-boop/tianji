@@ -102,12 +102,19 @@
 | `LOOKUP` | 查看隐藏信息。 | `target`, `info_type` (hand_cards, destiny_card) |
 | `INTERRUPT` | **(新增)** 中断一个正在结算的动作。 | `target_action`, `interrupt_type` (CANCEL, REDIRECT) |
 | `COPY_EFFECT` | **(新增)** 复制另一个效果。 | `target`, `source_effect`, `modifications` |
+| **卡牌与牌库** | | |
+| `DRAW_CARD` | **(新增)** 目标从指定牌库抽牌。 | `target`, `deck` (basic, function), `count` |
+| `DISCARD_CARD`| **(新增)** 目标弃牌。 | `target`, `count` |
+| `SWAP_HAND_CARDS`| **(新增)** 两人交换指定数量手牌。 | `target`, `other_player`, `count` (or `ALL`) |
+| `SWAP_DISCARD_PILES`| **(新增)** 两人交换弃牌堆。 | `target_a`, `target_b` |
 | **实体与场上效果** | | |
 | `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties` |
 | `DESTROY_ENTITY`| **(新增)** 移除一个场上实体。 | `target_entity_id` |
-| **其他** | | |
+| **游戏流程与规则** | | |
+| `SKIP_PHASE` | **(新增)** 跳过一个游戏阶段。 | `phase` (INTERPRETATION, etc.) |
+| `PROPOSE_ALLIANCE`| **(新增)** 向另一位玩家提议结盟。 | `target`, `duration`, `on_accept_effect` |
 | `EXECUTE_LATER` | 延迟执行效果。 | `delay` (e.g., "next_turn_start"), `effect` |
-| `TRIGGER_EVENT` | 触发一个游戏事件（如“论道”）。 | `event_id`, `participants` |
+| `TRIGGER_EVENT` | 触发一个游戏事件（如“论道”）。 | `event_id` (EVENT_SONG, etc.), `participants` |
 
 ---
 
@@ -122,7 +129,11 @@
     *   `ALLY_FORMAL_SINGLE`: **(新增)** 仅限通过《比》卦结成的单个盟友。
     *   `ALLY_FORMAL_ALL`: **(新增)** 所有正式盟友。
     *   `PLAYER_CHOICE_ANY`: **(新增)** 由发起者在所有玩家中任选一个。
-    *   `OPPONENT_CHOICE_SINGLE`: **(新增)** 由发起者在所有敌对玩家中任选一个。
+    *   `OPPONENT_CHOICE_SINGLE`: 由发起者在所有敌对玩家中任选一个。
+    *   `OPPONENT_ALL`: **(新增)** 所有敌对玩家。
+    *   `ALLY_FORMAL_IN_PALACE`: **(新增)** 位于同一宫位的所有正式盟友。
+    *   `ALLY_FORMAL_SINGLE_CHOICE`: **(新增)** 由发起者在所有正式盟友中任选一个。
+    *   `PLAYER_CHOICE_ANY_NON_ALLY`: **(新增)** 由发起者在所有非盟友玩家中任选一个。
 
 ### 5.2 `status_id` - 状态效果
 
@@ -135,8 +146,15 @@
     *   `IMMUNITY_GENERAL_NEGATIVE`: 笼统的负面效果免疫（兜底）。
 *   **其他关键状态:**
     *   `CANNOT_PAY_COSTS`: **(新增)** 目标无法支付任何代价（一个负面状态）。
+    *   `CANNOT_GAIN_GOLD_FROM_ZONE`: **(新增)** 目标不能从区域效果中获得金币。
     *   `HEXAGRAM_INVERTED`: 错卦状态。
     *   `POSITIVE_GAIN_DOUBLED`: 乾卦状态。
+    *   `WAR_FORMATION`: **(新增)** 军阵状态。
+    *   `RAPID_MARCH`: **(新增)** 急行军状态。
+    *   `GENERAL`: **(新增)** 将帅状态。
+    *   `PRESTIGE`: **(新增)** 威望状态。
+    *   `MONTORIAL_FOG`: **(新增)** 启蒙之雾状态。
+    *   `EFFECT_MODIFIER_CANCEL_NEGATIVE`: **(新增)** 取消效果负面部分的状态。
 
 ### 5.3 `rule_id` & `mutation` - 规则修改 **(V3.0 增强)**
 

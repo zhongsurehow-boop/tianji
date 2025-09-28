@@ -139,7 +139,7 @@
               }
             },
             {
-              "action": "MODIFY_RESOURCE",
+              "action": "GAIN_RESOURCE",
               "params": {
                 "target": "SELF",
                 "resource": "YIN_YANG_GAUGE",
