@@ -1,6 +1,5 @@
 {
-    "id": "branch_you",
-    "type": "branch",
-    "name": "酉",
-    "element": "metal"
+  "id": "branch_you",
+  "name": "酉",
+  "type": "branch"
 }

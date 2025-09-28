@@ -1,6 +1,5 @@
 {
-    "id": "stem_ren",
-    "type": "stem",
-    "name": "壬",
-    "element": "water"
+  "id": "stem_ren",
+  "name": "壬",
+  "type": "stem"
 }

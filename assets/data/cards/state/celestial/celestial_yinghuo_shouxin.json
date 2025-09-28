@@ -1,7 +1,0 @@
-{
-    "id": "celestial_yinghuo_shouxin",
-    "type": "celestial",
-    "name": "荧惑守心",
-    "trigger": "当游戏基金首次耗尽时，揭示此牌。",
-    "effect": "此星象持续到游戏结束。所有【天部】的金币奖励累积值减半，所有【地部】的金币惩罚累积值翻倍。"
-}

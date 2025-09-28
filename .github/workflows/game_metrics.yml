@@ -1,0 +1,24 @@
+name: Tianji Game Metrics
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # 每天定时采集一次（可调整）
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Run metrics collector
+        run: |
+          python3 tools/collect_game_metrics.py --output metrics/latest_metrics.json
+      - name: Upload metrics artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: game-metrics
+          path: metrics/latest_metrics.json

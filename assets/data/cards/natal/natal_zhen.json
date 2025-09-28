@@ -3,12 +3,15 @@
     "type": "natal",
     "name": "震",
     "symbol": "☳",
-    "passive": {
-        "name": "洊雷",
-        "description": "因你的牌效果使他人损失时，你额外+2金币。"
-    },
-    "active": {
-        "name": "震惊百里",
+    "triggers": [
+        {
+            "condition": "ON_CAUSE_LOSS",
+            "effect": {
+                "description": "因你的牌效果使他人损失时，你额外+2金币。"
+            }
+        }
+    ],
+    "effect": {
         "description": "放牌阶段，可盖放两张基础牌，解读时二选一。"
     }
 }

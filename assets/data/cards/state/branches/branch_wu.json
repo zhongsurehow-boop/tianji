@@ -1,6 +1,5 @@
 {
-    "id": "branch_wu",
-    "type": "branch",
-    "name": "午",
-    "element": "fire"
+  "id": "branch_wu",
+  "name": "午",
+  "type": "branch"
 }

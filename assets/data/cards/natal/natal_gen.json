@@ -3,12 +3,15 @@
     "type": "natal",
     "name": "艮",
     "symbol": "☶",
-    "passive": {
-        "name": "兼山",
-        "description": "生命上限+20，受到的单次>10的伤害-5。"
-    },
-    "active": {
-        "name": "艮其背",
+    "triggers": [
+        {
+            "condition": "ON_GAME_START",
+            "effect": {
+                "description": "生命上限+20，受到的单次>10的伤害-5。"
+            }
+        }
+    ],
+    "effect": {
         "description": "指定一名玩家，其本轮不能执行爻辞效果。"
     }
 }

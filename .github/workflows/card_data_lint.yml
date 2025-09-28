@@ -1,0 +1,34 @@
+name: Tianji Card Data Lint
+
+on:
+  push:
+    paths:
+      - 'assets/data/cards/**/*.json'
+      - 'tools/lint_card_data.py'
+      - 'card_logic_schema.md'
+  pull_request:
+    paths:
+      - 'assets/data/cards/**/*.json'
+      - 'tools/lint_card_data.py'
+      - 'card_logic_schema.md'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      - name: Run card data linter
+        run: |
+          python3 tools/lint_card_data.py

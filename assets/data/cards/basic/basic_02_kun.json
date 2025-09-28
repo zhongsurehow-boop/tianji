@@ -1,17 +1,99 @@
 {
-    "id": "basic_02_kun",
-    "name": "坤",
-    "symbol": "☷",
-    "sequence": 2,
-    "pinyin": "kun",
-    "strokes": 12,
-    "link": {
-        "pair_type": "...",
-        "pair_id": "..."
-    },
-    "effects": {
-        "tian": "天部效果 (坤) ...",
-        "ren": "人部效果 (坤) ...",
-        "di": "地部效果 (坤) ..."
+  "id": "basic_02_kun",
+  "name": "坤",
+  "symbol": "☷☷",
+  "sequence": 2,
+  "pinyin": "kun",
+  "strokes": 6,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "厚德载物",
+    "description": "若你本轮未移动，你可以选择取消你下个爻辞效果中的所有负面部分，只执行其正面部分。",
+    "variants": {
+      "di": {
+        "name": "固守",
+        "description": "若你本轮未移动，你获得【厚德载物】效果，并额外获得【免疫下一次战斗伤害】。",
+        "effect": {
+          "condition": {
+            "op": "PLAYER_HAS_FLAG",
+            "params": {
+              "flag": "HAS_NOT_MOVED_THIS_TURN"
+            }
+          },
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "SELF",
+                "status_id": "EFFECT_MODIFIER_CANCEL_NEGATIVE",
+                "duration": 1
+              }
+            },
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "SELF",
+                "status_id": "IMMUNE_COMBAT_DAMAGE",
+                "value": 1,
+                "duration": 1
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "收敛",
+        "description": "若你本轮未移动，你可以改为复制本轮一名其他玩家已结算的基础爻辞效果，并取消其负面部分。",
+        "effect": {
+          "condition": {
+            "op": "PLAYER_HAS_FLAG",
+            "params": {
+              "flag": "HAS_NOT_MOVED_THIS_TURN"
+            }
+          },
+          "actions": [
+            {
+              "action": "COPY_EFFECT",
+              "params": {
+                "target": "SELF",
+                "source_effect": {
+                  "type": "LAST_BASIC_CARD_EFFECT_PLAYED",
+                  "player": "OTHER"
+                },
+                "modifications": {
+                  "remove_negative_parts": true
+                },
+                "copy_semantics": "snapshot"
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "滋养",
+        "description": "若你本轮未移动，你可以将【厚德载物】效果赋予一名盟友。",
+        "effect": {
+          "condition": {
+            "op": "PLAYER_HAS_FLAG",
+            "params": {
+              "flag": "HAS_NOT_MOVED_THIS_TURN"
+            }
+          },
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "ALLY_FORMAL_SINGLE",
+                "status_id": "EFFECT_MODIFIER_CANCEL_NEGATIVE",
+                "duration": 1
+              }
+            }
+          ]
+        }
+      }
     }
+  },
+  "metadata": {
+    "review": "required"
+  }
 }

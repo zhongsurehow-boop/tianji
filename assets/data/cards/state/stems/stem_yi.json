@@ -1,6 +1,5 @@
 {
-    "id": "stem_yi",
-    "type": "stem",
-    "name": "乙",
-    "element": "wood"
+  "id": "stem_yi",
+  "name": "乙",
+  "type": "stem"
 }

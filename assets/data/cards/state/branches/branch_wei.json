@@ -1,6 +1,5 @@
 {
-    "id": "branch_wei",
-    "type": "branch",
-    "name": "未",
-    "element": "earth"
+  "id": "branch_wei",
+  "name": "未",
+  "type": "branch"
 }

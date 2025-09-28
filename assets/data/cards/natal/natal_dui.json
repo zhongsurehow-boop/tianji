@@ -3,12 +3,16 @@
     "type": "natal",
     "name": "兑",
     "symbol": "☱",
-    "passive": {
-        "name": "丽泽",
-        "description": "任一玩家为基金补充金币时，你获得其补充额的20%。"
-    },
-    "active": {
-        "name": "和悦",
-        "description": "指定一名玩家，本轮你们双方金币得失合并后平分。"
+    "triggers": [
+        {
+            "condition": "ON_RESOURCE_CHANGE",
+            "params": {"resource": "gold", "change_type": "FUND_REPLENISH"},
+            "effect": {
+                "description": "任一玩家为基金补充金币时，你获得其补充额的20%。"
+            }
+        }
+    ],
+    "effect": {
+        "description": "指定一名玩家，本轮你们双方金币得失合并后平均分。"
     }
 }

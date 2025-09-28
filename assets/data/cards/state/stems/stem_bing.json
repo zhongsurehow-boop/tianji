@@ -1,6 +1,5 @@
 {
-    "id": "stem_bing",
-    "type": "stem",
-    "name": "丙",
-    "element": "fire"
+  "id": "stem_bing",
+  "name": "丙",
+  "type": "stem"
 }

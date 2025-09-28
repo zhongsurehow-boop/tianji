@@ -144,50 +144,85 @@
                     { id: 'Di',   name: '地', innerRadius: 300, outerRadius: 400 }
                 ],
                 // ==================================================================
-                // == NEW & CRITICAL: A comprehensive list of all zones and their  ==
-                // == adjacencies, effectively encoding the movement rules.        ==
+                // == MODIFIED: Zone data now only contains essential metadata.   ==
+                // == Adjacencies will be dynamically generated based on rules.  ==
                 // ==================================================================
                 zones: {
-                    'Gong_Li-Bu_Tian':  { description: '离宫之天部', adjacencies: ['Gong_Li-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Li-Bu_Ren':   { description: '离宫之人部', adjacencies: ['Gong_Li-Bu_Tian', 'Gong_Li-Bu_Di'] },
-                    'Gong_Li-Bu_Di':    { description: '离宫之地部', adjacencies: ['Gong_Li-Bu_Ren', 'Gong_Kun-Bu_Di', 'Gong_Xun-Bu_Di'] },
-                    'Gong_Kun-Bu_Tian': { description: '坤宫之天部', adjacencies: ['Gong_Kun-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Kun-Bu_Ren':  { description: '坤宫之人部', adjacencies: ['Gong_Kun-Bu_Tian', 'Gong_Kun-Bu_Di'] },
-                    'Gong_Kun-Bu_Di':   { description: '坤宫之地部', adjacencies: ['Gong_Kun-Bu_Ren', 'Gong_Dui-Bu_Di', 'Gong_Li-Bu_Di'] },
-                    'Gong_Dui-Bu_Tian': { description: '兑宫之天部', adjacencies: ['Gong_Dui-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Dui-Bu_Ren':  { description: '兑宫之人部', adjacencies: ['Gong_Dui-Bu_Tian', 'Gong_Dui-Bu_Di'] },
-                    'Gong_Dui-Bu_Di':   { description: '兑宫之地部', adjacencies: ['Gong_Dui-Bu_Ren', 'Gong_Qian-Bu_Di', 'Gong_Kun-Bu_Di'] },
-                    'Gong_Qian-Bu_Tian':{ description: '乾宫之天部', adjacencies: ['Gong_Qian-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Qian-Bu_Ren': { description: '乾宫之人部', adjacencies: ['Gong_Qian-Bu_Tian', 'Gong_Qian-Bu_Di'] },
-                    'Gong_Qian-Bu_Di':  { description: '乾宫之地部', adjacencies: ['Gong_Qian-Bu_Ren', 'Gong_Kan-Bu_Di', 'Gong_Dui-Bu_Di'] },
-                    'Gong_Kan-Bu_Tian': { description: '坎宫之天部', adjacencies: ['Gong_Kan-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Kan-Bu_Ren':  { description: '坎宫之人部', adjacencies: ['Gong_Kan-Bu_Tian', 'Gong_Kan-Bu_Di'] },
-                    'Gong_Kan-Bu_Di':   { description: '坎宫之地部', adjacencies: ['Gong_Kan-Bu_Ren', 'Gong_Gen-Bu_Di', 'Gong_Qian-Bu_Di'] },
-                    'Gong_Gen-Bu_Tian': { description: '艮宫之天部', adjacencies: ['Gong_Gen-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Gen-Bu_Ren':  { description: '艮宫之人部', adjacencies: ['Gong_Gen-Bu_Tian', 'Gong_Gen-Bu_Di'] },
-                    'Gong_Gen-Bu_Di':   { description: '艮宫之地部', adjacencies: ['Gong_Gen-Bu_Ren', 'Gong_Zhen-Bu_Di', 'Gong_Kan-Bu_Di'] },
-                    'Gong_Zhen-Bu_Tian':{ description: '震宫之天部', adjacencies: ['Gong_Zhen-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Zhen-Bu_Ren': { description: '震宫之人部', adjacencies: ['Gong_Zhen-Bu_Tian', 'Gong_Zhen-Bu_Di'] },
-                    'Gong_Zhen-Bu_Di':  { description: '震宫之地部', adjacencies: ['Gong_Zhen-Bu_Ren', 'Gong_Xun-Bu_Di', 'Gong_Gen-Bu_Di'] },
-                    'Gong_Xun-Bu_Tian': { description: '巽宫之天部', adjacencies: ['Gong_Xun-Bu_Ren', 'Gong_Zhong'] },
-                    'Gong_Xun-Bu_Ren':  { description: '巽宫之人部', adjacencies: ['Gong_Xun-Bu_Tian', 'Gong_Xun-Bu_Di'] },
-                    'Gong_Xun-Bu_Di':   { description: '巽宫之地部', adjacencies: ['Gong_Xun-Bu_Ren', 'Gong_Li-Bu_Di', 'Gong_Zhen-Bu_Di'] },
-                    'Gong_Zhong':       { description: '中宫/太极部', 
-                                          adjacencies: [
-                                            'Gong_Li-Bu_Tian', 'Gong_Kun-Bu_Tian', 'Gong_Dui-Bu_Tian', 'Gong_Qian-Bu_Tian',
-                                            'Gong_Kan-Bu_Tian', 'Gong_Gen-Bu_Tian', 'Gong_Zhen-Bu_Tian', 'Gong_Xun-Bu_Tian'
-                                          ],
-                                          specialRules: [
-                                            'Player must exit upon next move.',
-                                            'Target of exit is the unoccupied Earth-Dept zone with the lowest Luoshu number.',
-                                            'Player suffers 10% gold penalty upon entry.'
-                                          ]
-                                        }
+                    // This will be populated by generateZoneShells and generateAdjacencies
                 }
             };
 
             // =================================================================
-            // 2. RENDERER (Reads the rich data to build the map)
+            // 2. LOGIC & GENERATION (Code that interprets rules)
+            // =================================================================
+
+            /**
+             * Creates the basic structure for all zones.
+             */
+            function generateZoneShells(data) {
+                data.palaces.forEach(palace => {
+                    data.departments.forEach(dept => {
+                        const zoneId = `Gong_${palace.id}-Bu_${dept.id}`;
+                        data.zones[zoneId] = {
+                            description: `${palace.name}宫之${dept.name}部`,
+                            adjacencies: [] // To be filled by the next function
+                        };
+                    });
+                });
+                data.zones['Gong_Zhong'] = {
+                    description: '中宫/太极部',
+                    adjacencies: [], // Adjacency is governed by specialRules, not a simple list
+                    specialRules: [
+                        'Player must exit upon next move.',
+                        'Target of exit is the unoccupied Earth-Dept zone with the lowest Luoshu number.',
+                        'Player suffers 10% gold penalty upon entry.'
+                    ]
+                };
+            }
+
+            /**
+             * Dynamically generates the adjacency list for every zone based on game rules.
+             * This makes game_rules.md the single source of truth for movement.
+             */
+            function generateAdjacencies(data) {
+                const palaceIds = data.palaces.map(p => p.id);
+                const numPalaces = palaceIds.length;
+
+                for (const zoneId in data.zones) {
+                    if (zoneId === 'Gong_Zhong') continue;
+
+                    const [gong, bu] = zoneId.split('-');
+                    const palaceId = gong.split('_')[1];
+                    const deptId = bu.split('_')[1];
+                    const adj = data.zones[zoneId].adjacencies;
+
+                    const currentPalaceIndex = palaceIds.indexOf(palaceId);
+
+                    if (deptId === 'Tian') {
+                        adj.push(`Gong_${palaceId}-Bu_Ren`);
+                        adj.push('Gong_Zhong');
+                    } else if (deptId === 'Ren') {
+                        adj.push(`Gong_${palaceId}-Bu_Tian`);
+                        adj.push(`Gong_${palaceId}-Bu_Di`);
+                    } else if (deptId === 'Di') {
+                        adj.push(`Gong_${palaceId}-Bu_Ren`);
+                        // Add adjacent Di palaces
+                        const prevPalaceId = palaceIds[(currentPalaceIndex + numPalaces - 1) % numPalaces];
+                        const nextPalaceId = palaceIds[(currentPalaceIndex + 1) % numPalaces];
+                        adj.push(`Gong_${prevPalaceId}-Bu_Di`);
+                        adj.push(`Gong_${nextPalaceId}-Bu_Di`);
+                    }
+                }
+
+                // Note: Adjacency FROM Zhong Gong is handled by its special movement rule, not a static list here.
+            }
+
+            // --- Call the generation functions ---
+            generateZoneShells(mapData);
+            generateAdjacencies(mapData);
+
+            // =================================================================
+            // 3. RENDERER (Reads the rich data to build the map)
             // =================================================================
             const svgNS = "http://www.w3.org/2000/svg";
 
@@ -245,7 +280,7 @@
             document.getElementById('Gong_Zhong').addEventListener('click', handleZoneClick);
 
             // =================================================================
-            // 3. UTILITIES & EVENT HANDLERS
+            // 4. UTILITIES & EVENT HANDLERS
             // =================================================================
             function handleZoneClick(event) {
                 const zoneId = event.currentTarget.id;
@@ -262,7 +297,6 @@
                 }
             }
 
-            // ... (The rest of the helper functions: polarToCartesian, createAnnulusSector, createText, createLuoshuDots remain the same) ...
             function polarToCartesian(centerX, centerY, radius, angleInDegrees){const a=(angleInDegrees-90)*Math.PI/180;return{x:centerX+(radius*Math.cos(a)),y:centerY+(radius*Math.sin(a))}}
             function createAnnulusSector(cx,cy,r0,r1,a0,a1){const p0=polarToCartesian(cx,cy,r0,a0),p1=polarToCartesian(cx,cy,r1,a0),p2=polarToCartesian(cx,cy,r1,a1),p3=polarToCartesian(cx,cy,r0,a1);const l=a1-a0<=180?"0":"1";const d=`M ${p0.x} ${p0.y} L ${p1.x} ${p1.y} A ${r1} ${r1} 0 ${l} 1 ${p2.x} ${p2.y} L ${p3.x} ${p3.y} A ${r0} ${r0} 0 ${l} 0 ${p0.x} ${p0.y} Z`;const p=document.createElementNS(svgNS,'path');p.setAttribute("d",d);return p}
             function createText(t,x,y,c=''){const e=document.createElementNS(svgNS,'text');e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('dy','0.35em');if(c)e.setAttribute('class',c);e.textContent=t;return e}

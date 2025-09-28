@@ -1,6 +1,5 @@
 {
-    "id": "branch_shen",
-    "type": "branch",
-    "name": "申",
-    "element": "metal"
+  "id": "branch_shen",
+  "name": "申",
+  "type": "branch"
 }

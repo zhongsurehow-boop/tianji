@@ -1,7 +1,0 @@
-{
-    "id": "celestial_qisha_ruming",
-    "type": "celestial",
-    "name": "七杀入命",
-    "trigger": "当第一位玩家出局时，揭示此牌。",
-    "effect": "此星象持续3轮。在此期间，所有“论道”事件的失败者，除了损失金币外，还需额外损失5点生命值。"
-}

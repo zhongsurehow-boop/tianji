@@ -1,17 +1,59 @@
 {
-    "id": "basic_37_jia_ren",
-    "name": "家人",
-    "symbol": "☴☲",
-    "sequence": 37,
-    "pinyin": "jia_ren",
-    "strokes": 8,
-    "link": {
-        "pair_type": "...",
-        "pair_id": "..."
-    },
-    "effects": {
-        "tian": "天部效果 (家人) ...",
-        "ren": "人部效果 (家人) ...",
-        "di": "地部效果 (家人) ..."
+  "id": "basic_37_jia_ren",
+  "name": "家人",
+  "symbol": "☴☲",
+  "sequence": 37,
+  "pinyin": "jia_ren",
+  "strokes": 37,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "Placeholder Effect",
+    "description": "A simple placeholder effect.",
+    "variants": {
+      "di": {
+        "name": "地",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "人",
+        "effect": {
+          "actions": [
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "SELF",
+                "deck": "basic",
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "天",
+        "effect": {
+          "actions": [
+            {
+              "action": "DEAL_DAMAGE",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 2
+              }
+            }
+          ]
+        }
+      }
     }
+  }
 }
