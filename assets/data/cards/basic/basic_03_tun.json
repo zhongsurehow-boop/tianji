@@ -21,7 +21,6 @@
           "entity_type": "ENTITY_TUN",
           "position": "SELF",
           "owner": "SELF",
-          "max_instances": 1,
           "properties": {
             "name": "屯",
             "duration": 3,
@@ -67,7 +66,6 @@
                 "position": "SELF",
                 "owner": "SELF",
                 "is_permanent": true,
-                "max_instances": 1,
                 "properties": {
                   "name": "前哨",
                   "on_enter_effect": {
@@ -115,9 +113,7 @@
               "action": "SWAP_HAND_CARDS",
               "params": {
                 "target": "SELF",
-                "other_player": "ALLY_FORMAL_SINGLE_CHOICE",
-                "atomic": true,
-                "fallback_policy": "no_op"
+                "other_player": "ALLY_FORMAL_SINGLE_CHOICE"
               }
             }
           ]
@@ -154,8 +150,5 @@
         }
       }
     }
-  },
-  "metadata": {
-    "review": "required"
   }
 }

@@ -7,11 +7,11 @@
   "strokes": 9,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "密云不雨",
+    "description": "小有积蓄，但尚未形成大的突破。效果偏向于小额的获取与限制。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "种德",
         "effect": {
           "actions": [
             {
@@ -19,16 +19,9 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 3
               }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
+            },
             {
               "action": "DRAW_CARD",
               "params": {
@@ -40,15 +33,37 @@
           ]
         }
       },
-      "tian": {
-        "name": "天",
+      "ren": {
+        "name": "牵连",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "SELF",
+                "count": 1
+              }
+            },
+            {
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "节制",
+        "effect": {
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "status_id": "CANNOT_GAIN_GOLD_FROM_ZONE",
+                "duration": 1
               }
             }
           ]

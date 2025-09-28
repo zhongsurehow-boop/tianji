@@ -15,7 +15,7 @@
 - **爻辞变量：**
   - **地部 (蓄力):** 发动【天道酬勤】时，支付的**代价**减半（5金币，3生命值，向上取整）。
   - **人部 (精进):** 除了核心效果，你还可以立即执行一次额外移动（1格）。
-  - **天部 (君威):** 你可以指定一名**正式盟友**，使其也获得【天道酬勤】状态，持续一轮。作为**代价**，在【归整阶段】的“回合结束时效果结算”步骤，你必须弃掉一张手牌。
+  - **天部 (君威):** 你可以指定一名**正式盟友**，使其也获得【天道酬勤】状态，持续一轮。作为此效果的一部分，在【归整阶段】的“回合结束时效果结算”步骤，你必须弃掉一张手牌。
 
 ```json
 {
@@ -156,7 +156,7 @@
 - **效果：** 若你在本轮的【移动阶段】未进行移动，则在【解读阶段】发动此效果时，你可以选择**取消**你爻辞效果中所有负面部分（如支付代价、承受伤害等），只执行其正面部分。
 - **爻辞变量：**
   - **地部 (固守):** 你额外获得 **【IMMUNE_COMBAT_DAMAGE (1)】** 状态（免疫下一次战斗伤害）。
-  - **人部 (收敛):** 你可以改为**复制**本轮在你之前已解读过的**一名其他玩家**的**基础**爻辞效果（不含任何功能牌或状态修正）。你依然可以取消其负面部分。
+  - **人部 (收敛):** 你可以改为**复制**本轮在你之前已解读过的**一名其他玩家**的**基础**爻辞效果（不含任何功能牌或状态修正）。你**必须支付**其原始的**代价**，但可以取消后续的其他负面部分（如生命值损失、弃牌等）。
   - **天部 (滋养):** 你可以将【厚德载物】的**目标**从“你自己”变为一名**正式盟友**。
 
 ```json
@@ -193,7 +193,7 @@
               "action": "COPY_EFFECT",
               "params": {
                 "target": "SELF",
-                "source_effect": { "type": "LAST_BASIC_CARD_EFFECT_PLAYED", "player": "OTHER" },
+                "source_effect": { "type": "LAST_BASIC_CARD_EFFECT_PLAYED", "player_scope": "OTHER" },
                 "modifications": { "remove_negative_parts": true }
               }
             }
@@ -331,7 +331,7 @@
                 "status_id": "MONTORIAL_FOG",
                 "duration": 1,
                 "value": {
-                  "teach_effect": { "action": "COPY_EFFECT", "params": { "target": "SELF", "source_effect": "INTERRUPTED_EFFECT", "modifications": { "only_gains": true, "multiplier": 0.5 } } },
+                  "teach_effect": { "action": "COPY_EFFECT", "params": { "target": "SELF", "source_effect": { "type": "INTERRUPTED_EFFECT" }, "modifications": { "only_gains": true, "multiplier": 0.5 } } },
                   "discipline_effect": { "action": "LOSE_RESOURCE", "params": { "target": "EVENT_SOURCE_PLAYER", "resource": "health", "value": 5 } }
                 }
               }
@@ -368,7 +368,7 @@
                 "status_id": "MONTORIAL_FOG",
                 "duration": 1,
                 "value": {
-                  "discipline_effect": { "action": "COPY_EFFECT", "params": { "target": "OPPONENT_CHOICE_SINGLE", "source_effect": "INTERRUPTED_EFFECT" } }
+                  "discipline_effect": { "action": "COPY_EFFECT", "params": { "target": "OPPONENT_CHOICE_SINGLE", "source_effect": { "type": "INTERRUPTED_EFFECT" } } }
                 }
               }
             }

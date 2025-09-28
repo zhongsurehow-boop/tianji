@@ -25,12 +25,13 @@
                     "action": "COPY_EFFECT",
                     "params": {
                       "target": "SELF",
-                      "source_effect": "INTERRUPTED_EFFECT",
+                      "source_effect": {
+                        "type": "INTERRUPTED_EFFECT"
+                      },
                       "modifications": {
                         "only_gains": true,
                         "multiplier": 0.5
-                      },
-                      "copy_semantics": "snapshot"
+                      }
                     }
                   },
                   "discipline_effect": {
@@ -87,8 +88,9 @@
                     "action": "COPY_EFFECT",
                     "params": {
                       "target": "OPPONENT_CHOICE_SINGLE",
-                      "source_effect": "INTERRUPTED_EFFECT",
-                      "copy_semantics": "snapshot"
+                      "source_effect": {
+                        "type": "INTERRUPTED_EFFECT"
+                      }
                     }
                   }
                 }
@@ -98,8 +100,5 @@
         }
       }
     }
-  },
-  "metadata": {
-    "review": "required"
   }
 }

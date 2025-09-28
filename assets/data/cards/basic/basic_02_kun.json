@@ -58,12 +58,11 @@
                 "target": "SELF",
                 "source_effect": {
                   "type": "LAST_BASIC_CARD_EFFECT_PLAYED",
-                  "player": "OTHER"
+                  "player_scope": "OTHER"
                 },
                 "modifications": {
                   "remove_negative_parts": true
-                },
-                "copy_semantics": "snapshot"
+                }
               }
             }
           ]
@@ -92,8 +91,5 @@
         }
       }
     }
-  },
-  "metadata": {
-    "review": "required"
   }
 }

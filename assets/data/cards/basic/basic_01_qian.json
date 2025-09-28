@@ -150,8 +150,6 @@
                           "action": "EXECUTE_LATER",
                           "params": {
                             "delay": "END_OF_TURN",
-                            "max_turns": 1,
-                            "snapshot_args": true,
                             "effect": {
                               "actions": [
                                 {
@@ -178,8 +176,5 @@
         }
       }
     }
-  },
-  "metadata": {
-    "review": "required"
   }
 }

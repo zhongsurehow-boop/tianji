@@ -1,0 +1,59 @@
+{
+  "id": "basic_22_ben",
+  "name": "贲",
+  "symbol": "☶☲",
+  "sequence": 22,
+  "pinyin": "ben",
+  "strokes": 22,
+  "type": "basic",
+  "core_mechanism": {
+    "name": "Placeholder Effect",
+    "description": "A simple placeholder effect.",
+    "variants": {
+      "di": {
+        "name": "地",
+        "effect": {
+          "actions": [
+            {
+              "action": "GAIN_RESOURCE",
+              "params": {
+                "target": "SELF",
+                "resource": "gold",
+                "value": 2
+              }
+            }
+          ]
+        }
+      },
+      "ren": {
+        "name": "人",
+        "effect": {
+          "actions": [
+            {
+              "action": "DRAW_CARD",
+              "params": {
+                "target": "SELF",
+                "deck": "basic",
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "天",
+        "effect": {
+          "actions": [
+            {
+              "action": "DEAL_DAMAGE",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "value": 2
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

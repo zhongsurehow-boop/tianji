@@ -20,6 +20,8 @@
   // ... 其他元数据 ...
   "type": "basic",
 
+  // "usage_limit" can be defined at the top level to apply to the entire card,
+  // or within a specific effect/variant to apply only to that part.
   "usage_limit": {
     "scope": "GAME",
     "count": 1
@@ -170,8 +172,19 @@
 
 ### 5.6 `COPY_EFFECT` 参数 **(V3.1 新增)**
 *   **`target`**: 谁来执行这个被复制的效果。
-*   **`source_effect`**: 定义要复制哪个效果。例如: `{ "type": "LAST_BASIC_CARD_EFFECT", "player": "ANY" }`
+*   **`source_effect`**: 定义要复制哪个效果。这是一个结构化对象，详见 5.7 节。
 *   **`modifications`**: 可选，对复制的效果进行调整。例如: `{ "remove_negative_parts": true }`
+
+### 5.7 Contextual Data Sources
+
+To avoid "magic strings," actions that need to reference dynamic game state (like a just-played card or an interrupted effect) must use a structured object.
+
+**`source_effect` Object (for `COPY_EFFECT`)**
+*   **Structure:** `{ "type": "SOURCE_TYPE", "player_scope": "PLAYER_SCOPE_VALUE" }`
+*   **`SOURCE_TYPE` Values:**
+    *   `LAST_BASIC_CARD_EFFECT_PLAYED`: The effect from the last *basic* card that was resolved. Used by 《坤》.
+    *   `INTERRUPTED_EFFECT`: The effect that was just cancelled by an `INTERRUPT` action. This is specifically for creating "counter-spell" type effects, like with 《蒙》.
+*   **`PLAYER_SCOPE_VALUE` Values:** (Optional) `SELF`, `OPPONENT_SINGLE`, `ANY`, etc.
 
 ---
 
@@ -199,7 +212,8 @@
           {
             "action": "INTERRUPT",
             "params": {
-              "target_action": "CURRENTLY_RESOLVING_ATTACK", // 引擎需要知道要中断哪个动作
+              // The engine infers the target action from the trigger's context.
+              // For "ON_BEING_TARGETED" by an "ATTACK", it interrupts that attack.
               "interrupt_type": "CANCEL"
             }
           },
