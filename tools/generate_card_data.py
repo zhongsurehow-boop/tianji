@@ -9,7 +9,8 @@ game engine can consume.
 Key Functions:
 - Parses specified Markdown files (`hexagram_interpretations.md`, etc.).
 - Extracts all `json` code blocks.
-- Validates each card's JSON data against the official `card_logic_schema.md`.
+- Validates each card's JSON data against the official `card_logic_schema.md`,
+  including enforcement of security parameters for high-risk actions.
 - Generates individual `.json` files for each valid card into the
   `assets/data/cards/` directory, organized by card type.
 - Provides detailed error reporting for both JSON syntax and schema violations.
@@ -34,8 +35,6 @@ DEFAULT_SCHEMA_PATH = ROOT_DIR / "card_logic_schema.md"
 # Define input source files and the base output directory.
 INPUT_FILES = [
     ROOT_DIR / "hexagram_interpretations.md",
-    # Add other source files here if they are created, e.g., for expansions.
-    # ROOT_DIR / "docs" / "state_cards.md", # This file was mentioned in the original script but doesn't exist.
 ]
 OUTPUT_DIR = ROOT_DIR / "assets" / "data" / "cards"
 
@@ -64,9 +63,6 @@ class CardSchema:
         print(f"Loading schema from: {self.path.name}")
         try:
             content = self.path.read_text(encoding="utf-8")
-            # Regex to find the 'Action' table and extract the action names.
-            # It looks for a markdown table header, then captures the first
-            # column of each subsequent row.
             action_table_match = re.search(
                 r"## 4\. 动作 \(Action\).*?\| 类型.*?\|(.*?)^---", content, re.S | re.M
             )
@@ -75,7 +71,6 @@ class CardSchema:
                 return
 
             table_content = action_table_match.group(1)
-            # Extracts all action names (e.g., `GAIN_RESOURCE`) from the table rows.
             self.actions = {
                 action.strip()
                 for action in re.findall(r"\|\s*`([A-Z_]+)`", table_content)
@@ -89,7 +84,8 @@ class CardSchema:
 
     def validate(self, card_data: Dict[str, Any]) -> List[str]:
         """
-        Validates a single card's data against the loaded schema.
+        Validates a single card's data against the loaded schema, including
+        mandatory security parameters for high-risk actions.
 
         This function serves as the "Card Data Linter" required by AGENTS.md.
 
@@ -108,55 +104,68 @@ class CardSchema:
             if key not in card_data:
                 errors.append(f"Missing required top-level key: '{key}'")
 
-        # Rule 2: Recursively find and validate all action objects.
-        self._validate_actions_recursively(card_data, card_id, errors)
+        # Rule 2: Recursively validate all high-risk constructs.
+        self._recursive_validator(card_data, card_id, errors)
 
         return errors
 
-    def _validate_actions_recursively(
+    def _recursive_validator(
         self, data: Any, card_id: str, errors: List[str], path: str = ""
     ):
-        """Helper to traverse the data and validate 'actions' arrays."""
+        """
+        Recursively traverses the card data to validate actions and other
+        high-risk objects against security and consistency rules.
+        """
         if isinstance(data, dict):
+            # --- A. Check for action objects and their security contracts ---
+            if "action" in data:
+                action_name = data.get("action")
+                params = data.get("params", {})
+                action_path = path or "effect"
+
+                # A.1: Basic action name validation
+                if not action_name:
+                    errors.append(f"Object at '{action_path}' looks like an action but is missing the 'action' key.")
+                elif action_name not in self.actions:
+                    errors.append(
+                        f"Action '{action_name}' at '{action_path}' is not a valid action "
+                        f"defined in {self.path.name}."
+                    )
+                # A.2: Security Contract Validations for high-risk actions
+                else:
+                    if action_name == "MODIFY_RULE":
+                        if "scope" not in params or "duration" not in params:
+                            errors.append(f"Security Linter: Action '{action_name}' at '{action_path}' must include 'scope' and 'duration' parameters.")
+                    elif action_name == "EXECUTE_LATER":
+                        if "expiry_time" not in params:
+                            errors.append(f"Security Linter: Action '{action_name}' at '{action_path}' must include an 'expiry_time' parameter.")
+                    elif action_name.startswith("SWAP_"):
+                        if "atomic" not in params:
+                             errors.append(f"Security Linter: Action '{action_name}' at '{action_path}' must include an 'atomic' parameter.")
+
+            # --- B. Check for usage_limit objects ---
+            if "usage_limit" in data and isinstance(data["usage_limit"], dict):
+                usage_limit_path = f"{path}.usage_limit" if path else "usage_limit"
+                if "reset_timing" not in data["usage_limit"]:
+                    errors.append(f"Security Linter: Object 'usage_limit' at '{usage_limit_path}' must include a 'reset_timing' parameter.")
+
+            # --- C. Recurse into all nested structures ---
             for key, value in data.items():
                 new_path = f"{path}.{key}" if path else key
-                if key == "actions" and isinstance(value, list):
-                    for i, action_obj in enumerate(value):
-                        action_path = f"{new_path}[{i}]"
-                        if not isinstance(action_obj, dict):
-                            errors.append(f"Action at '{action_path}' is not a dictionary.")
-                            continue
-                        action_name = action_obj.get("action")
-                        if not action_name:
-                            errors.append(f"Action at '{action_path}' is missing the 'action' key.")
-                        elif action_name not in self.actions:
-                            errors.append(
-                                f"Action '{action_name}' at '{action_path}' is not a valid action "
-                                f"defined in {self.path.name}."
-                            )
-                else:
-                    self._validate_actions_recursively(value, card_id, errors, new_path)
+                self._recursive_validator(value, card_id, errors, new_path)
+
         elif isinstance(data, list):
             for i, item in enumerate(data):
-                self._validate_actions_recursively(item, card_id, errors, f"{path}[{i}]")
-
+                self._recursive_validator(item, card_id, errors, f"{path}[{i}]")
 
 # --- 3. Markdown Parsing & Data Extraction ---
 
 def find_json_blocks(content: str) -> Iterator[Tuple[str, int]]:
     """
     Finds all ```json ... ``` blocks in a string and yields them with their line numbers.
-
-    Args:
-        content: The string content of the file.
-
-    Yields:
-        A tuple containing the JSON string and its starting line number.
     """
-    # Using re.finditer to get match objects which contain position info.
     for match in re.finditer(r"```json\n(.*?)\n```", content, re.DOTALL):
         json_block = match.group(1)
-        # Calculate the line number of the start of the block.
         line_number = content.count("\n", 0, match.start()) + 1
         yield json_block, line_number
 
@@ -164,12 +173,6 @@ def find_json_blocks(content: str) -> Iterator[Tuple[str, int]]:
 def parse_markdown_file(filepath: Path) -> Iterator[Tuple[Dict[str, Any], str, int]]:
     """
     Parses a markdown file to extract JSON data blocks.
-
-    Args:
-        filepath: The path to the markdown file.
-
-    Yields:
-        A tuple of (parsed_json, filename, line_number).
     """
     print(f"\nParsing source file: {filepath.name}...")
     try:
@@ -195,10 +198,6 @@ def parse_markdown_file(filepath: Path) -> Iterator[Tuple[Dict[str, Any], str, i
 def generate_card_files(cards: List[Dict[str, Any]], base_output_path: Path):
     """
     Generates individual .json files for each card in the appropriate subdirectory.
-
-    Args:
-        cards: A list of validated card data dictionaries.
-        base_output_path: The root directory for all generated card files.
     """
     generated_count = 0
     print(f"\nGenerating {len(cards)} valid card files...")
@@ -207,13 +206,10 @@ def generate_card_files(cards: List[Dict[str, Any]], base_output_path: Path):
         card_type = card["type"]
         card_id = card["id"]
 
-        # Determine the correct subdirectory based on the card type.
         if card_type in STATE_CARD_TYPES:
-            # Pluralization for state cards is specific.
             subfolder_name = "celestial" if card_type == "celestial" else f"{card_type}s"
             output_path = base_output_path / "state" / subfolder_name
         else:
-            # Other cards are directly in a folder named by their type.
             output_path = base_output_path / card_type
 
         output_path.mkdir(parents=True, exist_ok=True)
@@ -221,7 +217,6 @@ def generate_card_files(cards: List[Dict[str, Any]], base_output_path: Path):
 
         try:
             with file_path.open("w", encoding="utf-8") as f:
-                # Use indent=2 for readability, ensure_ascii=False for Chinese chars.
                 json.dump(card, f, ensure_ascii=False, indent=2)
             generated_count += 1
         except IOError as e:
@@ -236,15 +231,13 @@ def generate_card_files(cards: List[Dict[str, Any]], base_output_path: Path):
 
 def main():
     """Main function to orchestrate the card data generation process."""
-    print("--- Starting Card Data Generation (v2.0) ---")
+    print("--- Starting Card Data Generation (v3.0 - Hardened Linter) ---")
 
-    # 1. Load the schema first, as it's required for validation.
     schema = CardSchema(DEFAULT_SCHEMA_PATH)
     if not schema.actions:
         print("\nCould not load schema definitions. Aborting.", file=sys.stderr)
         sys.exit(1)
 
-    # 2. Parse all source files to get raw card data.
     all_parsed_cards = []
     for file_path in INPUT_FILES:
         if not file_path.exists():
@@ -256,7 +249,6 @@ def main():
         print("\nNo card data found in any source file. Exiting.", file=sys.stderr)
         return
 
-    # 3. Validate cards and collect valid ones.
     valid_cards = []
     total_cards = len(all_parsed_cards)
     print(f"\nFound {total_cards} card definitions. Validating against schema...")
@@ -276,18 +268,17 @@ def main():
 
     print(f"  Validation complete. {len(valid_cards)} / {total_cards} cards are valid.")
 
-    # 4. Generate files for the valid cards.
+    if len(valid_cards) < total_cards:
+        print("\nErrors were found. Halting file generation.", file=sys.stderr)
+        sys.exit(1)
+
     if valid_cards:
         generate_card_files(valid_cards, OUTPUT_DIR)
     else:
         print("\nNo valid cards to generate.")
 
-    # 5. Final summary.
     print("\n--- Card Data Generation Complete ---")
     print(f"Output directory: {OUTPUT_DIR}")
-    if len(valid_cards) < total_cards:
-        print(f"Warning: {total_cards - len(valid_cards)} cards failed validation and were not generated.")
-        sys.exit(1) # Exit with an error code if some cards failed validation
 
 
 if __name__ == "__main__":

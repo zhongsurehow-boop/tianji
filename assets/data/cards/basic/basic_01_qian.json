@@ -150,6 +150,7 @@
                           "action": "EXECUTE_LATER",
                           "params": {
                             "delay": "END_OF_TURN",
+                            "expiry_time": "1 ROUND",
                             "effect": {
                               "actions": [
                                 {

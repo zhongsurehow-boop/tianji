@@ -128,6 +128,7 @@
                           "action": "EXECUTE_LATER",
                           "params": {
                             "delay": "END_OF_TURN",
+                            "expiry_time": "1 ROUND",
                             "effect": {
                               "actions": [
                                 { "action": "DISCARD_CARD", "params": { "target": "SELF", "count": 1 } }
@@ -277,7 +278,7 @@
         "effect": {
           "actions": [
             { "action": "DESTROY_ENTITY", "params": { "target_entity_type": "ENTITY_TUN", "position": "SELF" } },
-            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "ALLY_FORMAL_SINGLE_CHOICE" } }
+            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "ALLY_FORMAL_SINGLE_CHOICE", "atomic": true } }
           ]
         }
       },
@@ -409,7 +410,7 @@
           "actions": [
             { "action": "SKIP_PHASE", "params": { "phase": "INTERPRETATION" } },
             { "action": "APPLY_STATUS", "params": { "target": "SELF", "status_id": "IMMUNITY_GENERAL_NEGATIVE", "value": 1, "duration": 1 } },
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 10 } }, { "action": "DRAW_CARD", "params": { "target": "SELF", "deck": "basic", "count": 2 } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "expiry_time": "1 ROUND", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 10 } }, { "action": "DRAW_CARD", "params": { "target": "SELF", "deck": "basic", "count": 2 } } ] } } }
           ]
         }
       },
@@ -418,7 +419,7 @@
         "effect": {
           "actions": [
             { "action": "SKIP_PHASE", "params": { "phase": "INTERPRETATION" } },
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "condition": { "op": "PLAYER_HAS_NOT_TAKEN_DAMAGE_SINCE", "params": { "timestamp": "NOW" } }, "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 15 } }, { "action": "DRAW_CARD", "params": { "target": "SELF", "deck": "basic", "count": 3 } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "expiry_time": "1 ROUND", "condition": { "op": "PLAYER_HAS_NOT_TAKEN_DAMAGE_SINCE", "params": { "timestamp": "NOW" } }, "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 15 } }, { "action": "DRAW_CARD", "params": { "target": "SELF", "deck": "basic", "count": 3 } } ] } } }
           ]
         }
       },
@@ -427,7 +428,7 @@
         "effect": {
           "actions": [
             { "action": "SKIP_PHASE", "params": { "phase": "INTERPRETATION" } },
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 10 } }, { "action": "CHOICE", "params": { "target": "SELF", "options": [ { "description": "将10金币赠予盟友", "effect": { "action": "TRANSFER_RESOURCE", "params": { "from": "SELF", "to": "ALLY_FORMAL_SINGLE", "resource": "gold", "value": 10 } } } ] } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_UPKEEP_PHASE", "expiry_time": "1 ROUND", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 10 } }, { "action": "CHOICE", "params": { "target": "SELF", "options": [ { "description": "将10金币赠予盟友", "effect": { "action": "TRANSFER_RESOURCE", "params": { "from": "SELF", "to": "ALLY_FORMAL_SINGLE", "resource": "gold", "value": 10 } } } ] } } ] } } }
           ]
         }
       }
@@ -940,7 +941,7 @@
         "name": "同人于宗",
         "effect": {
           "actions": [
-            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "OPPONENT_CHOICE_SINGLE", "count": 1 } }
+            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "OPPONENT_CHOICE_SINGLE", "count": 1, "atomic": true } }
           ]
         }
       },
@@ -1604,7 +1605,7 @@
         "effect": {
           "actions": [
             { "action": "SKIP_PHASE", "params": { "phase": "MOVEMENT" } },
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 5 } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "expiry_time": "1 ROUND", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 5 } } ] } } }
           ]
         }
       },
@@ -1916,7 +1917,7 @@
         "name": "浚恒",
         "effect": {
           "actions": [
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "repeat": 3, "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 1 } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "repeat": 3, "expiry_time": "3 ROUNDS", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 1 } } ] } } }
           ]
         }
       },
@@ -2241,7 +2242,7 @@
         "name": "交孚",
         "effect": {
           "actions": [
-            { "action": "SWAP_RESOURCES", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "YIN_YANG_GAUGE" } }
+            { "action": "SWAP_RESOURCES", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "YIN_YANG_GAUGE", "atomic": true } }
           ]
         }
       }
@@ -2782,7 +2783,7 @@
         "name": "巳日乃孚",
         "effect": {
           "actions": [
-            { "action": "SWAP_POSITION", "params": { "target_a": "PLAYER_CHOICE_ANY_NON_ALLY", "target_b": "PLAYER_CHOICE_ANY_NON_ALLY" } }
+            { "action": "SWAP_POSITION", "params": { "target_a": "PLAYER_CHOICE_ANY_NON_ALLY", "target_b": "PLAYER_CHOICE_ANY_NON_ALLY", "atomic": true } }
           ]
         }
       },
@@ -2940,7 +2941,7 @@
         "effect": {
           "actions": [
             { "action": "APPLY_STATUS", "params": { "target": "SELF", "status_id": "CANNOT_MOVE", "duration": 1 } },
-            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 5 } } ] } } }
+            { "action": "EXECUTE_LATER", "params": { "delay": "NEXT_TURN_START", "expiry_time": "1 ROUND", "effect": { "actions": [ { "action": "GAIN_RESOURCE", "params": { "target": "SELF", "resource": "gold", "value": 5 } } ] } } }
           ]
         }
       },
@@ -3058,7 +3059,7 @@
         "name": "月几望",
         "effect": {
           "actions": [
-            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "OPPONENT_CHOICE_SINGLE", "count": "ALL" } }
+            { "action": "SWAP_HAND_CARDS", "params": { "target": "SELF", "other_player": "OPPONENT_CHOICE_SINGLE", "count": "ALL", "atomic": true } }
           ]
         }
       }
@@ -3495,7 +3496,8 @@
   "type": "basic",
   "usage_limit": {
     "scope": "GAME",
-    "count": 1
+    "count": 1,
+    "reset_timing": "NEVER"
   },
   "core_mechanism": {
     "name": "水火既济",
@@ -3558,7 +3560,8 @@
         "name": "震用伐鬼方",
         "usage_limit": {
           "scope": "GAME",
-          "count": 1
+          "count": 1,
+          "reset_timing": "NEVER"
         },
         "effect": {
           "actions": [
@@ -3566,7 +3569,8 @@
               "action": "SWAP_DISCARD_PILES",
               "params": {
                 "target_a": "SELF",
-                "target_b": "OPPONENT_CHOICE_SINGLE"
+                "target_b": "OPPONENT_CHOICE_SINGLE",
+                "atomic": true
               }
             }
           ]
@@ -3575,7 +3579,7 @@
       "tian": {
         "name": "易位",
         "effect": {
-          "actions": [{ "action": "SWAP_RESOURCES", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "gold" } }]
+          "actions": [{ "action": "SWAP_RESOURCES", "params": { "target_a": "SELF", "target_b": "OPPONENT_CHOICE_SINGLE", "resource": "gold", "atomic": true } }]
         }
       }
     }

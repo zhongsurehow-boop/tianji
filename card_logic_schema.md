@@ -99,25 +99,25 @@
 | **状态与规则** | | |
 | `APPLY_STATUS` | 对目标施加状态。 | `target`, `status_id`, `duration`, `value`, `is_permanent` |
 | `REMOVE_STATUS` | 移除目标状态。 | `target`, `status_id` (或 `ALL_NEGATIVE`, `ALL_POSITIVE`) |
-| `MODIFY_RULE` | **(已增强)** 修改全局或玩家规则。 | `rule_id`, `scope`, `mutation` (`{type, value}`), `duration` |
+| `MODIFY_RULE` | **(已增强)** 修改全局或玩家规则。 | `rule_id`, `scope` (必须), `mutation`, `duration` (必须), `rollback_condition` |
 | **互动与信息** | | |
 | `CHOICE` | 给予玩家一个选择。 | `target`, `options` (每个option包含description和effect) |
 | `LOOKUP` | 查看隐藏信息。 | `target`, `info_type` (hand_cards, destiny_card) |
 | `INTERRUPT` | **(新增)** 中断一个正在结算的动作。 | `target_action`, `interrupt_type` (CANCEL, REDIRECT) |
-| `COPY_EFFECT` | **(新增)** 复制另一个效果。 | `target`, `source_effect`, `modifications` |
+| `COPY_EFFECT` | **(新增)** 复制另一个效果。 | `target`, `source_effect`, `modifications`, `copy_semantics` (可选) |
 | **卡牌与牌库** | | |
-| `DRAW_CARD` | **(新增)** 目标从指定牌库抽牌。 | `target`, `deck` (basic, function), `count` |
-| `DISCARD_CARD`| **(新增)** 目标弃牌。 | `target`, `count` |
-| `SWAP_HAND_CARDS`| **(新增)** 两人交换指定数量手牌。 | `target`, `other_player`, `count` (or `ALL`) |
-| `SWAP_DISCARD_PILES`| **(新增)** 两人交换弃牌堆。 | `target_a`, `target_b` |
+| `DRAW_CARD` | **(新增)** 目标从指定牌库抽牌。 | `target`, `deck` (basic, function), `count`, `reveal` (可选) |
+| `DISCARD_CARD`| **(新增)** 目标弃牌。 | `target`, `count`, `source` (RANDOM, CHOICE_FROM_HAND) |
+| `SWAP_HAND_CARDS`| **(新增)** 两人交换指定数量手牌。 | `target_a`, `target_b`, `count`, `atomic` (必须), `fallback_policy` (可选) |
+| `SWAP_DISCARD_PILES`| **(新增)** 两人交换弃牌堆。 | `target_a`, `target_b`, `atomic` (必须), `fallback_policy` (可选) |
 | `RECOVER_CARD_FROM_DISCARD`| **(新增)** 从弃牌堆回收牌到手牌。 | `target`, `deck`, `count` |
 | **实体与场上效果** | | |
-| `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties` |
+| `CREATE_ENTITY` | **(已增强)** 在棋盘上创建实体。 | `entity_type`, `position`, `owner`, `properties`, `max_instances` (可选) |
 | `DESTROY_ENTITY`| **(新增)** 移除一个场上实体。 | `target_entity_id` |
 | **游戏流程与规则** | | |
 | `SKIP_PHASE` | **(新增)** 跳过一个游戏阶段。 | `phase` (INTERPRETATION, etc.) |
 | `PROPOSE_ALLIANCE`| **(新增)** 向另一位玩家提议结盟。 | `target`, `duration`, `on_accept_effect` |
-| `EXECUTE_LATER` | 延迟执行效果。 | `delay` (e.g., "next_turn_start"), `effect` |
+| `EXECUTE_LATER` | 延迟执行效果。 | `delay`, `effect`, `expiry_time` (必须), `max_turns` (可选) |
 | `TRIGGER_EVENT` | 触发一个游戏事件（如“论道”）。 | `event_id` (EVENT_SONG, etc.), `participants` |
 
 ---
@@ -203,11 +203,12 @@
 }
 ```
 
-### 5.5 `usage_limit` - 使用限制 **(V3.1 新增)**
+### 5.5 `usage_limit` - 使用限制 **(V3.1 新增与强化)**
 位于卡牌顶层，用于定义那些有使用次数限制的效果（如“每场游戏一次”）。
 
 *   **`scope`**: `GAME`, `ROUND`, `PLAYER_LIFETIME`
 *   **`count`**: 整数，表示可用的次数。
+*   **`reset_timing` (必须):** 定义计数器何时重置。例如: `END_OF_ROUND`, `ON_STATUS_APPLIED(X)`.
 
 ### 5.6 `COPY_EFFECT` 参数 **(V3.1 新增)**
 *   **`target`**: 谁来执行这个被复制的效果。

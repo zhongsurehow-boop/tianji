@@ -113,7 +113,8 @@
               "action": "SWAP_HAND_CARDS",
               "params": {
                 "target": "SELF",
-                "other_player": "ALLY_FORMAL_SINGLE_CHOICE"
+                "other_player": "ALLY_FORMAL_SINGLE_CHOICE",
+                "atomic": true
               }
             }
           ]

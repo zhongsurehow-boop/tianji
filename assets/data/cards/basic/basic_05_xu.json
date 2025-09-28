@@ -33,6 +33,7 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
+                "expiry_time": "1 ROUND",
                 "effect": {
                   "actions": [
                     {
@@ -72,6 +73,7 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
+                "expiry_time": "1 ROUND",
                 "condition": {
                   "op": "PLAYER_HAS_NOT_TAKEN_DAMAGE_SINCE",
                   "params": {
@@ -117,6 +119,7 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
+                "expiry_time": "1 ROUND",
                 "effect": {
                   "actions": [
                     {

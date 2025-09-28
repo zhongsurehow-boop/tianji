@@ -19,6 +19,7 @@
               "params": {
                 "delay": "NEXT_TURN_START",
                 "repeat": 3,
+                "expiry_time": "3 ROUNDS",
                 "effect": {
                   "actions": [
                     {

@@ -45,7 +45,8 @@
               "params": {
                 "target": "SELF",
                 "other_player": "OPPONENT_CHOICE_SINGLE",
-                "count": 1
+                "count": 1,
+                "atomic": true
               }
             }
           ]

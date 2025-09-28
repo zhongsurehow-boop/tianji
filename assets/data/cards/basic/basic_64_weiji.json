@@ -32,7 +32,8 @@
         "name": "震用伐鬼方",
         "usage_limit": {
           "scope": "GAME",
-          "count": 1
+          "count": 1,
+          "reset_timing": "NEVER"
         },
         "effect": {
           "actions": [
@@ -40,7 +41,8 @@
               "action": "SWAP_DISCARD_PILES",
               "params": {
                 "target_a": "SELF",
-                "target_b": "OPPONENT_CHOICE_SINGLE"
+                "target_b": "OPPONENT_CHOICE_SINGLE",
+                "atomic": true
               }
             }
           ]
@@ -55,7 +57,8 @@
               "params": {
                 "target_a": "SELF",
                 "target_b": "OPPONENT_CHOICE_SINGLE",
-                "resource": "gold"
+                "resource": "gold",
+                "atomic": true
               }
             }
           ]

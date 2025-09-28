@@ -18,7 +18,8 @@
               "action": "SWAP_POSITION",
               "params": {
                 "target_a": "PLAYER_CHOICE_ANY_NON_ALLY",
-                "target_b": "PLAYER_CHOICE_ANY_NON_ALLY"
+                "target_b": "PLAYER_CHOICE_ANY_NON_ALLY",
+                "atomic": true
               }
             }
           ]

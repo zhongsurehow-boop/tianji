@@ -65,7 +65,8 @@
               "params": {
                 "target_a": "SELF",
                 "target_b": "OPPONENT_CHOICE_SINGLE",
-                "resource": "YIN_YANG_GAUGE"
+                "resource": "YIN_YANG_GAUGE",
+                "atomic": true
               }
             }
           ]
