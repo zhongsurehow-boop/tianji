@@ -11,7 +11,7 @@
 
 ### **第一卦：《乾》 ☰☰ - 天**
 **核心机制：【天道酬勤】**
-- **效果：** **支付** 10 金币和 5 生命值作为**代价**。在本轮的【解读阶段】，你所有效果造成的**伤害**、获得的**金币**和恢复的**生命值**，其基础数值翻倍。
+- **效果：** 你可以选择是否发动【天道酬勤】。若发动，你必须**支付** 10 金币和 5 生命值作为**代价**。成功支付后，在本轮的【解读阶段】，你所有效果造成的**伤害**、获得的**金币**和恢复的**生命值**，其基础数值翻倍。
 - **爻辞变量：**
   - **地部 (蓄力):** 发动【天道酬勤】时，支付的**代价**减半（5金币，3生命值，向上取整）。
   - **人部 (精进):** 除了核心效果，你还可以立即执行一次额外移动（1格）。
@@ -595,13 +595,13 @@
 ```
 
 ---
-### **第九卦：《小畜》 ☴☰**
-**核心机制：【Placeholder】**
-- **效果：** Placeholder effect description.
+### **第九卦：《小畜》 ☴☰ - 密云**
+**核心机制：【密云不雨】**
+- **效果：** 风行天上，聚云成势，但雨未降。此卦代表小有积蓄，但尚未形成大的突破。效果偏向于小额的获取与限制。
 - **爻辞变量：**
-  - **地部:** Placeholder.
-  - **人部:** Placeholder.
-  - **天部:** Placeholder.
+  - **地部 (种德):** 小有积蓄。你获得3金币，并抽一张基础牌。
+  - **人部 (牵连):** 与他人产生小的交互。你指定一名其他玩家，你们各弃一张手牌。
+  - **天部 (节制):** 施加小的限制。指定一名其他玩家，在本轮的【结算阶段】，该玩家不能通过区域效果获得金币。
 ```json
 {
   "id": "basic_09_xiao_chu",
@@ -612,11 +612,11 @@
   "strokes": 9,
   "type": "basic",
   "core_mechanism": {
-    "name": "Placeholder Effect",
-    "description": "A simple placeholder effect.",
+    "name": "密云不雨",
+    "description": "小有积蓄，但尚未形成大的突破。效果偏向于小额的获取与限制。",
     "variants": {
       "di": {
-        "name": "地",
+        "name": "种德",
         "effect": {
           "actions": [
             {
@@ -624,16 +624,9 @@
               "params": {
                 "target": "SELF",
                 "resource": "gold",
-                "value": 2
+                "value": 3
               }
-            }
-          ]
-        }
-      },
-      "ren": {
-        "name": "人",
-        "effect": {
-          "actions": [
+            },
             {
               "action": "DRAW_CARD",
               "params": {
@@ -645,15 +638,37 @@
           ]
         }
       },
-      "tian": {
-        "name": "天",
+      "ren": {
+        "name": "牵连",
         "effect": {
           "actions": [
             {
-              "action": "DEAL_DAMAGE",
+              "action": "DISCARD_CARD",
+              "params": {
+                "target": "SELF",
+                "count": 1
+              }
+            },
+            {
+              "action": "DISCARD_CARD",
               "params": {
                 "target": "OPPONENT_CHOICE_SINGLE",
-                "value": 2
+                "count": 1
+              }
+            }
+          ]
+        }
+      },
+      "tian": {
+        "name": "节制",
+        "effect": {
+          "actions": [
+            {
+              "action": "APPLY_STATUS",
+              "params": {
+                "target": "OPPONENT_CHOICE_SINGLE",
+                "status_id": "CANNOT_GAIN_GOLD_FROM_ZONE",
+                "duration": 1
               }
             }
           ]
@@ -1514,11 +1529,11 @@
   - **天部:** Placeholder.
 ```json
 {
-  "id": "basic_22_bi",
+  "id": "basic_22_ben",
   "name": "贲",
   "symbol": "☶☲",
   "sequence": 22,
-  "pinyin": "bi",
+  "pinyin": "ben",
   "strokes": 22,
   "type": "basic",
   "core_mechanism": {
