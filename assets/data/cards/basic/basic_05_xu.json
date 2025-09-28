@@ -33,6 +33,8 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
+                "max_turns": 1,
+                "snapshot_args": true,
                 "effect": {
                   "actions": [
                     {
@@ -78,6 +80,8 @@
                     "timestamp": "NOW"
                   }
                 },
+                "max_turns": 1,
+                "snapshot_args": true,
                 "effect": {
                   "actions": [
                     {
@@ -117,6 +121,8 @@
               "action": "EXECUTE_LATER",
               "params": {
                 "delay": "NEXT_UPKEEP_PHASE",
+                "max_turns": 1,
+                "snapshot_args": true,
                 "effect": {
                   "actions": [
                     {
@@ -155,5 +161,8 @@
         }
       }
     }
+  },
+  "metadata": {
+    "review": "required"
   }
 }

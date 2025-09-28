@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Set
 # Allowed top-level keys in a card JSON
 VALID_TOP_LEVEL_KEYS: Set[str] = {
     "id", "name", "symbol", "sequence", "pinyin", "strokes", "type",
-    "core_mechanism", "effect", "triggers", "usage_limit"
+    "core_mechanism", "effect", "triggers", "usage_limit", "metadata"
 }
 
 # Required top-level keys for every card
@@ -24,7 +24,9 @@ VALID_ACTIONS: Set[str] = {
     "GAIN_RESOURCE", "LOSE_RESOURCE", "PAY_COST", "DEAL_DAMAGE", "MOVE",
     "SWAP_POSITION", "APPLY_STATUS", "REMOVE_STATUS", "MODIFY_RULE", "CHOICE",
     "LOOKUP", "INTERRUPT", "COPY_EFFECT", "CREATE_ENTITY", "DESTROY_ENTITY",
-    "EXECUTE_LATER", "TRIGGER_EVENT", "DISCARD_CARD" # Added from 'qian' example
+    "EXECUTE_LATER", "TRIGGER_EVENT", "DISCARD_CARD",
+    # 新增支持的动作类型（与 card_logic_schema.md v3.1 保持一致）
+    "DRAW_CARD", "PROPOSE_ALLIANCE", "SKIP_PHASE", "SWAP_HAND_CARDS", "SWAP_RESOURCE", "SWAP_DISCARD_PILES", "MODIFY_RESOURCE", "TRANSFER_RESOURCE"
 }
 
 # Allowed parameters for each action (simplified for this linter)
@@ -131,6 +133,47 @@ def _validate_action_object(action: Dict[str, Any], path: str) -> List[str]:
         if missing_params:
             errors.append(f"Action '{action_type}' at '{path}' is missing required params: {missing_params}")
 
+    # --- High-level safety checks / engine contract checks ---
+    params = action.get('params', {}) if isinstance(action.get('params', {}), dict) else {}
+
+    # MODIFY_RULE must include scope and rollback info
+    if action_type == 'MODIFY_RULE':
+        scope = params.get('scope')
+        if not scope:
+            errors.append(f"MODIFY_RULE at '{path}' must include a 'scope' param (turn/phase/persistent).")
+        else:
+            if scope not in {'turn', 'phase', 'persistent'}:
+                errors.append(f"MODIFY_RULE at '{path}' has invalid scope '{scope}'. Use one of turn/phase/persistent.")
+        if not (params.get('rollback_condition') or params.get('duration')):
+            errors.append(f"MODIFY_RULE at '{path}' should include 'duration' or 'rollback_condition' to allow safe rollback.")
+
+    # EXECUTE_LATER should have expiry or max_turns to avoid dangling events
+    if action_type == 'EXECUTE_LATER':
+        if not (params.get('expiry_time') or params.get('max_turns') or params.get('delay')):
+            errors.append(f"EXECUTE_LATER at '{path}' should include 'expiry_time', 'max_turns' or 'delay' to avoid dangling events.")
+        # Recommend snapshot behavior (warning-level implemented as error to force explicitness)
+        if not params.get('snapshot_args') and not params.get('late_resolve'):
+            errors.append(f"EXECUTE_LATER at '{path}' should state 'snapshot_args' or 'late_resolve' to clarify resolution semantics.")
+
+    # COPY_EFFECT should declare copy semantics when used
+    if action_type == 'COPY_EFFECT':
+        copy_sem = params.get('copy_semantics')
+        if not copy_sem:
+            errors.append(f"COPY_EFFECT at '{path}' must declare 'copy_semantics' (snapshot|reference|forbidden).")
+        else:
+            if copy_sem not in {'snapshot', 'reference', 'forbidden'}:
+                errors.append(f"COPY_EFFECT at '{path}' has invalid copy_semantics '{copy_sem}'. Use snapshot|reference|forbidden.")
+
+    # CREATE_ENTITY should bound creation to avoid infinite loops
+    if action_type == 'CREATE_ENTITY':
+        if not (params.get('max_instances') or params.get('create_stack_limit')):
+            errors.append(f"CREATE_ENTITY at '{path}' should include 'max_instances' or 'create_stack_limit' to prevent runaway creation.")
+
+    # SWAP_* operations must be atomic or declare fallback
+    if action_type and action_type.startswith('SWAP'):
+        if 'atomic' not in params and 'fallback_policy' not in params:
+            errors.append(f"{action_type} at '{path}' must include 'atomic' boolean or 'fallback_policy' to avoid partial swaps.")
+
     return errors
 
 def main():
@@ -167,6 +210,15 @@ def main():
 
             card_id = os.path.splitext(os.path.basename(filepath))[0]
             errors = lint_card(data, card_id)
+
+            # Top-level usage_limit semantics check
+            if 'usage_limit' in data:
+                ul = data.get('usage_limit')
+                if not isinstance(ul, dict):
+                    errors.append(f"Top-level 'usage_limit' in {filepath} must be an object with 'reset_timing'.")
+                else:
+                    if not ul.get('reset_timing'):
+                        errors.append(f"Top-level 'usage_limit' in {filepath} must include 'reset_timing' (e.g., end_of_turn).")
 
             if errors:
                 print(f"\n--- Errors found in {filepath}:")

@@ -62,7 +62,8 @@
                 },
                 "modifications": {
                   "remove_negative_parts": true
-                }
+                },
+                "copy_semantics": "snapshot"
               }
             }
           ]
@@ -91,5 +92,8 @@
         }
       }
     }
+  },
+  "metadata": {
+    "review": "required"
   }
 }

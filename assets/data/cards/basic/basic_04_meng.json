@@ -29,7 +29,8 @@
                       "modifications": {
                         "only_gains": true,
                         "multiplier": 0.5
-                      }
+                      },
+                      "copy_semantics": "snapshot"
                     }
                   },
                   "discipline_effect": {
@@ -86,7 +87,8 @@
                     "action": "COPY_EFFECT",
                     "params": {
                       "target": "OPPONENT_CHOICE_SINGLE",
-                      "source_effect": "INTERRUPTED_EFFECT"
+                      "source_effect": "INTERRUPTED_EFFECT",
+                      "copy_semantics": "snapshot"
                     }
                   }
                 }
@@ -96,5 +98,8 @@
         }
       }
     }
+  },
+  "metadata": {
+    "review": "required"
   }
 }

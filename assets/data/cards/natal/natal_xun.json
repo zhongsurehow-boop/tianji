@@ -3,12 +3,16 @@
     "type": "natal",
     "name": "巽",
     "symbol": "☴",
-    "passive": {
-        "name": "随风",
-        "description": "移动阶段，可选择额外移动一格。"
-    },
-    "active": {
-        "name": "无孔不入",
+    "triggers": [
+        {
+            "condition": "ON_PHASE_START",
+            "params": {"phase": "MOVEMENT"},
+            "effect": {
+                "description": "移动阶段，可选择额外移动一格。"
+            }
+        }
+    ],
+    "effect": {
         "description": "结算阶段，可获得任一【天部】区域一半的累积金币。"
     }
 }
